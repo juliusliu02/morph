@@ -2,13 +2,13 @@
 import InputPassageForm from "@/components/input-passage-form";
 import { useState } from "react";
 import { PassagePair } from "@/lib/types";
-import DiffPassage from "@/components/diff-passage";
+import Page from "@/app/grammar-edit/page";
 
 function Home() {
   const [firstPass, setFirstPass] = useState<PassagePair | null>(null);
 
   if (firstPass !== null) {
-    return <DiffPassage pair={firstPass}></DiffPassage>;
+    return <Page pair={firstPass}></Page>;
   }
 
   return <InputPassageForm setFirstPass={setFirstPass} />;

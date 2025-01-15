@@ -86,7 +86,7 @@ function InputPassageForm({ setFirstPass }: InputPassageFormProps) {
           )}
         />
         <Button disabled={isPending} type="submit">
-          {isPending ? "Loading..." : "Submit"}
+          {isPending ? "Loading..." : "Get grammar edit"}
         </Button>
       </form>
     </Form>

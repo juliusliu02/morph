@@ -10,7 +10,7 @@ const grammarEditPrompt =
   "Correct only the grammatical mistake in this text. Return only the result; do not add sentences at the start.";
 
 const lexicalEditPrompt =
-  "Paraphrase or rephrase the content where it feels repetitive or unnatural.";
+  "Paraphrase or rephrase the content where it feels repetitive or unnatural. Return only the result; do not add sentences at the start.";
 
 export const grammarEdit = async (content: string) => {
   return client.chatCompletion({
