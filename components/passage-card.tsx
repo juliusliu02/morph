@@ -7,9 +7,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { passageToDiff } from "@/lib/utils";
+import { PassagePair } from "@/lib/types";
 
-type PassageProps = {
-  diff: Diff[];
+type PassageCardProps = {
+  pair: PassagePair;
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren) => {
@@ -24,7 +26,7 @@ const InsertText = ({ children }: React.PropsWithChildren) => {
   return <span className="bg-indigo-400 text-gray-100">{children}</span>;
 };
 
-const renderPassage = (diff: Diff, key: string): React.ReactNode => {
+const WordChunk = (diff: Diff, key: string): React.ReactNode => {
   switch (diff[0]) {
     case DiffOp.Delete:
       return <DeleteText key={key}>{diff[1]}</DeleteText>;
@@ -35,14 +37,34 @@ const renderPassage = (diff: Diff, key: string): React.ReactNode => {
   }
 };
 
-function PassageCard({ diff }: PassageProps) {
-  const original = diff
-    .filter((d: Diff) => d[0] != DiffOp.Insert)
-    .map((diff, index) => renderPassage(diff, "o" + index));
+const renderPassage = (diffs: Diff[], keyPrefix: string) => {
+  const paragraphs: React.ReactNode[] = [];
+  let currentParagraph: React.ReactNode[] = [];
+  diffs.map((diff: Diff, index: number) => {
+    if (diff[1].includes("\n")) {
+      diff[1] = diff[1].replace("\n", "");
+      currentParagraph.push(WordChunk(diff, keyPrefix + index));
+      paragraphs.push(<p>{...currentParagraph}</p>);
+      currentParagraph = [];
+    } else {
+      currentParagraph.push(WordChunk(diff, keyPrefix + index));
+    }
+  });
+  if (currentParagraph.length > 0) {
+    paragraphs.push(<p>{...currentParagraph}</p>);
+  }
+  return <>{...paragraphs}</>;
+};
 
-  const edit = diff
-    .filter((d: Diff) => d[0] !== DiffOp.Delete)
-    .map((diff, index) => renderPassage(diff, "e" + index));
+function PassageCard({ pair }: PassageCardProps) {
+  const diff = passageToDiff(pair);
+
+  const originalDiff = diff.filter((d: Diff) => d[0] != DiffOp.Insert);
+  const original = renderPassage(originalDiff, "o");
+
+  const editDiff = diff.filter((d: Diff) => d[0] !== DiffOp.Delete);
+  const edit = renderPassage(editDiff, "e");
+  console.log(editDiff);
 
   return (
     <div className="flex gap-5 flex-1">

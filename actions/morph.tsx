@@ -26,11 +26,12 @@ export const getGrammarEdit = async (
     return { error: validatedFields.error.message };
   }
 
-  const result = await getEdit(
-    "grammar",
-    // replace other line break characters.
-    validatedFields.data.body,
-  );
+  // TODO: remove the last part when paragraph parsing is set up
+  const original = validatedFields.data.body
+    .replaceAll("\r\n", "\n")
+    .replaceAll("\n", " ");
+
+  const result = await getEdit("grammar", original);
 
   if (result.error) {
     return { error: result.error };
@@ -38,7 +39,7 @@ export const getGrammarEdit = async (
 
   return {
     passagePair: {
-      original: validatedFields.data.body,
+      original: original,
       edit: result.response!,
     },
   };

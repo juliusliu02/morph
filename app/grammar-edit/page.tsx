@@ -2,7 +2,7 @@
 import React, { useActionState } from "react";
 import { getLexicalEdit } from "@/actions/morph";
 import { Button } from "@/components/ui/button";
-import DiffPassage from "@/components/diff-passage";
+import PassageCard from "@/components/passage-card";
 import { PassagePair } from "@/lib/types";
 
 function Page({ pair }: { pair: PassagePair }) {
@@ -15,13 +15,13 @@ function Page({ pair }: { pair: PassagePair }) {
           <p className="border-b pb-2 text-3xl font-semibold tracking-tight">
             Lexical edit
           </p>
-          <DiffPassage pair={state.passagePair} />
+          <PassageCard pair={state.passagePair} />
         </>
       )}
       <p className="border-b pb-2 text-3xl font-semibold tracking-tight">
         Grammar edit
       </p>
-      <DiffPassage pair={pair} />
+      <PassageCard pair={pair} />
       <></>
       <form action={formAction}>
         <input hidden name="body" readOnly value={pair.edit} />

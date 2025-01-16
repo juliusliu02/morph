@@ -26,8 +26,7 @@ export type ResponseType =
       error: string;
     };
 
-const formatPrompt =
-  "Return the result in JSON format, in which 'edit' is the modified version of the text.";
+const formatPrompt = `Return the complete result in JSON format, in which 'edit' is the modified version of the text. Do not add any additional explanatory text.`;
 
 const getJsonResponse = async (
   prompt: string,
