@@ -1,7 +1,7 @@
 "use server";
 import "server-only";
 
-import { grammarEdit, lexicalEdit } from "@/lib/prompts";
+import { getEdit } from "@/lib/prompts";
 import { formSchema } from "@/lib/validations";
 import { PassagePair } from "@/lib/types";
 
@@ -26,19 +26,20 @@ export const getGrammarEdit = async (
     return { error: validatedFields.error.message };
   }
 
-  // replace other line break characters.
-  const result = await grammarEdit(
-    validatedFields.data.body.replaceAll("\r\n", "\n").replaceAll("\r", "\n"),
+  const result = await getEdit(
+    "grammar",
+    // replace other line break characters.
+    validatedFields.data.body,
   );
 
-  if (!result.choices[0].message.content) {
-    return { error: "Server error. Please alert the administrator." };
+  if (result.error) {
+    return { error: result.error };
   }
 
   return {
     passagePair: {
       original: validatedFields.data.body,
-      edit: result.choices[0].message.content,
+      edit: result.response!,
     },
   };
 };
@@ -48,16 +49,16 @@ export const getLexicalEdit = async (
   data: FormData,
 ): Promise<FormState> => {
   const passage = data.get("body") as string;
+  const result = await getEdit("lexical", passage);
 
-  const result = await lexicalEdit(passage);
-  if (!result.choices[0].message.content) {
-    return { error: "Server error. Please alert the administrator." };
+  if (result.error) {
+    return { error: result.error };
   }
 
   return {
     passagePair: {
       original: passage,
-      edit: result.choices[0].message.content,
+      edit: result.response!,
     },
   };
 };

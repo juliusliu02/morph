@@ -12,14 +12,6 @@ const diff = new DiffMatchPatch();
 export const passageToDiff = (pair: PassagePair): Diff[] => {
   const { original, edit } = pair;
   const result = diff.diff_main(original, edit);
-  diff.diff_cleanupEfficiency(result);
+  diff.diff_cleanupSemantic(result);
   return result;
 };
-
-export const diffToHTML = (d: Diff[]) => {
-  return diff.diff_prettyHtml(d);
-};
-
-// export const diffToPair = (diff: Diff[]) => {
-//   return;
-// };

@@ -45,7 +45,7 @@ function PassageCard({ diff }: PassageProps) {
     .map((diff, index) => renderPassage(diff, "e" + index));
 
   return (
-    <div className="flex gap-5">
+    <div className="flex gap-5 flex-1">
       <Card className="my-5">
         <CardHeader>
           <CardTitle>Original</CardTitle>

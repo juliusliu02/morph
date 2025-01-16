@@ -3,22 +3,25 @@ export type PassagePair = {
   edit: string;
 };
 
-export type Edit = {
-  title?: string;
-  original: string;
-  grammarEdit: string;
-  lexicalEdit: string;
-  logicalEdit?: string;
-  final?: string;
+export const EditOptions = ["grammar", "lexical", "logical", "custom"] as const;
+export type EditType = (typeof EditOptions)[number];
+
+export type Version = {
+  hash: string;
+  text: string;
+  editType: EditType;
 };
 
-export type GrammarEdit = Pick<Edit, "title" | "original" | "grammarEdit">;
+export type Dialogue = {
+  title?: string;
+  version: Version[];
+};
 
-export type TopicQuestionEdit = Edit & {
+export type TopicQuestionDialogue = Dialogue & {
   question: string;
 };
 
 // TODO: manage chart somehow (with storage?)
-export type ChartQuestionEdit = {
+export type ChartQuestionDialogue = {
   chart: string;
 };

@@ -10,8 +10,19 @@ function Page({ pair }: { pair: PassagePair }) {
 
   return (
     <div>
-      {state?.passagePair && <DiffPassage pair={state.passagePair} />}
+      {state?.passagePair && (
+        <>
+          <p className="border-b pb-2 text-3xl font-semibold tracking-tight">
+            Lexical edit
+          </p>
+          <DiffPassage pair={state.passagePair} />
+        </>
+      )}
+      <p className="border-b pb-2 text-3xl font-semibold tracking-tight">
+        Grammar edit
+      </p>
       <DiffPassage pair={pair} />
+      <></>
       <form action={formAction}>
         <input hidden name="body" readOnly value={pair.edit} />
         <Button

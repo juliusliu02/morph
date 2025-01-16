@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourceSans3.className} antialiased max-w-2xl mx-auto`}
+        className={`${sourceSans3.className} antialiased max-w-2xl mx-auto bg-slate-50`}
       >
         {children}
       </body>

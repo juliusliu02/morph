@@ -6,13 +6,22 @@ const API = process.env.INFERENCE_API_KEY;
 
 const client = new HfInference(API);
 
+// doc ref: https://huggingface.co/docs/text-generation-inference/main/en/basic_tutorials/using_guidance#grammar-and-constraints-
+const jsonSchema = {
+  properties: {
+    text: {
+      type: "string",
+    },
+  },
+  required: ["body"],
+};
+
 const chatCompletion = await client.chatCompletion({
   model: "meta-llama/Meta-Llama-3-8B-Instruct",
   messages: [
     {
       role: "system",
-      content:
-        "Correct only the grammatical mistake in this text. Return only the result. Do not add sentences at the start.",
+      content: "Correct only the grammatical mistakes in this text.",
     },
     {
       role: "user",
@@ -21,6 +30,13 @@ const chatCompletion = await client.chatCompletion({
     },
   ],
   max_tokens: 500,
+  response_format: {
+    type: "json",
+    value: JSON.stringify(jsonSchema),
+  },
 });
+
+const result = JSON.parse(chatCompletion.choices[0].message.content!);
+console.log(result);
 
 console.log(chatCompletion.choices[0].message);
