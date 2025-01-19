@@ -1,0 +1,39 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Edit {
+  ORIGINAL
+  GRAMMAR
+  LEXICAL
+  LOGICAL
+  CUSTOM
+}
+
+model Version {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  text       String
+  edit       Edit
+  dialogue   Dialogue @relation(fields: [dialogueId], references: [id])
+  dialogueId String   @db.ObjectId
+}
+
+model Dialogue {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  title String?
+  // owner    User      @relation(fields: [ownerId], references: [id])
+  // ownerId  String    @db.ObjectId
+  versions Version[]
+}
+
+model User {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  email String  @unique
+  name  String?
+  // dialogues Dialogue[]
+}

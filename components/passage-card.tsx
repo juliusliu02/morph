@@ -7,11 +7,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { passageToDiff } from "@/lib/utils";
-import { PassagePair } from "@/lib/types";
+import { getDiff } from "@/lib/utils";
+import { Version } from "@prisma/client";
 
 type PassageCardProps = {
-  pair: PassagePair;
+  original: Version;
+  edit: Version;
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren) => {
@@ -56,15 +57,14 @@ const renderPassage = (diffs: Diff[], keyPrefix: string) => {
   return <>{...paragraphs}</>;
 };
 
-function PassageCard({ pair }: PassageCardProps) {
-  const diff = passageToDiff(pair);
+function PassageCard({ original, edit }: PassageCardProps) {
+  const diff = getDiff(original, edit);
 
   const originalDiff = diff.filter((d: Diff) => d[0] != DiffOp.Insert);
-  const original = renderPassage(originalDiff, "o");
+  const originalHTML = renderPassage(originalDiff, "o");
 
   const editDiff = diff.filter((d: Diff) => d[0] !== DiffOp.Delete);
-  const edit = renderPassage(editDiff, "e");
-  console.log(editDiff);
+  const editHTML = renderPassage(editDiff, "e");
 
   return (
     <div className="flex gap-5 flex-1">
@@ -73,7 +73,7 @@ function PassageCard({ pair }: PassageCardProps) {
           <CardTitle>Original</CardTitle>
           <CardDescription>This is the text before editing.</CardDescription>
         </CardHeader>
-        <CardContent>{original}</CardContent>
+        <CardContent>{originalHTML}</CardContent>
       </Card>
 
       <Card className="my-5">
@@ -81,7 +81,7 @@ function PassageCard({ pair }: PassageCardProps) {
           <CardTitle>Edit</CardTitle>
           <CardDescription>This is the text after editing.</CardDescription>
         </CardHeader>
-        <CardContent>{edit}</CardContent>
+        <CardContent>{editHTML}</CardContent>
       </Card>
     </div>
   );

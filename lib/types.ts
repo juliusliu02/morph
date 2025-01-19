@@ -1,10 +1,11 @@
+import { Edit } from "@prisma/client";
+
 export type PassagePair = {
   original: string;
   edit: string;
 };
 
-export const EditOptions = ["grammar", "lexical", "logical", "custom"] as const;
-export type EditType = (typeof EditOptions)[number];
+export type EditType = Edit;
 
 export type Version = {
   hash: string;

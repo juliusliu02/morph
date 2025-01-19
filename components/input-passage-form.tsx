@@ -17,17 +17,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useActionState, useEffect } from "react";
+import React, { useActionState } from "react";
 import { useRef } from "react";
-import { getGrammarEdit } from "@/actions/morph";
+import { createDialogue } from "@/actions/morph";
 import { X } from "lucide-react";
-import { PassagePair } from "@/lib/types";
 
-type InputPassageFormProps = {
-  setFirstPass: React.Dispatch<React.SetStateAction<PassagePair | null>>;
-};
-
-function InputPassageForm({ setFirstPass }: InputPassageFormProps) {
+function InputPassageForm() {
   const form = useForm<z.output<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -36,13 +31,8 @@ function InputPassageForm({ setFirstPass }: InputPassageFormProps) {
     },
   });
 
-  const [state, formAction, isPending] = useActionState(getGrammarEdit, null);
+  const [state, formAction, isPending] = useActionState(createDialogue, null);
   const formRef = useRef<HTMLFormElement>(null);
-  useEffect(() => {
-    if (state?.passagePair) {
-      setFirstPass(state.passagePair);
-    }
-  }, [setFirstPass, state]);
 
   return (
     <Form {...form}>
@@ -54,7 +44,7 @@ function InputPassageForm({ setFirstPass }: InputPassageFormProps) {
         })}
         className="space-y-8"
       >
-        {state?.error && <X>{state.error}</X>}
+        {state?.message && <X className='bg-red-300'>{state.message}</X>}
         <FormField
           control={form.control}
           name="title"

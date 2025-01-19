@@ -18,10 +18,12 @@ const jsonSchema = {
 
 export type ResponseType =
   | {
+      success: true;
       response: string;
       error?: never;
     }
   | {
+      success: false;
       response?: never;
       error: string;
     };
@@ -57,6 +59,7 @@ const getJsonResponse = async (
 
   if (!response.choices[0].message.content) {
     return {
+      success: false,
       error: "an error occurred during the generation of response",
     };
   }
@@ -67,11 +70,13 @@ const getJsonResponse = async (
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {
+        success: false,
         error: error.message,
       };
     } else {
       console.error(error);
       return {
+        success: false,
         error: "malformatted response",
       };
     }
@@ -79,10 +84,12 @@ const getJsonResponse = async (
 
   if (jsonResponse.edit) {
     return {
+      success: true,
       response: jsonResponse.edit,
     };
   } else
     return {
+      success: false,
       error: "generated response is malformatted",
     };
 };
@@ -99,21 +106,22 @@ const lexicalEditPrompt = `Paraphrase or rephrase the content where it feels rep
 
 const logicalEditPrompt = "";
 
-export const getEdit = (
+export const getEdit = async (
   type: EditType,
   original: string,
   customPrompt?: string,
-) => {
+): Promise<ResponseType> => {
   switch (type) {
-    case "grammar":
-      return getJsonResponse(grammarEditPrompt, original);
-    case "lexical":
-      return getJsonResponse(lexicalEditPrompt, original);
-    case "logical":
-      return getJsonResponse(logicalEditPrompt, original);
-    case "custom":
+    case "GRAMMAR":
+      return await getJsonResponse(grammarEditPrompt, original);
+    case "LEXICAL":
+      return await getJsonResponse(lexicalEditPrompt, original);
+    case "LOGICAL":
+      return await getJsonResponse(logicalEditPrompt, original);
+    case "CUSTOM":
       if (customPrompt) {
-        return getJsonResponse(customPrompt, original);
-      } else throw new Error("Unknown prompt type");
+        return await getJsonResponse(customPrompt, original);
+      }
   }
+  return { success: false, error: "unknown edit type" };
 };
