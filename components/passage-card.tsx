@@ -20,7 +20,7 @@ const DeleteText = ({ children }: React.PropsWithChildren) => {
 };
 
 const EqualText = ({ children }: React.PropsWithChildren) => {
-  return <span className="">{children}</span>;
+  return <span>{children}</span>;
 };
 
 const InsertText = ({ children }: React.PropsWithChildren) => {
@@ -38,33 +38,38 @@ const WordChunk = (diff: Diff, key: string): React.ReactNode => {
   }
 };
 
-const renderPassage = (diffs: Diff[], keyPrefix: string) => {
-  const paragraphs: React.ReactNode[] = [];
-  let currentParagraph: React.ReactNode[] = [];
-  diffs.map((diff: Diff, index: number) => {
-    if (diff[1].includes("\n")) {
-      diff[1] = diff[1].replace("\n", "");
-      currentParagraph.push(WordChunk(diff, keyPrefix + index));
-      paragraphs.push(<p>{...currentParagraph}</p>);
-      currentParagraph = [];
-    } else {
-      currentParagraph.push(WordChunk(diff, keyPrefix + index));
-    }
-  });
-  if (currentParagraph.length > 0) {
-    paragraphs.push(<p>{...currentParagraph}</p>);
-  }
-  return <>{...paragraphs}</>;
+const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
+  return diffs.map((diff, pIndex) => (
+    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
+      {diff.map((diff, wIndex) =>
+        WordChunk(diff, keyPrefix + pIndex + "w" + wIndex),
+      )}
+    </p>
+  ));
 };
 
 function PassageCard({ original, edit }: PassageCardProps) {
-  const diff = getDiff(original, edit);
+  const originalParagraphs = original.text.split("\n\n");
+  const editedParagraphs = edit.text.split("\n\n");
 
-  const originalDiff = diff.filter((d: Diff) => d[0] != DiffOp.Insert);
-  const originalHTML = renderPassage(originalDiff, "o");
+  if (originalParagraphs.length !== editedParagraphs.length) {
+    console.log("not the same length");
+    return <p>an error occurred while rendering the passage.</p>;
+  }
 
-  const editDiff = diff.filter((d: Diff) => d[0] !== DiffOp.Delete);
-  const editHTML = renderPassage(editDiff, "e");
+  const diffs = originalParagraphs.map((p, index) =>
+    getDiff(p, editedParagraphs[index]),
+  );
+
+  const originalDiffs = diffs.map((diff) =>
+    diff.filter((d: Diff) => d[0] != DiffOp.Insert),
+  );
+  const originalHTML = renderPassage(originalDiffs, "o");
+
+  const editDiffs = diffs.map((diff) =>
+    diff.filter((d: Diff) => d[0] != DiffOp.Delete),
+  );
+  const editHTML = renderPassage(editDiffs, "e");
 
   return (
     <div className="flex gap-5 flex-1">

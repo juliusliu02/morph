@@ -9,8 +9,8 @@ export function cn(...inputs: ClassValue[]) {
 
 const diff = new DiffMatchPatch();
 
-export const getDiff = (original: Version, edit: Version): Diff[] => {
-  const result = diff.diff_main(original.text, edit.text);
+export const getDiff = (original: string, edit: string): Diff[] => {
+  const result = diff.diff_main(original, edit);
   diff.diff_cleanupSemantic(result);
   return result;
 };

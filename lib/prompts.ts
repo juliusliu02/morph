@@ -1,16 +1,14 @@
-import { HfInference } from "@huggingface/inference";
-import dotenv from "dotenv";
 import { EditType } from "@/lib/types";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 
-dotenv.config();
-const API = process.env.INFERENCE_API_KEY;
-
-const client = new HfInference(API);
-
-const jsonSchema = {
+const geminiSchema = {
+  type: SchemaType.OBJECT,
   properties: {
     edit: {
-      type: "string",
+      type: SchemaType.STRING,
+      description:
+        "The edited version of original text. Line breaks are preserved as '\\n'",
+      nullable: false,
     },
   },
   required: ["edit"],
@@ -28,45 +26,40 @@ export type ResponseType =
       error: string;
     };
 
-const formatPrompt = `Return the complete result in JSON format, in which 'edit' is the modified version of the text. Do not add any additional explanatory text.`;
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
+const model = genAI.getGenerativeModel({
+  model: "gemini-2.0-flash-exp",
+  generationConfig: {
+    responseMimeType: "application/json",
+    responseSchema: geminiSchema,
+  },
+});
 
 const getJsonResponse = async (
   prompt: string,
   payload: string,
 ): Promise<ResponseType> => {
-  const response = await client.chatCompletion({
-    model: "meta-llama/Meta-Llama-3-8B-Instruct",
-    messages: [
-      {
-        role: "system",
-        content: prompt,
-      },
-      {
-        role: "format_prompt",
-        content: formatPrompt,
-      },
+  const result = await model.generateContent({
+    contents: [
       {
         role: "user",
-        content: payload,
+        parts: [
+          {
+            text: prompt,
+          },
+          {
+            text: payload,
+          },
+        ],
       },
     ],
-    max_tokens: 500,
-    response_format: {
-      type: "json",
-      value: JSON.stringify(jsonSchema),
-    },
   });
 
-  if (!response.choices[0].message.content) {
-    return {
-      success: false,
-      error: "an error occurred during the generation of response",
-    };
-  }
+  console.log(result.response.text());
 
   let jsonResponse;
   try {
-    jsonResponse = JSON.parse(response.choices[0].message.content);
+    jsonResponse = JSON.parse(result.response.text());
   } catch (error: unknown) {
     if (error instanceof Error) {
       return {

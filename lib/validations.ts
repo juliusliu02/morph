@@ -12,6 +12,6 @@ export const textEditFormSchema = z.object({
 });
 
 export const idEditFormSchema = z.object({
-  original: z.string().min(1),
+  id: z.string(),
   edit: z.nativeEnum(Edit),
 });
