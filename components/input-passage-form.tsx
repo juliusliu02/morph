@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useActionState } from "react";
 import { useRef } from "react";
-import { createDialogue } from "@/actions/morph";
+import { createDialogue } from "@/actions/actions";
 import { X } from "lucide-react";
 
 function InputPassageForm() {
@@ -44,7 +44,7 @@ function InputPassageForm() {
         })}
         className="space-y-8"
       >
-        {state?.message && <X className='bg-red-300'>{state.message}</X>}
+        {state?.message && <X className="bg-red-300">{state.message}</X>}
         <FormField
           control={form.control}
           name="title"

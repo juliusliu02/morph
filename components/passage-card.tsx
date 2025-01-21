@@ -24,7 +24,7 @@ const EqualText = ({ children }: React.PropsWithChildren) => {
 };
 
 const InsertText = ({ children }: React.PropsWithChildren) => {
-  return <span className="bg-indigo-400 text-gray-100">{children}</span>;
+  return <span className="text-indigo-800 font-semibold">{children}</span>;
 };
 
 const WordChunk = (diff: Diff, key: string): React.ReactNode => {
@@ -40,7 +40,10 @@ const WordChunk = (diff: Diff, key: string): React.ReactNode => {
 
 const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
   return diffs.map((diff, pIndex) => (
-    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
+    <p
+      key={keyPrefix + pIndex}
+      className="leading-relaxed mb-4 last:mb-0 tracking-[.001rem]"
+    >
       {diff.map((diff, wIndex) =>
         WordChunk(diff, keyPrefix + pIndex + "w" + wIndex),
       )}
@@ -49,12 +52,14 @@ const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
 };
 
 function PassageCard({ original, edit }: PassageCardProps) {
-  const originalParagraphs = original.text.split("\n\n");
-  const editedParagraphs = edit.text.split("\n\n");
+  let originalParagraphs = original.text.split("\n\n");
+  let editedParagraphs = edit.text.split("\n\n");
 
   if (originalParagraphs.length !== editedParagraphs.length) {
-    console.log("not the same length");
-    return <p>an error occurred while rendering the passage.</p>;
+    // AI fails to generate line breaks.
+    // wipe all line breaks.
+    originalParagraphs = [original.text.replaceAll("\n", "")];
+    editedParagraphs = [edit.text.replaceAll("\n", "")];
   }
 
   const diffs = originalParagraphs.map((p, index) =>
@@ -83,8 +88,12 @@ function PassageCard({ original, edit }: PassageCardProps) {
 
       <Card className="my-5">
         <CardHeader>
-          <CardTitle>Edit</CardTitle>
-          <CardDescription>This is the text after editing.</CardDescription>
+          <CardTitle className="capitalize">
+            {edit.edit.toString().toLowerCase()} edit
+          </CardTitle>
+          <CardDescription>
+            This is the text after {edit.edit.toString().toLowerCase()} editing.
+          </CardDescription>
         </CardHeader>
         <CardContent>{editHTML}</CardContent>
       </Card>

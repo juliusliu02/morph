@@ -1,6 +1,6 @@
 "use server";
 import "server-only";
-import { getEdit } from "@/lib/prompts";
+import { getEdit } from "@/lib/llm";
 import { formSchema, idEditFormSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
