@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { formSchema } from "@/lib/validations";
+import { newDialogueSchema } from "@/lib/validations";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -19,12 +19,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useActionState } from "react";
 import { useRef } from "react";
-import { createDialogue } from "@/actions/actions";
+import { createDialogue } from "@/actions/edit";
 import { X } from "lucide-react";
 
 function InputPassageForm() {
-  const form = useForm<z.output<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.output<typeof newDialogueSchema>>({
+    resolver: zodResolver(newDialogueSchema),
     defaultValues: {
       title: "",
       body: "",

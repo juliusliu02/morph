@@ -1,7 +1,14 @@
-import InputPassageForm from "@/components/input-passage-form";
+import React from "react";
+import { getCurrentSession } from "@/lib/auth/dal";
+import { redirect } from "next/navigation";
 
-function Home() {
-  return <InputPassageForm />;
+async function Page() {
+  const { user } = await getCurrentSession();
+  if (!user) {
+    redirect("/login");
+  }
+
+  return <div>Hello {user.name}</div>;
 }
 
-export default Home;
+export default Page;
