@@ -8,7 +8,7 @@ async function Page() {
     redirect("/login");
   }
 
-  return <div>Hello {user.name}</div>;
+  return <div className='mt-5'>Hello {user.name}</div>;
 }
 
 export default Page;

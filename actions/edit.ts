@@ -1,10 +1,12 @@
 "use server";
 import "server-only";
 import { getEdit } from "@/lib/llm";
-import { newDialogueSchema } from "@/lib/validations";
+import { idEditFormSchema, newDialogueSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth/dal";
+import { revalidatePath } from "next/cache";
+import { Edit } from "@prisma/client";
 
 type ActionState = {
   message: string;
@@ -60,5 +62,57 @@ export const createDialogue = async (
     },
   });
 
-  redirect(`/${dialogue.id}`);
+  redirect(`/passages/${dialogue.id}`);
+};
+
+export const getEditById = async (
+  id: unknown,
+  edit: unknown
+): Promise<ActionState | void> => {
+  const { user } = await getCurrentSession();
+  if (!user) {
+    return { message: "Not logged in" };
+  }
+
+  // validate data
+  const validatedFields = idEditFormSchema.safeParse({ id, edit });
+  if (!validatedFields.success) {
+    return { message: "invalid input" };
+  }
+
+  const original = await prisma.version.findUnique({
+    where: { id: validatedFields.data.id },
+    include: {
+      dialogue: true
+    }
+  })
+
+  if (!original) {
+    return { message: "passage not found" };
+  }
+
+  if (original.dialogue.ownerId !== user.id) {
+    return { message: "not authorized" };
+  }
+
+  // get edit
+  const response = await getEdit(validatedFields.data.edit, original.text);
+  if (!response.success) {
+    return { message: response.error };
+  }
+
+  // store to database
+  await prisma.dialogue.update({
+    where: { id: original.dialogueId },
+    data: {
+      versions: {
+        create: {
+          edit: validatedFields.data.edit,
+          text: response.response
+        }
+      }
+    }
+  });
+
+  revalidatePath(`/passages/${original.dialogueId}`);
 };

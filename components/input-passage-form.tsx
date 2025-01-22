@@ -39,9 +39,6 @@ function InputPassageForm() {
       <form
         ref={formRef}
         action={formAction}
-        onSubmit={form.handleSubmit(() => {
-          formRef.current?.submit();
-        })}
         className="space-y-8"
       >
         {state?.message && <X className="bg-red-300">{state.message}</X>}
@@ -75,7 +72,9 @@ function InputPassageForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} type="submit">
+        <Button disabled={isPending} type="submit" onClick={form.handleSubmit(() => {
+          formRef.current?.requestSubmit();
+        })}>
           {isPending ? "Loading..." : "Get grammar edit"}
         </Button>
       </form>
