@@ -18,11 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourceSans3.className} antialiased flex items-center justify-center bg-slate-50`}
+        className={`${sourceSans3.className} antialiased bg-slate-50`}
       >
-        <div className='max-w-screen-md'>
           {children}
-        </div>
       </body>
     </html>
   );

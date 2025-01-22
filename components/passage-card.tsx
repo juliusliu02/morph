@@ -57,9 +57,9 @@ function PassageCard({ original, edit }: PassageCardProps) {
 
   if (originalParagraphs.length !== editedParagraphs.length) {
     // AI fails to generate line breaks.
-    // wipe all line breaks.
-    originalParagraphs = [original.text.replaceAll("\n", "")];
-    editedParagraphs = [edit.text.replaceAll("\n", "")];
+    // consolidate into one paragraph.
+    originalParagraphs = [original.text.replaceAll("\n", " ")];
+    editedParagraphs = [edit.text.replaceAll("\n", " ")];
   }
 
   const diffs = originalParagraphs.map((p, index) =>
@@ -78,7 +78,7 @@ function PassageCard({ original, edit }: PassageCardProps) {
 
   return (
     <div className="flex gap-5 flex-1">
-      <Card className="my-5">
+      <Card className="my-5 w-1/2">
         <CardHeader>
           <CardTitle>Original</CardTitle>
           <CardDescription>This is the text before editing.</CardDescription>
@@ -86,13 +86,13 @@ function PassageCard({ original, edit }: PassageCardProps) {
         <CardContent>{originalHTML}</CardContent>
       </Card>
 
-      <Card className="my-5">
+      <Card className="my-5 w-1/2">
         <CardHeader>
           <CardTitle className="capitalize">
             {edit.edit.toString().toLowerCase()} edit
           </CardTitle>
           <CardDescription>
-            This is the text after {edit.edit.toString().toLowerCase()} editing.
+            This is the text after editing.
           </CardDescription>
         </CardHeader>
         <CardContent>{editHTML}</CardContent>

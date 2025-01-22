@@ -35,10 +35,10 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
 
   const versions = result.versions.slice(result.versions.length - 2);
 
-  return <div>
+  return <div className="p-5 flex items-center justify-center">
+    <div className="w-full max-w-3xl ">
     <PassageCard original={versions[0]} edit={versions[1]} />
-    <div className='flex'>
-      <EditDropdown original={versions[1]} />
+    <EditDropdown original={versions[1]} />
     </div>
   </div>;
 }
