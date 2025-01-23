@@ -51,7 +51,7 @@ function InputPassageForm() {
               <FormControl>
                 <Input placeholder="Title of the article" {...field} />
               </FormControl>
-              <FormDescription>This is the title of the text</FormDescription>
+              <FormDescription>Input the title of the text.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
