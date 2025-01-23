@@ -12,7 +12,7 @@ async function Page() {
   return <div className="flex flex-col items-center justify-center mt-20">
     <div className='w-full max-w-2xl'>
       <h2 className="pb-2 text-3xl font-semibold tracking-tight transition-colors">Hello {user.name}.</h2>
-      <p className="text-xl text-muted-foreground">Input a passage to start editing.</p>
+      <p className="text-xl text-muted-foreground mb-5">Input a passage to start editing.</p>
       <InputPassageForm />
     </div>
   </div>;
