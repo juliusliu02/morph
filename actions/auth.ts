@@ -57,6 +57,7 @@ export async function signup(
     const session = await createSession(token, user.id);
     await setSessionTokenCookie(token, session.expiresAt);
   } catch (error: unknown) {
+    console.log(error);
     let errorMessage: string = "An error occurred while creating your account.";
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // unique constraint

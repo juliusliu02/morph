@@ -6,7 +6,6 @@ import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { revalidatePath } from "next/cache";
-import { Edit } from "@prisma/client";
 
 type ActionState = {
   message: string;

@@ -97,12 +97,18 @@ export function LoginForm({
               <Button
                 disabled={isPending}
                 type="submit"
-                onClick={form.handleSubmit(() =>
-                  formRef.current?.requestSubmit(),
-                )}
+                onClick={form.handleSubmit(() => {
+                  formRef.current?.requestSubmit();
+                })}
               >
                 {isPending ? "Loading..." : "Log in"}
               </Button>
+              <div className="mt-4 text-center text-sm">
+                Don&apos;t have an account?{" "}
+                <a href="/signup" className="underline underline-offset-4">
+                  Sign up
+                </a>
+              </div>
             </form>
           </Form>
         </CardContent>
