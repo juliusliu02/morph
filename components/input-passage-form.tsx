@@ -47,9 +47,9 @@ function InputPassageForm() {
           name="title"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Title (optional)</FormLabel>
+              <FormLabel className="text-md">Title (optional)</FormLabel>
               <FormControl>
-                <Input placeholder="Title of the article" {...field} />
+                <Input className="mt-2" placeholder="Title of the article" {...field} />
               </FormControl>
               <FormDescription>Input the title of the text.</FormDescription>
               <FormMessage />
@@ -61,9 +61,9 @@ function InputPassageForm() {
           name="body"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Body</FormLabel>
+              <FormLabel className="text-md">Body</FormLabel>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea className="mt-2" {...field} />
               </FormControl>
               <FormDescription>
                 Paste in the passage you want to edit.
