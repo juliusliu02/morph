@@ -1,4 +1,3 @@
-"use server";
 import "server-only";
 import { getEdit } from "@/lib/llm";
 import { idEditFormSchema, newDialogueSchema } from "@/lib/validations";
@@ -66,7 +65,7 @@ export const createDialogue = async (
 
 export const getEditById = async (
   id: unknown,
-  edit: unknown
+  edit: unknown,
 ): Promise<ActionState | void> => {
   const { user } = await getCurrentSession();
   if (!user) {
@@ -82,9 +81,9 @@ export const getEditById = async (
   const original = await prisma.version.findUnique({
     where: { id: validatedFields.data.id },
     include: {
-      dialogue: true
-    }
-  })
+      dialogue: true,
+    },
+  });
 
   if (!original) {
     return { message: "passage not found" };
@@ -107,10 +106,10 @@ export const getEditById = async (
       versions: {
         create: {
           edit: validatedFields.data.edit,
-          text: response.response
-        }
-      }
-    }
+          text: response.response,
+        },
+      },
+    },
   });
 
   revalidatePath(`/passages/${original.dialogueId}`);

@@ -3,7 +3,10 @@ import { Edit } from "@prisma/client";
 
 export const newDialogueSchema = z.object({
   title: z.string().trim().optional(),
-  body: z.string().trim().min(1, { message: "PassageCard cannot be empty." }),
+  body: z
+    .string()
+    .trim()
+    .min(200, { message: "The passage must be longer than 200 characters." }),
 });
 
 export const textEditFormSchema = z.object({
@@ -21,7 +24,7 @@ export const loginFormSchema = z.object({
   password: z
     .string()
     .trim()
-    .min(6, { message: "Password must be longer than 6 characters" }),
+    .min(8, { message: "Password must be longer than 8 characters" }),
 });
 
 export const signupFormSchema = z.object({

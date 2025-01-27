@@ -1,4 +1,3 @@
-"use server";
 import "server-only";
 import { signupFormSchema, loginFormSchema } from "@/lib/validations";
 import bcrypt from "bcrypt";
