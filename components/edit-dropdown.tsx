@@ -9,14 +9,16 @@ import {
 import { Edit, Version } from "@prisma/client";
 import { getEditById } from "@/actions/edit";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+import { ToastAction } from "@/components/ui/toast";
 
 type EditDropdownProps = {
   original: Version;
-  // setError: (error: string) => void;
 };
 
 function EditDropdown({ original }: EditDropdownProps) {
   const [isPending, setIsPending] = React.useState<boolean>(false);
+  const { toast } = useToast();
 
   const editFilterList = [
     Edit.ORIGINAL,
@@ -27,6 +29,29 @@ function EditDropdown({ original }: EditDropdownProps) {
   const editOptions = Object.keys(Edit).filter(
     (option) => !editFilterList.includes(option),
   );
+
+  const getEdit = async (edit: string) => {
+    setIsPending(true);
+    const response = await getEditById(original.id, edit);
+    setIsPending(false);
+    // error
+    if (response) {
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: response.message,
+        action: (
+          <ToastAction onClick={() => getEdit(edit)} altText="Try again">
+            Try again
+          </ToastAction>
+        ),
+      });
+    }
+    // success
+    else {
+      window.scrollTo(0, 0);
+    }
+  };
 
   return (
     <DropdownMenu>
@@ -40,12 +65,7 @@ function EditDropdown({ original }: EditDropdownProps) {
           <DropdownMenuItem
             className="cursor-pointer"
             key={item}
-            onSelect={async () => {
-              setIsPending(true);
-              await getEditById(original.id, item);
-              setIsPending(false);
-              window.scrollTo(0, 0);
-            }}
+            onSelect={() => getEdit(item)}
           >
             Get {item.toLowerCase()} edit
           </DropdownMenuItem>

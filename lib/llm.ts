@@ -1,5 +1,9 @@
 import { EditType } from "@/lib/types";
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import {
+  GoogleGenerativeAI,
+  GoogleGenerativeAIError,
+  SchemaType,
+} from "@google/generative-ai";
 import {
   grammarEditPrompt,
   lexicalEditPrompt,
@@ -49,21 +53,30 @@ const getJsonResponse = async (
   prompt: string,
   payload: string,
 ): Promise<ResponseType> => {
-  const result = await model.generateContent({
-    contents: [
-      {
-        role: "user",
-        parts: [
-          {
-            text: prompt,
-          },
-          {
-            text: payload,
-          },
-        ],
-      },
-    ],
-  });
+  let result;
+  try {
+    result = await model.generateContent({
+      contents: [
+        {
+          role: "user",
+          parts: [
+            {
+              text: prompt,
+            },
+            {
+              text: payload,
+            },
+          ],
+        },
+      ],
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return {
+      success: false,
+      error: "Unable to generate content. Please try again later.",
+    };
+  }
 
   let jsonResponse;
   try {
