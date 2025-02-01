@@ -20,15 +20,17 @@ model Version {
   text       String
   edit       Edit
   dialogue   Dialogue @relation(fields: [dialogueId], references: [id])
+  createdAt  DateTime @default(now())
   dialogueId String   @db.ObjectId
 }
 
 model Dialogue {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  title    String?
-  owner    User      @relation(fields: [ownerId], references: [id])
-  ownerId  String    @db.ObjectId
-  versions Version[]
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  title     String?
+  owner     User      @relation(fields: [ownerId], references: [id])
+  ownerId   String    @db.ObjectId
+  createdAt DateTime  @default(now())
+  versions  Version[]
 }
 
 model User {

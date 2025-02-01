@@ -1,4 +1,4 @@
-import "server-only";
+"use server";
 import { signupFormSchema, loginFormSchema } from "@/lib/validations";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/prisma";

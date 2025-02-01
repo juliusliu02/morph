@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -49,7 +50,7 @@ export function LoginForm({
         <CardHeader>
           <CardTitle className="text-2xl">Log in</CardTitle>
           <CardDescription>
-            Enter your username below to login to your account
+            Enter your username below to log in to your account.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -103,15 +104,15 @@ export function LoginForm({
               >
                 {isPending ? "Loading..." : "Log in"}
               </Button>
-              <div className="mt-4 text-center text-sm">
-                Don&apos;t have an account?{" "}
-                <a href="/signup" className="underline underline-offset-4">
-                  Sign up
-                </a>
-              </div>
             </form>
           </Form>
         </CardContent>
+        <CardFooter className="justify-center text-sm">
+          Don&apos;t have an account?&nbsp;
+          <a href="/signup" className="underline underline-offset-4">
+            Sign up
+          </a>
+        </CardFooter>
       </Card>
     </div>
   );

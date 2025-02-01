@@ -36,11 +36,7 @@ function InputPassageForm() {
 
   return (
     <Form {...form}>
-      <form
-        ref={formRef}
-        action={formAction}
-        className="space-y-8"
-      >
+      <form ref={formRef} action={formAction} className="space-y-8">
         {state?.message && <X className="bg-red-300">{state.message}</X>}
         <FormField
           control={form.control}
@@ -49,7 +45,11 @@ function InputPassageForm() {
             <FormItem>
               <FormLabel className="text-md">Title (optional)</FormLabel>
               <FormControl>
-                <Input className="mt-2" placeholder="Title of the article" {...field} />
+                <Input
+                  className="mt-2"
+                  placeholder="Title of the article"
+                  {...field}
+                />
               </FormControl>
               <FormDescription>Input the title of the text.</FormDescription>
               <FormMessage />
@@ -72,9 +72,14 @@ function InputPassageForm() {
             </FormItem>
           )}
         />
-        <Button disabled={isPending} type="submit" onClick={form.handleSubmit(() => {
-          formRef.current?.requestSubmit();
-        })}>
+        <Button
+          className="cursor-pointer"
+          disabled={isPending}
+          type="submit"
+          onClick={form.handleSubmit(() => {
+            formRef.current?.requestSubmit();
+          })}
+        >
           {isPending ? "Loading..." : "Get grammar edit"}
         </Button>
       </form>

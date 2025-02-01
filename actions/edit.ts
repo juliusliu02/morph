@@ -1,4 +1,4 @@
-import "server-only";
+"use server";
 import { getEdit } from "@/lib/llm";
 import { idEditFormSchema, newDialogueSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";

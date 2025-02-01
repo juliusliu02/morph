@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -137,6 +138,12 @@ export function SignupForm({
             </form>
           </Form>
         </CardContent>
+        <CardFooter className="justify-center text-sm">
+          Already have an account?&nbsp;
+          <a href="/login" className="underline underline-offset-4">
+            Log in
+          </a>
+        </CardFooter>
       </Card>
     </div>
   );

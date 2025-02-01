@@ -6,9 +6,14 @@ import {
   logicalEditPrompt,
 } from "@/lib/prompts";
 
-const geminiSchema = {
+const editSchema = {
   type: SchemaType.OBJECT,
   properties: {
+    success: {
+      type: SchemaType.BOOLEAN,
+      description:
+        "True if the original text is valid and the rewrite is successful, false otherwise.",
+    },
     edit: {
       type: SchemaType.STRING,
       description:
@@ -36,7 +41,7 @@ const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash-exp",
   generationConfig: {
     responseMimeType: "application/json",
-    responseSchema: geminiSchema,
+    responseSchema: editSchema,
   },
 });
 
@@ -73,12 +78,12 @@ const getJsonResponse = async (
       console.error(error);
       return {
         success: false,
-        error: "malformatted response",
+        error: "Malformatted response.",
       };
     }
   }
 
-  if (jsonResponse.edit) {
+  if (jsonResponse.success) {
     return {
       success: true,
       response: jsonResponse.edit,
@@ -86,7 +91,7 @@ const getJsonResponse = async (
   } else
     return {
       success: false,
-      error: "generated response is malformatted",
+      error: "Invalid data.",
     };
 };
 

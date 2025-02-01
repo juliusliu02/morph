@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Edit } from "@prisma/client";
 
 export const newDialogueSchema = z.object({
-  title: z.string().trim().optional(),
+  title: z.string().trim(),
   body: z
     .string()
     .trim()

@@ -83,7 +83,9 @@ function PassageCard({ original, edit }: PassageCardProps) {
           <CardTitle>Original</CardTitle>
           <CardDescription>This is the text before editing.</CardDescription>
         </CardHeader>
-        <CardContent>{originalHTML}</CardContent>
+        <CardContent>
+          <article>{originalHTML}</article>
+        </CardContent>
       </Card>
 
       <Card className="my-5 w-1/2">
@@ -91,11 +93,11 @@ function PassageCard({ original, edit }: PassageCardProps) {
           <CardTitle className="capitalize">
             {edit.edit.toString().toLowerCase()} edit
           </CardTitle>
-          <CardDescription>
-            This is the text after editing.
-          </CardDescription>
+          <CardDescription>This is the text after editing.</CardDescription>
         </CardHeader>
-        <CardContent>{editHTML}</CardContent>
+        <CardContent>
+          <article>{editHTML}</article>
+        </CardContent>
       </Card>
     </div>
   );
