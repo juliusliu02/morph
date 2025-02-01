@@ -28,8 +28,10 @@ async function Page() {
     <main className="flex justify-center items-center h-screen">
       <Card className="max-w-2xl w-full mx-5">
         <CardHeader>
-          <CardTitle>Your passages</CardTitle>
-          <CardDescription>
+          <CardTitle className="pb-2 text-3xl font-semibold tracking-tight transition-colors">
+            Your passages
+          </CardTitle>
+          <CardDescription className="text-xl text-muted-foreground">
             This is a list of your past passages.
           </CardDescription>
         </CardHeader>

@@ -1,9 +1,5 @@
 import { EditType } from "@/lib/types";
-import {
-  GoogleGenerativeAI,
-  GoogleGenerativeAIError,
-  SchemaType,
-} from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import {
   grammarEditPrompt,
   lexicalEditPrompt,
@@ -96,7 +92,7 @@ const getJsonResponse = async (
     }
   }
 
-  if (jsonResponse.success) {
+  if (jsonResponse.success && jsonResponse.edit) {
     return {
       success: true,
       response: jsonResponse.edit,
@@ -104,7 +100,7 @@ const getJsonResponse = async (
   } else
     return {
       success: false,
-      error: "Invalid data.",
+      error: "An error occurred while generating a response.",
     };
 };
 
@@ -123,7 +119,10 @@ export const getEdit = async (
     case "CUSTOM":
       if (customPrompt) {
         return await getJsonResponse(customPrompt, original);
+      } else {
+        return { success: false, error: "Custom prompt cannot be empty." };
       }
+    default:
+      return { success: false, error: "Unknown edit type." };
   }
-  return { success: false, error: "unknown edit type" };
 };

@@ -36,13 +36,13 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   const versions = result.versions.slice(result.versions.length - 2);
 
   return (
-    <main className="p-5 flex items-center justify-center">
-      <div className="w-full max-w-3xl ">
+    <div className="p-5 flex items-center justify-center">
+      <main className="w-full max-w-3xl mt-10">
         <PassageCard original={versions[0]} edit={versions[1]} />
         <EditDropdown original={versions[1]} />
-      </div>
+      </main>
       <Toaster />
-    </main>
+    </div>
   );
 }
 

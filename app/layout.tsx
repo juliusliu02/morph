@@ -2,13 +2,17 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Source_Sans_3 } from "next/font/google";
 import React from "react";
+import NavBar from "@/components/nav-bar";
 
 export const metadata: Metadata = {
   title: "Morph",
   description: "AI-powered multi-step essay editor",
 };
 
-const sourceSans3 = Source_Sans_3();
+const sourceSans3 = Source_Sans_3({
+  subsets: ["latin"],
+  variable: "--font-source-sans-3",
+});
 
 export default function RootLayout({
   children,
@@ -18,9 +22,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourceSans3.className} antialiased bg-slate-50`}
+        className={`${sourceSans3.className} antialiased bg-slate-50 relative`}
       >
-          {children}
+        <NavBar />
+        {children}
       </body>
     </html>
   );

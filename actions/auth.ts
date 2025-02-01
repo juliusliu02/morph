@@ -109,7 +109,7 @@ export async function login(
 
   const token = generateSessionToken();
   const session = await createSession(token, user.id);
-  // might fail.
+  // might fail if the user has javascript disabled.
   /// TODO: add try catch block, if error occurs, return the token and set token on client side if that works.
   await setSessionTokenCookie(token, session.expiresAt);
 
@@ -123,5 +123,5 @@ export async function logout() {
   }
 
   await deleteSessionTokenCookie();
-  redirect("/", RedirectType.replace);
+  redirect("/login", RedirectType.replace);
 }
