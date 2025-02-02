@@ -5,13 +5,12 @@ import React from "react";
 import NavBar from "@/components/nav-bar";
 
 export const metadata: Metadata = {
-  title: "Morph",
+  title: "Morph | A Smart Essay Editor",
   description: "AI-powered multi-step essay editor",
 };
 
 const sourceSans3 = Source_Sans_3({
   subsets: ["latin"],
-  variable: "--font-source-sans-3",
 });
 
 export default function RootLayout({
