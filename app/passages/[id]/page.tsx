@@ -1,6 +1,6 @@
 import React from "react";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import PassageCard from "@/components/passage-card";
 import { getCurrentSession } from "@/lib/auth/dal";
 import EditDropdown from "@/components/edit-dropdown";
@@ -30,7 +30,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   }
 
   if (!result || !result.versions || result.ownerId != user.id) {
-    return redirect("/notfound");
+    notFound();
   }
 
   const versions = result.versions.slice(result.versions.length - 2);
