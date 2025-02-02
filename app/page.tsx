@@ -17,7 +17,7 @@ async function Page() {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-[5rem]">
       <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle className="pb-2 text-3xl font-semibold tracking-tight transition-colors">

@@ -87,11 +87,17 @@ export async function login(
 
   const { username, password } = validatedFields.data;
 
-  const user = await prisma.user.findUnique({
-    where: {
-      username: username,
-    },
-  });
+  let user;
+  try {
+    user = await prisma.user.findUnique({
+      where: {
+        username: username,
+      },
+    });
+  } catch (err: unknown) {
+    console.error(err);
+    return { message: "Network error. Please try again later." };
+  }
 
   if (!user) {
     return {
