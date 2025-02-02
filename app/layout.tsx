@@ -3,6 +3,7 @@ import "./globals.css";
 import { Source_Sans_3 } from "next/font/google";
 import React from "react";
 import NavBar from "@/components/nav-bar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
   title: "Morph | A Smart Essay Editor",
@@ -25,6 +26,7 @@ export default function RootLayout({
       >
         <NavBar />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
