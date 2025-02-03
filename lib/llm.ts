@@ -1,10 +1,10 @@
-import { EditType } from "@/lib/types";
 import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
 import {
   grammarEditPrompt,
   lexicalEditPrompt,
   logicalEditPrompt,
 } from "@/lib/prompts";
+import type { Edit } from "@prisma/client";
 
 const editSchema = {
   type: SchemaType.OBJECT,
@@ -105,7 +105,7 @@ const getJsonResponse = async (
 };
 
 export const getEdit = async (
-  type: EditType,
+  type: Edit,
   original: string,
   customPrompt?: string,
 ): Promise<ResponseType> => {
