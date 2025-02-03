@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourceSans3.className} antialiased bg-slate-50 relative`}
+        className={`${sourceSans3.className} antialiased bg-slate-50 dark:bg-gray-900 relative`}
       >
         <NavBar />
         {children}
