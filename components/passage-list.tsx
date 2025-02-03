@@ -3,6 +3,7 @@ import { Dialogue } from "@prisma/client";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import PassageDropdown from "@/components/passage-action";
 
 type PassageListProps = {
   passages: Dialogue[];
@@ -18,25 +19,26 @@ const PassageListItem = ({ passage }: PassageListItemProps) => {
       className={cn(buttonVariants({ variant: "ghost" }), "dark:bg-slate-950")}
       href={`/passages/${passage.id}`}
     >
-      <div className="flex justify-between w-full dark:text-gray-200">
+      <li className="flex justify-between items-center w-full dark:text-gray-200">
         <span>
           {passage.title !== "" ? passage.title : "Untitled document"}
         </span>
-        <span className="text-gray-600 dark:text-gray-400">
+        <span className="text-gray-600 dark:text-gray-400 flex gap-2">
           {passage.createdAt.toLocaleDateString("en-ca")}
+          <PassageDropdown id={passage.id} />
         </span>
-      </div>
+      </li>
     </Link>
   );
 };
 
 const PassageList = ({ passages }: PassageListProps) => {
   return (
-    <section className="flex flex-col bg-white dark:bg-slate-950 max-w-2xl mx-auto">
+    <ul className="flex flex-col bg-white dark:bg-slate-950 max-w-2xl mx-auto">
       {passages.map((passage, index) => (
         <PassageListItem key={index} passage={passage} />
       ))}
-    </section>
+    </ul>
   );
 };
 

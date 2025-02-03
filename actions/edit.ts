@@ -114,3 +114,45 @@ export const getEditById = async (
 
   revalidatePath(`/passages/${original.dialogueId}`);
 };
+
+export const deleteDialogue = async (
+  id: unknown,
+): Promise<ActionState | void> => {
+  const { user } = await getCurrentSession();
+  if (!user) {
+    return { message: "Not logged in" };
+  }
+
+  if (typeof id !== "string") {
+    return { message: "invalid input" };
+  }
+
+  let passage;
+  try {
+    passage = await prisma.dialogue.findUnique({
+      where: { id: id },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "passage not found" };
+  }
+
+  if (!passage) {
+    return { message: "passage not found" };
+  }
+
+  if (passage.ownerId !== user.id) {
+    return { message: "not authorized" };
+  }
+
+  try {
+    await prisma.dialogue.delete({
+      where: { id: passage.id },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "server error, try again later" };
+  }
+
+  revalidatePath(`/passages/`);
+};

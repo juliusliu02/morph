@@ -32,12 +32,16 @@ async function Page() {
             Your passages
           </CardTitle>
           <CardDescription className="text-xl text-muted-foreground">
-            This is a list of your past passages.
+            {passages.length > 0
+              ? "This is a list of your past passages."
+              : "You currently don't have any passages."}
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <PassageList passages={passages} />
-        </CardContent>
+        {passages.length > 0 && (
+          <CardContent>
+            <PassageList passages={passages} />
+          </CardContent>
+        )}
       </Card>
     </main>
   );
