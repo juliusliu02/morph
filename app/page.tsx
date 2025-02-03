@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Subtitle, Title } from "@/components/typography";
 
 async function Page() {
   const { user } = await getCurrentSession();
@@ -20,11 +21,11 @@ async function Page() {
     <div className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-[5rem]">
       <Card className="w-full max-w-2xl">
         <CardHeader>
-          <CardTitle className="pb-2 text-3xl font-semibold tracking-tight transition-colors">
-            Hello {user.name}.
+          <CardTitle>
+            <Title>Hello {user.name}.</Title>
           </CardTitle>
-          <CardDescription className="text-xl text-muted-foreground">
-            Input a passage to start editing.
+          <CardDescription>
+            <Subtitle>Input a passage to start editing.</Subtitle>
           </CardDescription>
         </CardHeader>
         <CardContent>

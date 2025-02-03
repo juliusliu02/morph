@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Subtitle, Title } from "@/components/typography";
 
 async function Page() {
   const { user } = await getCurrentSession();
@@ -28,13 +29,15 @@ async function Page() {
     <main className="flex justify-center items-center min-h-[calc(100vh-5rem)] pt-[5rem]">
       <Card className="max-w-2xl w-full mx-5">
         <CardHeader>
-          <CardTitle className="pb-2 text-3xl font-semibold tracking-tight transition-colors">
-            Your passages
+          <CardTitle>
+            <Title>Your passages</Title>
           </CardTitle>
-          <CardDescription className="text-xl text-muted-foreground">
-            {passages.length > 0
-              ? "This is a list of your past passages."
-              : "You currently don't have any passages."}
+          <CardDescription>
+            <Subtitle>
+              {passages.length > 0
+                ? "This is a list of your past passages."
+                : "You currently don't have any passages."}
+            </Subtitle>
           </CardDescription>
         </CardHeader>
         {passages.length > 0 && (
