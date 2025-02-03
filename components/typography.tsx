@@ -1,13 +1,30 @@
 import React from "react";
+import { cn } from "@/lib/utils";
 
-export const Title = ({ children }: React.PropsWithChildren) => {
+type Props = {
+  className?: string;
+};
+
+export const Title = (props: React.PropsWithChildren<Props>) => {
   return (
-    <h1 className="pb-2 text-3xl font-semibold tracking-tight transition-colors">
-      {children}
+    <h1
+      className={cn(
+        "pb-2 text-3xl font-semibold tracking-tight transition-colors",
+        props.className,
+      )}
+    >
+      {props.children}
     </h1>
   );
 };
 
-export const Subtitle = ({ children }: React.PropsWithChildren) => {
-  return <h2 className="text-xl text-muted-foreground">{children}</h2>;
+export const Subtitle = ({
+  children,
+  className,
+}: React.PropsWithChildren<Props>) => {
+  return (
+    <h2 className={cn("text-xl text-muted-foreground", className)}>
+      {children}
+    </h2>
+  );
 };
