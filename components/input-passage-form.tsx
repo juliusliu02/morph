@@ -17,10 +17,10 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React, { useActionState } from "react";
-import { useRef } from "react";
+import React, { useActionState, useRef } from "react";
 import { createDialogue } from "@/actions/edit";
-import { X } from "lucide-react";
+import { AlertCircle } from "lucide-react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 function InputPassageForm() {
   const form = useForm<z.output<typeof newDialogueSchema>>({
@@ -37,7 +37,13 @@ function InputPassageForm() {
   return (
     <Form {...form}>
       <form ref={formRef} action={formAction} className="space-y-8">
-        {state?.message && <X className="bg-red-300">{state.message}</X>}
+        {state?.message && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{state.message}</AlertDescription>
+          </Alert>
+        )}
         <FormField
           control={form.control}
           name="title"

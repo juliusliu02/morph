@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Source_Sans_3 } from "next/font/google";
 import React from "react";
-import NavBar from "@/components/nav-bar";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
@@ -24,7 +23,6 @@ export default function RootLayout({
       <body
         className={`${sourceSans3.className} antialiased bg-slate-50 dark:bg-gray-900 relative`}
       >
-        <NavBar />
         {children}
         <SpeedInsights />
       </body>

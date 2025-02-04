@@ -21,7 +21,7 @@ const editSchema = {
       nullable: false,
     },
   },
-  required: ["edit"],
+  required: ["success", "edit"],
 };
 
 export type ResponseType =
@@ -39,10 +39,6 @@ export type ResponseType =
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash-exp",
-  generationConfig: {
-    responseMimeType: "application/json",
-    responseSchema: editSchema,
-  },
 });
 
 const getJsonResponse = async (
@@ -65,6 +61,10 @@ const getJsonResponse = async (
           ],
         },
       ],
+      generationConfig: {
+        responseMimeType: "application/json",
+        responseSchema: editSchema,
+      },
     });
   } catch (error: unknown) {
     console.error(error);
