@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -11,8 +11,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Subtitle, Title } from "@/components/typography";
+import { LoadingSpinner } from "@/components/loading";
+import { CenteredContainer } from "@/components/container";
 
-async function Page() {
+async function PassageListCard() {
   const { user } = await getCurrentSession();
   if (!user) {
     return redirect("/login");
@@ -47,6 +49,20 @@ async function Page() {
         )}
       </Card>
     </main>
+  );
+}
+
+async function Page() {
+  return (
+    <Suspense
+      fallback={
+        <CenteredContainer>
+          <LoadingSpinner />
+        </CenteredContainer>
+      }
+    >
+      <PassageListCard />
+    </Suspense>
   );
 }
 

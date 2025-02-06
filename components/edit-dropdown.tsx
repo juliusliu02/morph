@@ -55,7 +55,7 @@ function EditDropdown({ original }: EditDropdownProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="mb-12 w-32">
+      <DropdownMenuTrigger asChild className="w-32">
         <Button disabled={isPending} className="font-semibold cursor-pointer">
           {isPending ? "Loading" : "Get a new edit"}
         </Button>

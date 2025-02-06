@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Diff, DiffOp } from "diff-match-patch-ts";
 import {
   Card,
@@ -9,10 +10,21 @@ import {
 } from "@/components/ui/card";
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
+import { Subtitle, Title } from "@/components/typography";
+import EditDropdown from "@/components/edit-dropdown";
+import { AnimatePresence, motion } from "motion/react";
+import { LoadingSpinner } from "@/components/loading";
+import { DialogueWithVersion } from "@/lib/types";
+import { getDialogue } from "@/actions/edit";
+import { useRouter } from "next/navigation";
 
 type PassageCardProps = {
   original: Version;
   edit: Version;
+};
+
+type PassageProps = {
+  passageId: string;
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren) => {
@@ -103,4 +115,66 @@ function PassageCard({ original, edit }: PassageCardProps) {
   );
 }
 
-export default PassageCard;
+function Passage({ passageId }: PassageProps) {
+  const [isLoading, setIsLoading] = useState(true);
+  const [passage, setPassage] = useState<DialogueWithVersion>();
+  const router = useRouter();
+
+  useEffect(() => {
+    getDialogue(passageId)
+      .then((response) => {
+        setPassage(response);
+        setIsLoading(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        router.push("/notfound");
+      });
+
+    if (passage) {
+      const timer = setTimeout(() => setIsLoading(false), 500);
+      return () => clearTimeout(timer);
+    }
+  }, [passage]);
+
+  return (
+    <div>
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <motion.div
+            className="min-h-svh w-full flex justify-center items-center"
+            key="loading"
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <LoadingSpinner />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="flex gap-5 items-baseline">
+              <Title>{passage!.title || "Untitled document"}</Title>
+              <Subtitle className="text-gray-500">
+                {passage!.createdAt.toLocaleString("en-ca")}
+              </Subtitle>
+            </div>
+            <PassageCard
+              original={passage!.versions[passage!.versions.length - 2]}
+              edit={passage!.versions[passage!.versions.length - 2]}
+            />
+            <EditDropdown
+              original={passage!.versions[passage!.versions.length - 1]}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default Passage;

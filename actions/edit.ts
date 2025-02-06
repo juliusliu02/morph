@@ -2,9 +2,10 @@
 import { getEdit } from "@/lib/llm";
 import { idEditFormSchema, newDialogueSchema } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { revalidatePath } from "next/cache";
+import { DialogueWithVersion } from "@/lib/types";
 
 type ActionState = {
   message: string;
@@ -155,4 +156,39 @@ export const deleteDialogue = async (
   }
 
   revalidatePath(`/passages/`);
+};
+
+export const getDialogue = async (
+  id: unknown,
+): Promise<DialogueWithVersion> => {
+  if (typeof id !== "string") {
+    notFound();
+  }
+  const { user } = await getCurrentSession();
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  let passage;
+
+  try {
+    passage = await prisma.dialogue.findUnique({
+      where: {
+        id: id,
+      },
+      include: {
+        versions: true,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+    redirect("/error");
+  }
+
+  if (!passage || !passage.versions || passage.ownerId != user.id) {
+    notFound();
+  }
+
+  return passage;
 };
