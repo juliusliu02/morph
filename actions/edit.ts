@@ -192,3 +192,47 @@ export const getDialogue = async (
 
   return passage;
 };
+
+export const changeTitle = async (
+  id: unknown,
+  title: unknown,
+): Promise<ActionState | void> => {
+  if (typeof id !== "string" || typeof title !== "string") {
+    return { message: "Invalid input." };
+  }
+  const { user } = await getCurrentSession();
+
+  if (!user) {
+    return { message: "You are not logged in." };
+  }
+
+  let passage;
+
+  try {
+    passage = await prisma.dialogue.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  if (!passage || passage.ownerId != user.id) {
+    return { message: "Passage doesn't exist." };
+  }
+
+  try {
+    await prisma.dialogue.update({
+      data: {
+        title: title,
+      },
+      where: {
+        id: id,
+      },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "Server error. Please try again later." };
+  }
+};

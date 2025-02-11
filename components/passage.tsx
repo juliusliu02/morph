@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Diff, DiffOp } from "diff-match-patch-ts";
 import {
   Card,
@@ -15,8 +15,9 @@ import EditDropdown from "@/components/edit-dropdown";
 import { AnimatePresence, motion } from "motion/react";
 import { LoadingSpinner } from "@/components/loading";
 import { DialogueWithVersion } from "@/lib/types";
-import { getDialogue } from "@/actions/edit";
+import { changeTitle, getDialogue } from "@/actions/edit";
 import { useRouter } from "next/navigation";
+import { toast } from "@/hooks/use-toast";
 
 type PassageCardProps = {
   original: Version;
@@ -135,6 +136,7 @@ function Passage({ passageId }: PassageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [passage, setPassage] = useState<DialogueWithVersion>();
   const router = useRouter();
+  const ref = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!passage) {
@@ -154,6 +156,18 @@ function Passage({ passageId }: PassageProps) {
       return () => clearTimeout(timer);
     }
   }, [passage, passageId, router]);
+
+  const saveTitle = async () => {
+    if (!ref.current) return;
+    const title = ref.current.innerText.trim();
+    if (title === "") ref.current.innerText = "Untitled document";
+
+    if (title === passage?.title) return;
+    const response = await changeTitle(passageId, title);
+    if (response) {
+      toast({ variant: "destructive", value: response.message });
+    }
+  };
 
   return (
     <div>
@@ -176,7 +190,27 @@ function Passage({ passageId }: PassageProps) {
             exit={{ opacity: 0 }}
           >
             <div className="flex gap-5 items-baseline">
-              <Title>{passage!.title || "Untitled document"}</Title>
+              <Title>
+                <span
+                  ref={ref}
+                  className="rounded-xl p-1"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onKeyDown={(e) => {
+                    if (
+                      e.key === "Enter" ||
+                      e.key === "Escape" ||
+                      e.key === "Tab"
+                    ) {
+                      e.preventDefault();
+                      ref.current?.blur();
+                    }
+                  }}
+                  onBlur={() => saveTitle()}
+                >
+                  {!!passage?.title ? passage.title : "Untitled document"}
+                </span>
+              </Title>
               <Subtitle className="text-gray-500">
                 {passage!.createdAt.toLocaleString("en-ca")}
               </Subtitle>
