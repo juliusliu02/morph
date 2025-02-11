@@ -92,7 +92,15 @@ function PassageCard({ original, edit }: PassageCardProps) {
     <div className="flex gap-5 flex-1">
       <Card className="my-5 w-1/2">
         <CardHeader>
-          <CardTitle>Original</CardTitle>
+          <CardTitle className="flex justify-between align-baseline">
+            <span className="capitalize">Previous version</span>
+            <span className="text-md font-normal text-gray-500">
+              {original.createdAt.toLocaleTimeString("en-ca", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </CardTitle>
           <CardDescription>This is the text before editing.</CardDescription>
         </CardHeader>
         <CardContent>
@@ -102,8 +110,16 @@ function PassageCard({ original, edit }: PassageCardProps) {
 
       <Card className="my-5 w-1/2">
         <CardHeader>
-          <CardTitle className="capitalize">
-            {edit.edit.toString().toLowerCase()} edit
+          <CardTitle className="flex justify-between align-baseline">
+            <span className="capitalize">
+              {edit.edit.toString().toLowerCase()} edit
+            </span>
+            <span className="text-md font-normal text-gray-500">
+              {edit.createdAt.toLocaleTimeString("en-ca", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
           </CardTitle>
           <CardDescription>This is the text after editing.</CardDescription>
         </CardHeader>
@@ -121,21 +137,23 @@ function Passage({ passageId }: PassageProps) {
   const router = useRouter();
 
   useEffect(() => {
-    getDialogue(passageId)
-      .then((response) => {
-        setPassage(response);
-        setIsLoading(false);
-      })
-      .catch((e) => {
-        console.log(e);
-        router.push("/notfound");
-      });
+    if (!passage) {
+      getDialogue(passageId)
+        .then((response) => {
+          setPassage(response);
+          setIsLoading(false);
+        })
+        .catch((e) => {
+          console.error(e);
+          router.push("/notfound");
+        });
+    }
 
     if (passage) {
       const timer = setTimeout(() => setIsLoading(false), 500);
       return () => clearTimeout(timer);
     }
-  }, [passage]);
+  }, [passage, passageId, router]);
 
   return (
     <div>
@@ -165,7 +183,7 @@ function Passage({ passageId }: PassageProps) {
             </div>
             <PassageCard
               original={passage!.versions[passage!.versions.length - 2]}
-              edit={passage!.versions[passage!.versions.length - 2]}
+              edit={passage!.versions[passage!.versions.length - 1]}
             />
             <EditDropdown
               original={passage!.versions[passage!.versions.length - 1]}

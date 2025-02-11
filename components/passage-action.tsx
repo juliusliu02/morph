@@ -63,7 +63,7 @@ const PassageDropdown = () => {
       <DropdownMenuTrigger className="cursor-pointer">
         <Ellipsis className="translate-y-[0.1rem] text-gray-500" />
       </DropdownMenuTrigger>
-      <DropdownMenuContent>
+      <DropdownMenuContent align="end">
         <DialogTrigger asChild onClick={(event) => event.stopPropagation()}>
           <DropdownMenuItem>Delete passage</DropdownMenuItem>
         </DialogTrigger>
