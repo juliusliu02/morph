@@ -43,13 +43,15 @@ const PassageAction = ({ id }: PassageActionProps) => {
                 Close
               </Button>
             </DialogClose>
-            <Button
-              onClick={async () => {
-                await deleteDialogue(id);
-              }}
-            >
-              Delete
-            </Button>
+            <DialogClose asChild>
+              <Button
+                onClick={async () => {
+                  await deleteDialogue(id);
+                }}
+              >
+                Delete
+              </Button>
+            </DialogClose>
           </DialogFooter>
         </DialogContent>
       </Dialog>

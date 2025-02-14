@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
-import { Subtitle, Title } from "@/components/typography";
+import { DiffWord, Subtitle, Title } from "@/components/typography";
 import EditDropdown from "@/components/edit-dropdown";
 import { AnimatePresence, motion } from "motion/react";
 import { LoadingSpinner } from "@/components/loading";
@@ -28,65 +28,60 @@ type PassageProps = {
   passageId: string;
 };
 
-const DeleteText = ({ children }: React.PropsWithChildren) => {
-  return <span className="line-through text-gray-400">{children}</span>;
-};
-
-const EqualText = ({ children }: React.PropsWithChildren) => {
-  return <span>{children}</span>;
-};
-
-const InsertText = ({ children }: React.PropsWithChildren) => {
-  return <span className="text-indigo-800 font-semibold">{children}</span>;
-};
-
-const WordChunk = (diff: Diff, key: string): React.ReactNode => {
-  switch (diff[0]) {
-    case DiffOp.Delete:
-      return <DeleteText key={key}>{diff[1]}</DeleteText>;
-    case DiffOp.Insert:
-      return <InsertText key={key}>{diff[1]}</InsertText>;
-    case DiffOp.Equal:
-      return <EqualText key={key}>{diff[1]}</EqualText>;
-  }
-};
-
 const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
   return diffs.map((diff, pIndex) => (
-    <p
-      key={keyPrefix + pIndex}
-      className="leading-relaxed mb-4 last:mb-0 tracking-[.001rem]"
-    >
-      {diff.map((diff, wIndex) =>
-        WordChunk(diff, keyPrefix + pIndex + "w" + wIndex),
-      )}
+    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
+      {diff.map((diff, wIndex) => (
+        <DiffWord diff={diff} key={keyPrefix + pIndex + "w" + wIndex} />
+      ))}
     </p>
   ));
 };
 
-function PassageCard({ original, edit }: PassageCardProps) {
-  let originalParagraphs = original.text.split("\n\n");
-  let editedParagraphs = edit.text.split("\n\n");
+const getDiffs = (originalText: string, editText: string) => {
+  const original = originalText.replaceAll(/\n+/g, "\n");
+  const edit = editText.replaceAll(/\n+/g, "\n");
+  const diffs = getDiff(original, edit);
+  console.log(originalText);
+  console.log(original);
 
-  if (originalParagraphs.length !== editedParagraphs.length) {
-    // AI fails to generate line breaks.
-    // consolidate into one paragraph.
-    originalParagraphs = [original.text.replaceAll("\n", " ")];
-    editedParagraphs = [edit.text.replaceAll("\n", " ")];
-  }
+  const originalDiffs = diffs.filter((d: Diff) => d[0] != DiffOp.Insert);
+  const editDiffs = diffs.filter((d: Diff) => d[0] != DiffOp.Delete);
 
-  const diffs = originalParagraphs.map((p, index) =>
-    getDiff(p, editedParagraphs[index]),
-  );
+  return {
+    original: splitDiffs(originalDiffs),
+    edit: splitDiffs(editDiffs),
+  };
+};
 
-  const originalDiffs = diffs.map((diff) =>
-    diff.filter((d: Diff) => d[0] != DiffOp.Insert),
+const splitDiffs = (diffs: Diff[]): Diff[][] => {
+  const paragraphs: Diff[][] = [[]];
+  diffs.forEach((diff) => {
+    const pieces = diff[1].split("\n");
+    if (pieces.length === 1) {
+      paragraphs[paragraphs.length - 1].push(diff);
+      return;
+    }
+
+    for (const piece of pieces) {
+      if (piece === "") {
+        paragraphs.push([]);
+      } else {
+        paragraphs[paragraphs.length - 1].push([diff[0], piece]);
+        paragraphs.push([]);
+      }
+    }
+    paragraphs.pop();
+  });
+  return paragraphs;
+};
+
+const PassageCard = ({ original, edit }: PassageCardProps) => {
+  const { original: originalDiffs, edit: editDiffs } = getDiffs(
+    original.text,
+    edit.text,
   );
   const originalHTML = renderPassage(originalDiffs, "o");
-
-  const editDiffs = diffs.map((diff) =>
-    diff.filter((d: Diff) => d[0] != DiffOp.Delete),
-  );
   const editHTML = renderPassage(editDiffs, "e");
 
   return (
@@ -95,7 +90,7 @@ function PassageCard({ original, edit }: PassageCardProps) {
         <CardHeader>
           <CardTitle className="flex justify-between align-baseline">
             <span className="capitalize">Previous version</span>
-            <span className="text-md font-normal text-gray-500">
+            <span className="text-md font-normal text-slate-500">
               {original.createdAt.toLocaleTimeString("en-ca", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -115,7 +110,7 @@ function PassageCard({ original, edit }: PassageCardProps) {
             <span className="capitalize">
               {edit.edit.toString().toLowerCase()} edit
             </span>
-            <span className="text-md font-normal text-gray-500">
+            <span className="text-md font-normal text-slate-500">
               {edit.createdAt.toLocaleTimeString("en-ca", {
                 hour: "2-digit",
                 minute: "2-digit",
@@ -130,7 +125,7 @@ function PassageCard({ original, edit }: PassageCardProps) {
       </Card>
     </div>
   );
-}
+};
 
 function Passage({ passageId }: PassageProps) {
   const [isLoading, setIsLoading] = useState(true);
@@ -211,7 +206,7 @@ function Passage({ passageId }: PassageProps) {
                   {!!passage?.title ? passage.title : "Untitled document"}
                 </span>
               </Title>
-              <Subtitle className="text-gray-500">
+              <Subtitle className="text-slate-500">
                 {passage!.createdAt.toLocaleString("en-ca")}
               </Subtitle>
             </div>
