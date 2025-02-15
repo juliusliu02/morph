@@ -17,7 +17,7 @@ import { LoadingSpinner } from "@/components/loading";
 import { DialogueWithVersion } from "@/lib/types";
 import { changeTitle, getDialogue } from "@/actions/edit";
 import { useRouter } from "next/navigation";
-import { toast } from "@/hooks/use-toast";
+import { toast } from "sonner";
 
 type PassageCardProps = {
   original: Version;
@@ -160,7 +160,9 @@ function Passage({ passageId }: PassageProps) {
     if (title === passage?.title) return;
     const response = await changeTitle(passageId, title);
     if (response) {
-      toast({ variant: "destructive", value: response.message });
+      toast.error("An error occurred.", {
+        description: response.message,
+      });
     }
   };
 

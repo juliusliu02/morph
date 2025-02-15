@@ -9,8 +9,7 @@ import {
 import { Edit, Version } from "@prisma/client";
 import { getEditById } from "@/actions/edit";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { ToastAction } from "@/components/ui/toast";
+import { toast } from "sonner";
 
 type EditDropdownProps = {
   original: Version;
@@ -18,7 +17,6 @@ type EditDropdownProps = {
 
 function EditDropdown({ original }: EditDropdownProps) {
   const [isPending, setIsPending] = React.useState<boolean>(false);
-  const { toast } = useToast();
 
   const editFilterList = [
     Edit.ORIGINAL,
@@ -36,15 +34,12 @@ function EditDropdown({ original }: EditDropdownProps) {
     setIsPending(false);
     // error
     if (response) {
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
+      toast.error("An error occurred.", {
         description: response.message,
-        action: (
-          <ToastAction onClick={() => getEdit(edit)} altText="Try again">
-            Try again
-          </ToastAction>
-        ),
+        action: {
+          label: "Retry",
+          onClick: () => getEdit(edit),
+        },
       });
     }
     // success
