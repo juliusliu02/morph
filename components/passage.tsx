@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Diff, DiffOp } from "diff-match-patch-ts";
+import { Diff } from "diff-match-patch-ts";
 import {
   Card,
   CardContent,
@@ -38,46 +38,8 @@ const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
   ));
 };
 
-const getDiffs = (originalText: string, editText: string) => {
-  const original = originalText.replaceAll(/\n+/g, "\n");
-  const edit = editText.replaceAll(/\n+/g, "\n");
-  const diffs = getDiff(original, edit);
-  console.log(originalText);
-  console.log(original);
-
-  const originalDiffs = diffs.filter((d: Diff) => d[0] != DiffOp.Insert);
-  const editDiffs = diffs.filter((d: Diff) => d[0] != DiffOp.Delete);
-
-  return {
-    original: splitDiffs(originalDiffs),
-    edit: splitDiffs(editDiffs),
-  };
-};
-
-const splitDiffs = (diffs: Diff[]): Diff[][] => {
-  const paragraphs: Diff[][] = [[]];
-  diffs.forEach((diff) => {
-    const pieces = diff[1].split("\n");
-    if (pieces.length === 1) {
-      paragraphs[paragraphs.length - 1].push(diff);
-      return;
-    }
-
-    for (const piece of pieces) {
-      if (piece === "") {
-        paragraphs.push([]);
-      } else {
-        paragraphs[paragraphs.length - 1].push([diff[0], piece]);
-        paragraphs.push([]);
-      }
-    }
-    paragraphs.pop();
-  });
-  return paragraphs;
-};
-
 const PassageCard = ({ original, edit }: PassageCardProps) => {
-  const { original: originalDiffs, edit: editDiffs } = getDiffs(
+  const { original: originalDiffs, edit: editDiffs } = getDiff(
     original.text,
     edit.text,
   );
