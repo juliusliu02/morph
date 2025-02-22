@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/card";
 import { Subtitle, Title } from "@/components/typography";
 import { LoadingSpinner } from "@/components/loading";
-import { CenteredContainer } from "@/components/container";
 
 async function PassageListCard() {
   const { user } = await getCurrentSession();
@@ -32,7 +31,7 @@ async function PassageListCard() {
       <Card className="max-w-2xl w-full mx-5">
         <CardHeader>
           <CardTitle>
-            <Title>Your passages</Title>
+            <Title>Your Passages</Title>
           </CardTitle>
           <CardDescription>
             <Subtitle>
@@ -54,13 +53,7 @@ async function PassageListCard() {
 
 async function Page() {
   return (
-    <Suspense
-      fallback={
-        <CenteredContainer>
-          <LoadingSpinner />
-        </CenteredContainer>
-      }
-    >
+    <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
       <PassageListCard />
     </Suspense>
   );

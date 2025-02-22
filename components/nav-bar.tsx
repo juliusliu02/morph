@@ -22,7 +22,7 @@ const NavBar = () => {
                   "dark:text-gray-200 dark:bg-slate-700",
                 )}
               >
-                Home
+                New Passage
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
