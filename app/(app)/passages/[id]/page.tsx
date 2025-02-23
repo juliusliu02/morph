@@ -15,18 +15,20 @@ async function Passage({ passageId }: PassageProps) {
   const passage = await getDialogue(passageId);
   return (
     <>
-      <div className="flex gap-5 items-baseline">
-        <PassageTitle passage={passage} />
-        <Subtitle className="text-slate-500">
-          {passage!.createdAt.toLocaleString("en-ca")}
-        </Subtitle>
+      <div className="flex justify-between">
+        <span className="flex gap-5 items-baseline">
+          <PassageTitle passage={passage} />
+          <Subtitle className="text-slate-500">
+            {passage!.createdAt.toLocaleString("en-ca")}
+          </Subtitle>
+        </span>
+        <EditDropdown
+          original={passage!.versions[passage!.versions.length - 1]}
+        />
       </div>
       <PassageBody
         original={passage!.versions[passage!.versions.length - 2]}
         edit={passage!.versions[passage!.versions.length - 1]}
-      />
-      <EditDropdown
-        original={passage!.versions[passage!.versions.length - 1]}
       />
     </>
   );

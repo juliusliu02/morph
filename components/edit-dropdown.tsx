@@ -10,6 +10,7 @@ import { Edit, Version } from "@prisma/client";
 import { getEditById } from "@/actions/edit";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Loader2, Pencil } from "lucide-react";
 
 type EditDropdownProps = {
   original: Version;
@@ -51,8 +52,17 @@ function EditDropdown({ original }: EditDropdownProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="w-32">
-        <Button disabled={isPending} className="font-semibold cursor-pointer">
-          {isPending ? "Loading" : "Get a new edit"}
+        <Button disabled={isPending} className="cursor-pointer">
+          {isPending ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Loading
+            </>
+          ) : (
+            <>
+              <Pencil /> Get a new edit
+            </>
+          )}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

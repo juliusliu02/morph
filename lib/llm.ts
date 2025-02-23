@@ -3,6 +3,7 @@ import {
   grammarEditPrompt,
   lexicalEditPrompt,
   logicalEditPrompt,
+  systemPrompt,
 } from "@/lib/prompts";
 import type { Edit } from "@prisma/client";
 
@@ -39,6 +40,7 @@ export type ResponseType =
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
 const model = genAI.getGenerativeModel({
   model: "gemini-2.0-flash-exp",
+  systemInstruction: systemPrompt,
 });
 
 const getJsonResponse = async (

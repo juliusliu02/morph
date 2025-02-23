@@ -34,6 +34,7 @@ type PassageTitleProps = {
 type PassageCardProps = {
   version: Version;
   html: React.JSX.Element[];
+  isEdit?: boolean;
 };
 
 const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
@@ -104,7 +105,7 @@ const Copy = ({ text }: { text: string }) => {
   );
 };
 
-const PassageCard = ({ version, html }: PassageCardProps) => {
+const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   return (
     <Card>
       <CardHeader>
@@ -122,7 +123,11 @@ const PassageCard = ({ version, html }: PassageCardProps) => {
             })}
           </span>
         </CardTitle>
-        <CardDescription>This is the text before editing.</CardDescription>
+        <CardDescription>
+          {!isEdit
+            ? "This is the text before editing."
+            : "This is the text after editing."}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <article>{html}</article>
@@ -145,7 +150,7 @@ export const PassageBody = ({ original, edit }: PassageBodyProps) => {
         <PassageCard version={original} html={originalHTML} />
       </div>
       <div className="my-5 w-1/2">
-        <PassageCard version={edit} html={editHTML} />
+        <PassageCard version={edit} html={editHTML} isEdit />
       </div>
     </div>
   );
