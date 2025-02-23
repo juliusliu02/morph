@@ -31,13 +31,13 @@ async function PassageListCard() {
       <Card className="max-w-2xl w-full mx-5">
         <CardHeader>
           <CardTitle>
-            <Title>Your Passages</Title>
+            <Title>My Passages</Title>
           </CardTitle>
           <CardDescription>
             <Subtitle>
               {passages.length > 0
                 ? "This is a list of your past passages."
-                : "You currently don't have any passages."}
+                : "You don't currently have any passages."}
             </Subtitle>
           </CardDescription>
         </CardHeader>
