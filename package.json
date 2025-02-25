@@ -11,11 +11,11 @@
     "prepare": "husky"
   },
   "dependencies": {
-    "@google/generative-ai": "^0.21.0",
-    "@hookform/resolvers": "^4.1.0",
+    "@google/generative-ai": "^0.22.0",
+    "@hookform/resolvers": "^4.1.2",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
-    "@prisma/client": "^6.3.1",
+    "@prisma/client": "^6.4.1",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-dropdown-menu": "^2.1.6",
     "@radix-ui/react-label": "^2.1.2",
@@ -28,15 +28,16 @@
     "clsx": "^2.1.1",
     "diff-match-patch-ts": "^0.6.0",
     "lucide-react": "^0.475.0",
-    "motion": "^12.4.3",
+    "motion": "^12.4.7",
     "next": "^15.1.7",
     "next-themes": "^0.4.4",
-    "prisma": "^6.3.1",
+    "npm-check-updates": "^17.1.15",
+    "prisma": "^6.4.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
-    "sonner": "^1.7.4",
-    "tailwind-merge": "^3.0.1",
+    "sonner": "^2.0.1",
+    "tailwind-merge": "^3.0.2",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.24.2"
   },
@@ -44,7 +45,7 @@
     "@commitlint/cli": "^19.7.1",
     "@commitlint/config-conventional": "^19.7.1",
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4.0.6",
+    "@tailwindcss/postcss": "^4.0.8",
     "@types/bcrypt": "^5.0.2",
     "@types/node": "^22",
     "@types/react": "^19",
@@ -53,7 +54,7 @@
     "eslint-config-next": "15.1.7",
     "husky": "^9.1.7",
     "postcss": "^8",
-    "tailwindcss": "^4.0.6",
+    "tailwindcss": "^4.0.8",
     "typescript": "^5"
   }
 }
