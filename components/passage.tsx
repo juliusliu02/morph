@@ -86,7 +86,7 @@ export function PassageTitle({ passage }: PassageTitleProps) {
 
 const Copy = ({ text }: { text: string }) => {
   return (
-    <TooltipProvider delayDuration={700}>
+    <TooltipProvider>
       <Tooltip>
         <TooltipTrigger>
           <ClipboardCopy
