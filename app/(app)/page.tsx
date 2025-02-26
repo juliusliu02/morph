@@ -23,7 +23,7 @@ async function Page() {
         <CardHeader>
           <CardTitle>
             <Title>
-              Hello {user.name} {user.name.endsWith(".") ? null : "."}
+              Hello {user.name + user.name.endsWith(".") ? "" : "."}
             </Title>
           </CardTitle>
           <CardDescription>
