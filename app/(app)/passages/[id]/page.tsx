@@ -1,7 +1,6 @@
 import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Passage } from "@/components/passage";
-import { NavigationBackArrow } from "@/components/navigation";
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
