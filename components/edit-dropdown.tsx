@@ -51,7 +51,7 @@ function EditDropdown({ original }: EditDropdownProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="w-32">
+      <DropdownMenuTrigger asChild>
         <Button disabled={isPending} className="cursor-pointer">
           {isPending ? (
             <>
@@ -60,7 +60,8 @@ function EditDropdown({ original }: EditDropdownProps) {
             </>
           ) : (
             <>
-              <Pencil /> Get a new edit
+              <Pencil />{" "}
+              <span className="hidden sm:inline">Get a new edit</span>
             </>
           )}
         </Button>

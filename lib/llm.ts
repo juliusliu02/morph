@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI, SchemaType } from "@google/generative-ai";
+import { GoogleGenerativeAI, Schema, SchemaType } from "@google/generative-ai";
 import {
   grammarEditPrompt,
   lexicalEditPrompt,
@@ -7,7 +7,7 @@ import {
 } from "@/lib/prompts";
 import type { Edit } from "@prisma/client";
 
-const editSchema = {
+const editSchema: Schema = {
   type: SchemaType.OBJECT,
   properties: {
     success: {
@@ -19,7 +19,6 @@ const editSchema = {
       type: SchemaType.STRING,
       description:
         "The edited version of original text. Preserve line breaks as '\\n'",
-      nullable: false,
     },
   },
   required: ["success", "edit"],

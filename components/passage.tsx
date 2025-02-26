@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Diff } from "diff-match-patch-ts";
 import {
   Card,
@@ -10,9 +10,9 @@ import {
 } from "@/components/ui/card";
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
-import { DiffWord, Title } from "@/components/typography";
+import { DiffWord, Subtitle, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
-import { changeTitle } from "@/actions/edit";
+import { changeTitle, getDialogue } from "@/actions/edit";
 import { toast } from "sonner";
 import { ClipboardCopy } from "lucide-react";
 import {
@@ -21,10 +21,20 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useMediaQuery } from "@/lib/hooks";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import EditDropdown from "@/components/edit-dropdown";
+import { LoadingSpinner } from "@/components/loading";
+import { useRouter } from "next/navigation";
+
+type PassageProps = {
+  passageId: string;
+};
 
 type PassageBodyProps = {
   original: Version;
   edit: Version;
+  isDesktop: boolean;
 };
 
 type PassageTitleProps = {
@@ -37,17 +47,7 @@ type PassageCardProps = {
   isEdit?: boolean;
 };
 
-const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
-  return diffs.map((diff, pIndex) => (
-    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
-      {diff.map((diff, wIndex) => (
-        <DiffWord diff={diff} key={keyPrefix + pIndex + "w" + wIndex} />
-      ))}
-    </p>
-  ));
-};
-
-export function PassageTitle({ passage }: PassageTitleProps) {
+function PassageTitle({ passage }: PassageTitleProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const saveTitle = async () => {
     if (!ref.current) return;
@@ -67,7 +67,7 @@ export function PassageTitle({ passage }: PassageTitleProps) {
     <Title>
       <span
         ref={ref}
-        className="rounded-xl p-1"
+        className="rounded-xl"
         contentEditable
         suppressContentEditableWarning
         onKeyDown={(e) => {
@@ -105,11 +105,21 @@ const Copy = ({ text }: { text: string }) => {
   );
 };
 
+const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
+  return diffs.map((diff, pIndex) => (
+    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
+      {diff.map((diff, wIndex) => (
+        <DiffWord diff={diff} key={keyPrefix + pIndex + "w" + wIndex} />
+      ))}
+    </p>
+  ));
+};
+
 const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex justify-between items-center">
+        <CardTitle className="flex justify-between items-center ">
           <span className="capitalize flex items-center gap-1">
             {version.edit === "ORIGINAL"
               ? "original"
@@ -136,7 +146,7 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   );
 };
 
-export const PassageBody = ({ original, edit }: PassageBodyProps) => {
+const PassageBody = ({ original, edit, isDesktop }: PassageBodyProps) => {
   const { original: originalDiffs, edit: editDiffs } = getDiff(
     original.text,
     edit.text,
@@ -144,7 +154,7 @@ export const PassageBody = ({ original, edit }: PassageBodyProps) => {
   const originalHTML = renderPassage(originalDiffs, "o");
   const editHTML = renderPassage(editDiffs, "e");
 
-  return (
+  return isDesktop ? (
     <div className="flex gap-5 flex-1">
       <div className="my-5 w-1/2">
         <PassageCard version={original} html={originalHTML} />
@@ -153,5 +163,67 @@ export const PassageBody = ({ original, edit }: PassageBodyProps) => {
         <PassageCard version={edit} html={editHTML} isEdit />
       </div>
     </div>
+  ) : (
+    <div className="flex justify-center">
+      <Tabs defaultValue="original" className="w-sm">
+        <TabsList>
+          <TabsTrigger value="original">Original</TabsTrigger>
+          <TabsTrigger value="edit">Edit</TabsTrigger>
+        </TabsList>
+        <TabsContent value="original">
+          <PassageCard version={original} html={originalHTML} />
+        </TabsContent>
+        <TabsContent value="edit">
+          <PassageCard version={edit} html={editHTML} isEdit />
+        </TabsContent>
+      </Tabs>
+    </div>
   );
 };
+
+export function Passage({ passageId }: PassageProps) {
+  const [passage, setPassage] = React.useState<DialogueWithVersion>();
+  const router = useRouter();
+  const isSm = useMediaQuery("(min-width: 640px)");
+
+  useEffect(() => {
+    getDialogue(passageId)
+      .then((result) => {
+        setPassage(result);
+      })
+      .catch((e) => {
+        console.error(e);
+        router.replace("/notfound");
+      });
+  });
+
+  if (!passage) {
+    return <LoadingSpinner className="fixed inset-[50%]" />;
+  }
+
+  return (
+    <>
+      <div className="flex justify-between mb-2">
+        <span
+          className="flex flex-col p-1 mr-5
+          sm:flex-row sm:gap-5 sm:items-baseline"
+        >
+          <PassageTitle passage={passage} />
+          <Subtitle className="text-slate-500">
+            {passage.createdAt.toLocaleDateString("en-ca")}
+          </Subtitle>
+        </span>
+        <div className="translate-y-0.5">
+          <EditDropdown
+            original={passage!.versions[passage!.versions.length - 1]}
+          />
+        </div>
+      </div>
+      <PassageBody
+        original={passage!.versions[passage!.versions.length - 2]}
+        edit={passage!.versions[passage!.versions.length - 1]}
+        isDesktop={isSm}
+      />
+    </>
+  );
+}
