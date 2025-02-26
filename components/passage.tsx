@@ -26,6 +26,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditDropdown from "@/components/edit-dropdown";
 import { LoadingSpinner } from "@/components/loading";
 import { useRouter } from "next/navigation";
+import { NavigationBackArrow } from "@/components/navigation";
 
 type PassageProps = {
   passageId: string;
@@ -34,7 +35,6 @@ type PassageProps = {
 type PassageBodyProps = {
   original: Version;
   edit: Version;
-  isDesktop: boolean;
 };
 
 type PassageTitleProps = {
@@ -146,15 +146,16 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   );
 };
 
-const PassageBody = ({ original, edit, isDesktop }: PassageBodyProps) => {
+const PassageBody = ({ original, edit }: PassageBodyProps) => {
   const { original: originalDiffs, edit: editDiffs } = getDiff(
     original.text,
     edit.text,
   );
   const originalHTML = renderPassage(originalDiffs, "o");
   const editHTML = renderPassage(editDiffs, "e");
+  const isSm = useMediaQuery("(min-width: 640px)");
 
-  return isDesktop ? (
+  return isSm ? (
     <div className="flex gap-5 flex-1">
       <div className="my-5 w-1/2">
         <PassageCard version={original} html={originalHTML} />
@@ -184,7 +185,6 @@ const PassageBody = ({ original, edit, isDesktop }: PassageBodyProps) => {
 export function Passage({ passageId }: PassageProps) {
   const [passage, setPassage] = React.useState<DialogueWithVersion>();
   const router = useRouter();
-  const isSm = useMediaQuery("(min-width: 640px)");
 
   useEffect(() => {
     getDialogue(passageId)
@@ -195,14 +195,18 @@ export function Passage({ passageId }: PassageProps) {
         console.error(e);
         router.replace("/notfound");
       });
-  });
+  }, [passageId, router]);
 
   if (!passage) {
     return <LoadingSpinner className="fixed inset-[50%]" />;
   }
 
   return (
-    <div className="">
+    <div
+      className="w-sm
+    sm:w-full sm:max-w-2xl"
+    >
+      <NavigationBackArrow className="mb-5" />
       <div className="flex justify-between mb-2">
         <span
           className="flex flex-col p-1 mr-5
@@ -222,7 +226,6 @@ export function Passage({ passageId }: PassageProps) {
       <PassageBody
         original={passage!.versions[passage!.versions.length - 2]}
         edit={passage!.versions[passage!.versions.length - 1]}
-        isDesktop={isSm}
       />
     </div>
   );

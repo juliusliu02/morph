@@ -7,8 +7,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   return (
     <main className="p-5 flex w-full justify-center">
-      <div className="max-w-full sm:w-full sm:max-w-3xl mt-10 pt-5">
-        <NavigationBackArrow className="mb-5" />
+      <div className="mt-10 pt-5 flex flex-col items-center">
         <Passage passageId={id} />
       </div>
       <Toaster richColors />
