@@ -202,7 +202,7 @@ export function Passage({ passageId }: PassageProps) {
   }
 
   return (
-    <>
+    <div className="">
       <div className="flex justify-between mb-2">
         <span
           className="flex flex-col p-1 mr-5
@@ -224,6 +224,6 @@ export function Passage({ passageId }: PassageProps) {
         edit={passage!.versions[passage!.versions.length - 1]}
         isDesktop={isSm}
       />
-    </>
+    </div>
   );
 }

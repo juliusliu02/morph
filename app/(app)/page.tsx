@@ -19,10 +19,12 @@ async function Page() {
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-[5rem]">
-      <Card className="w-full max-w-2xl">
+      <Card className="w-full max-w-2xl mx-5">
         <CardHeader>
           <CardTitle>
-            <Title>Hello {user.name}.</Title>
+            <Title>
+              Hello {user.name} {user.name.endsWith(".") ? null : "."}
+            </Title>
           </CardTitle>
           <CardDescription>
             <Subtitle>Input a passage to start editing.</Subtitle>

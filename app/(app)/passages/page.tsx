@@ -27,8 +27,8 @@ async function PassageListCard() {
   });
 
   return (
-    <main className="flex justify-center items-center min-h-[calc(100vh-5rem)] pt-[5rem]">
-      <Card className="max-w-2xl w-full mx-5">
+    <main className="flex justify-center items-center min-h-[calc(100vh-5rem)] pt-[5rem] px-5">
+      <Card className="w-full max-w-2xl">
         <CardHeader>
           <CardTitle>
             <Title>My Passages</Title>
