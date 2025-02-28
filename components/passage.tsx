@@ -13,7 +13,7 @@ import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Subtitle, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
-import { saveSelfEdit } from "@/actions/edit";
+import { saveSelfEdit } from "@/actions/version";
 import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
 import { ClipboardCopy, PenLine } from "lucide-react";
@@ -26,7 +26,7 @@ import {
 import { useMediaQuery } from "@/lib/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NavigationBackArrow } from "@/components/navigation";
-import PassageAction from "@/components/passage-action";
+import PassageAction, { RevertDialog } from "@/components/passage-action";
 import {
   Dialog,
   DialogContent,
@@ -260,6 +260,9 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
 };
 
 export function Passage({ passage }: PassageProps) {
+  const original = passage.versions[passage.versions.length - 2];
+  const edit = passage.versions[passage.versions.length - 1];
+
   return (
     <div
       className="w-sm
@@ -276,16 +279,12 @@ export function Passage({ passage }: PassageProps) {
             {passage.createdAt.toLocaleDateString("en-ca")}
           </Subtitle>
         </span>
-        <div className="translate-y-0.5">
-          <PassageAction
-            version={passage!.versions[passage!.versions.length - 1]}
-          />
-        </div>
+        <span className="translate-y-0.5 flex gap-2 items-baseline">
+          <PassageAction version={edit} />
+          <RevertDialog versionId={edit.id} />
+        </span>
       </div>
-      <PassageBody
-        original={passage!.versions[passage!.versions.length - 2]}
-        edit={passage!.versions[passage!.versions.length - 1]}
-      />
+      <PassageBody original={original} edit={edit} />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -17,14 +18,53 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Edit, Version } from "@prisma/client";
-import { getCustomEdit, getPresetEdit } from "@/actions/edit";
+import { deleteEdit, getCustomEdit, getPresetEdit } from "@/actions/version";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Loader2, Pencil } from "lucide-react";
+import { Loader2, Pencil, Undo2 } from "lucide-react";
 
 type PassageActionProps = {
   version: Version;
 };
+
+type RevertDialogProps = {
+  versionId: string;
+};
+
+export function RevertDialog({ versionId }: RevertDialogProps) {
+  return (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="destructive" className="cursor-pointer">
+          <Undo2 />
+        </Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Discard this version?</DialogTitle>
+          <DialogDescription>
+            This action cannot be undone. Are you sure you want to permanently
+            discard this version of the edit?
+          </DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              variant="destructive"
+              className="cursor-pointer"
+              onClick={async () => {
+                const response = await deleteEdit(versionId);
+                if (response) toast.error(response.message);
+              }}
+            >
+              Discard
+            </Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 function PassageDropdown({ version }: PassageActionProps) {
   const [isPending, setIsPending] = React.useState<boolean>(false);
@@ -67,7 +107,7 @@ function PassageDropdown({ version }: PassageActionProps) {
             </>
           ) : (
             <>
-              <Pencil />{" "}
+              <Pencil />
               <span className="hidden sm:inline">Get a new edit</span>
             </>
           )}
@@ -98,7 +138,7 @@ const PassageAction = ({ version }: PassageActionProps) => {
   const [prompt, setPrompt] = React.useState<string>("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
-  const handleSubmit = async (prompt: string) => {
+  const handleCustomEdit = async (prompt: string) => {
     setLoading(true);
     const response = await getCustomEdit(version.id, prompt);
     setLoading(false);
@@ -124,7 +164,7 @@ const PassageAction = ({ version }: PassageActionProps) => {
           <Button
             className="cursor-pointer"
             disabled={loading}
-            onClick={() => handleSubmit(prompt)}
+            onClick={() => handleCustomEdit(prompt)}
           >
             Get edit
           </Button>

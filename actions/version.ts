@@ -76,14 +76,16 @@ export const getCustomEdit = async (id: unknown, prompt: unknown) => {
     return { message: "Invalid input." };
   }
 
-  const original = await prisma.version.findUnique({
-    where: { id: validatedFields.data.id },
-    include: {
-      dialogue: true,
-    },
-  });
-
-  if (!original) {
+  let original;
+  try {
+    original = await prisma.version.findUniqueOrThrow({
+      where: { id: validatedFields.data.id },
+      include: {
+        dialogue: true,
+      },
+    });
+  } catch (error: unknown) {
+    console.error(error);
     return { message: "Passage not found." };
   }
 
@@ -131,17 +133,18 @@ export const saveSelfEdit = async (
     };
   }
 
-  const version = await prisma.version.findUnique({
-    where: { id: validatedFields.data.id },
-    include: {
-      dialogue: true,
-    },
-  });
-
-  if (!version) {
+  let version;
+  try {
+    version = await prisma.version.findUniqueOrThrow({
+      where: { id: validatedFields.data.id },
+      include: {
+        dialogue: true,
+      },
+    });
+  } catch (error: unknown) {
+    console.error(error);
     return { message: "Passage not found." };
   }
-
   if (version.dialogue.ownerId !== user.id) {
     return { message: "Not authorized." };
   }
@@ -150,8 +153,6 @@ export const saveSelfEdit = async (
     return;
   }
 
-  const formattedText = validatedFields.data.text.replaceAll("\r\n", "\n");
-
   // store to database
   await prisma.dialogue.update({
     where: { id: version.dialogueId },
@@ -159,11 +160,61 @@ export const saveSelfEdit = async (
       versions: {
         create: {
           edit: "SELF",
-          text: formattedText,
+          text: validatedFields.data.text,
         },
       },
     },
   });
+
+  revalidatePath(`/passages/${version.dialogueId}`);
+};
+
+export const deleteEdit = async (id: unknown): Promise<ActionState | void> => {
+  const { user } = await getCurrentSession();
+  if (!user) {
+    return { message: "Not logged in." };
+  }
+
+  if (typeof id !== "string") {
+    return { message: "Invalid input." };
+  }
+
+  let version;
+  try {
+    version = await prisma.version.findUniqueOrThrow({
+      where: { id },
+    });
+  } catch (error) {
+    console.error(error);
+    return { message: "Edit not found." };
+  }
+
+  try {
+    const dialogue = await prisma.dialogue.findUniqueOrThrow({
+      where: { id: version.dialogueId },
+      include: {
+        _count: {
+          select: {
+            versions: true,
+          },
+        },
+      },
+    });
+
+    if (dialogue._count.versions > 2) {
+      await prisma.version.delete({
+        where: { id },
+      });
+    } else {
+      return {
+        message:
+          "This is the only edit of the passage. To revert this edit, delete the whole passage instead.",
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return { message: "Server error. Please alert the administrator." };
+  }
 
   revalidatePath(`/passages/${version.dialogueId}`);
 };
