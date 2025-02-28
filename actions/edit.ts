@@ -16,19 +16,19 @@ export const createDialogue = async (
 ): Promise<ActionState> => {
   const { user } = await getCurrentSession();
   if (!user) {
-    return { message: "Not logged in" };
+    return { message: "Not logged in." };
   }
 
   // type guard
   if (!(data instanceof FormData)) {
-    return { message: "invalid form data" };
+    return { message: "Invalid form data." };
   }
 
   // validate data
   const formData = Object.fromEntries(data);
   const validatedFields = newDialogueSchema.safeParse(formData);
   if (!validatedFields.success) {
-    return { message: "invalid input" };
+    return { message: "Invalid input." };
   }
 
   // format line breaks
@@ -69,13 +69,13 @@ export const getEditById = async (
 ): Promise<ActionState | void> => {
   const { user } = await getCurrentSession();
   if (!user) {
-    return { message: "Not logged in" };
+    return { message: "Not logged in." };
   }
 
   // validate data
   const validatedFields = idEditFormSchema.safeParse({ id, edit });
   if (!validatedFields.success) {
-    return { message: "invalid input" };
+    return { message: "Invalid input." };
   }
 
   const original = await prisma.version.findUnique({
@@ -86,11 +86,11 @@ export const getEditById = async (
   });
 
   if (!original) {
-    return { message: "passage not found" };
+    return { message: "Passage not found." };
   }
 
   if (original.dialogue.ownerId !== user.id) {
-    return { message: "not authorized" };
+    return { message: "Not authorized." };
   }
 
   // get edit
@@ -120,11 +120,11 @@ export const deleteDialogue = async (
 ): Promise<ActionState | void> => {
   const { user } = await getCurrentSession();
   if (!user) {
-    return { message: "Not logged in" };
+    return { message: "Not logged in." };
   }
 
   if (typeof id !== "string") {
-    return { message: "invalid input" };
+    return { message: "Invalid input." };
   }
 
   let passage;
@@ -134,15 +134,15 @@ export const deleteDialogue = async (
     });
   } catch (error: unknown) {
     console.error(error);
-    return { message: "passage not found" };
+    return { message: "Passage not found." };
   }
 
   if (!passage) {
-    return { message: "passage not found" };
+    return { message: "Passage not found." };
   }
 
   if (passage.ownerId !== user.id) {
-    return { message: "not authorized" };
+    return { message: "You are not authorized." };
   }
 
   try {
@@ -197,6 +197,6 @@ export const changeTitle = async (
     });
   } catch (error: unknown) {
     console.error(error);
-    return { message: "Server error. Please try again later." };
+    return { message: "Couldn't update title. Please try again later." };
   }
 };

@@ -35,7 +35,7 @@ export async function signup(
   if (!validatedFields.success) {
     return {
       // errors: validatedFields.error.flatten().fieldErrors,
-      message: "Invalid form data",
+      message: "Invalid form data.",
     };
   }
 
@@ -81,7 +81,7 @@ export async function login(
 
   if (!validatedFields.success) {
     return {
-      message: "invalid input",
+      message: "Invalid input.",
     };
   }
 
