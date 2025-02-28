@@ -18,7 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useActionState, useRef } from "react";
-import { createDialogue } from "@/actions/edit";
+import { createDialogue } from "@/actions/dialogue";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 

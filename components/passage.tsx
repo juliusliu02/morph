@@ -13,7 +13,8 @@ import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Subtitle, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
-import { changeTitle, saveSelfEdit } from "@/actions/edit";
+import { saveSelfEdit } from "@/actions/edit";
+import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
 import { ClipboardCopy, PenLine } from "lucide-react";
 import {

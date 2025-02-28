@@ -6,12 +6,8 @@ export const newDialogueSchema = z.object({
   body: z
     .string()
     .trim()
-    .min(200, { message: "The passage must be longer than 200 characters." }),
-});
-
-export const textEditFormSchema = z.object({
-  original: z.string().trim().min(1, { message: "Text cannot be empty." }),
-  edit: z.nativeEnum(Edit),
+    .min(200, { message: "The passage must be longer than 200 characters." })
+    .transform((text) => text.replaceAll("\r\n", "\n")),
 });
 
 export const presetEditSchema = z.object({
@@ -29,7 +25,8 @@ export const selfEditSchema = z.object({
   text: z
     .string()
     .trim()
-    .min(200, { message: "The passage must be longer than 200 characters." }),
+    .min(200, { message: "The passage must be longer than 200 characters." })
+    .transform((text) => text.replaceAll("\r\n", "\n")),
 });
 
 export const loginFormSchema = z.object({

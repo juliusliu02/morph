@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Ellipsis } from "lucide-react";
-import { deleteDialogue } from "@/actions/edit";
+import { deleteDialogue } from "@/actions/dialogue";
 import { Button } from "@/components/ui/button";
 
 type PassageListItemActionProps = {
