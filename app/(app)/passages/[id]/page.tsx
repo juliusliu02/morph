@@ -41,7 +41,7 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   return (
     <main className="p-5 flex w-full justify-center">
       <div className="mt-10 pt-5 flex flex-col items-center">
-        <Suspense fallback={<LoadingSpinner />}>
+        <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
           <Dialogue id={id} />
         </Suspense>
       </div>
