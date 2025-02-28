@@ -8,7 +8,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,61 +15,122 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Ellipsis } from "lucide-react";
-import { deleteDialogue } from "@/actions/edit";
+import { Textarea } from "@/components/ui/textarea";
+import { Edit, Version } from "@prisma/client";
+import { getCustomEdit, getEditById } from "@/actions/edit";
 import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Loader2, Pencil } from "lucide-react";
 
 type PassageActionProps = {
-  id: string;
+  version: Version;
 };
 
-const PassageAction = ({ id }: PassageActionProps) => {
-  return (
-    <menu onClick={(e) => e.stopPropagation()}>
-      <Dialog>
-        <PassageDropdown />
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. Are you sure you want to permanently
-              delete this passage?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-            <DialogClose asChild>
-              <Button
-                onClick={async () => {
-                  await deleteDialogue(id);
-                }}
-              >
-                Delete
-              </Button>
-            </DialogClose>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </menu>
+function PassageDropdown({ version }: PassageActionProps) {
+  const [isPending, setIsPending] = React.useState<boolean>(false);
+
+  // filter out unsupported or invalid edit types.
+  const editFilterList = [
+    Edit.ORIGINAL,
+    version.edit,
+    Edit.LOGICAL,
+    Edit.CUSTOM,
+  ].map((option) => option.valueOf());
+  const editOptions = Object.keys(Edit).filter(
+    (option) => !editFilterList.includes(option),
   );
-};
 
-const PassageDropdown = () => {
+  const getEdit = async (edit: string) => {
+    setIsPending(true);
+    const response = await getEditById(version.id, edit);
+    setIsPending(false);
+    // response is void on success
+    if (response) {
+      toast.error("An error occurred.", {
+        description: response.message,
+        action: {
+          label: "Retry",
+          onClick: () => getEdit(edit),
+        },
+      });
+    }
+  };
+
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer">
-        <Ellipsis className="translate-y-[0.1rem] text-gray-500" />
+      <DropdownMenuTrigger asChild>
+        <Button disabled={isPending} className="cursor-pointer">
+          {isPending ? (
+            <>
+              <Loader2 className="animate-spin" />
+              Loading
+            </>
+          ) : (
+            <>
+              <Pencil />{" "}
+              <span className="hidden sm:inline">Get a new edit</span>
+            </>
+          )}
+        </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DialogTrigger asChild onClick={(event) => event.stopPropagation()}>
-          <DropdownMenuItem>Delete passage</DropdownMenuItem>
+        {editOptions.map((item) => (
+          <DropdownMenuItem
+            className="cursor-pointer"
+            key={item}
+            onSelect={() => getEdit(item)}
+          >
+            Get {item.toLowerCase()} edit
+          </DropdownMenuItem>
+        ))}
+        <DialogTrigger asChild>
+          <DropdownMenuItem className="cursor-pointer">
+            Use my own prompt
+          </DropdownMenuItem>
         </DialogTrigger>
       </DropdownMenuContent>
     </DropdownMenu>
+  );
+}
+
+const PassageAction = ({ version }: PassageActionProps) => {
+  const [open, setOpen] = React.useState(false);
+  const [prompt, setPrompt] = React.useState<string>("");
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  const handleSubmit = async (prompt: string) => {
+    setLoading(true);
+    const response = await getCustomEdit(version.id, prompt);
+    setLoading(false);
+    if (response) {
+      toast.error(response.message);
+    } else {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <PassageDropdown version={version} />
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Custom edit</DialogTitle>
+          <DialogDescription>
+            Input prompt below to get customized edit.
+          </DialogDescription>
+        </DialogHeader>
+        <Textarea onChange={(e) => setPrompt(e.target.value)} value={prompt} />
+        <DialogFooter>
+          <Button
+            className="cursor-pointer"
+            disabled={loading}
+            onClick={() => handleSubmit(prompt)}
+          >
+            Get edit
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

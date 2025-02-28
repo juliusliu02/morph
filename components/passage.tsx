@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/lib/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import EditDropdown from "@/components/edit-dropdown";
 import { NavigationBackArrow } from "@/components/navigation";
+import PassageAction from "@/components/passage-action";
 
 type PassageProps = {
   passage: DialogueWithVersion;
@@ -198,8 +198,8 @@ export function Passage({ passage }: PassageProps) {
           </Subtitle>
         </span>
         <div className="translate-y-0.5">
-          <EditDropdown
-            original={passage!.versions[passage!.versions.length - 1]}
+          <PassageAction
+            version={passage!.versions[passage!.versions.length - 1]}
           />
         </div>
       </div>
