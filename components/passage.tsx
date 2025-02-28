@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { Diff } from "diff-match-patch-ts";
 import {
   Card,
@@ -12,7 +12,7 @@ import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Subtitle, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
-import { changeTitle, getDialogue } from "@/actions/edit";
+import { changeTitle } from "@/actions/edit";
 import { toast } from "sonner";
 import { ClipboardCopy } from "lucide-react";
 import {
@@ -24,12 +24,10 @@ import {
 import { useMediaQuery } from "@/lib/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import EditDropdown from "@/components/edit-dropdown";
-import { LoadingSpinner } from "@/components/loading";
-import { useRouter } from "next/navigation";
 import { NavigationBackArrow } from "@/components/navigation";
 
 type PassageProps = {
-  passageId: string;
+  passage: DialogueWithVersion;
 };
 
 type PassageBodyProps = {
@@ -182,25 +180,7 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
   );
 };
 
-export function Passage({ passageId }: PassageProps) {
-  const [passage, setPassage] = React.useState<DialogueWithVersion>();
-  const router = useRouter();
-
-  useEffect(() => {
-    getDialogue(passageId)
-      .then((result) => {
-        setPassage(result);
-      })
-      .catch((e) => {
-        console.error(e);
-        router.replace("/notfound");
-      });
-  }, [passageId, router]);
-
-  if (!passage) {
-    return <LoadingSpinner className="fixed inset-[50%]" />;
-  }
-
+export function Passage({ passage }: PassageProps) {
   return (
     <div
       className="w-sm
