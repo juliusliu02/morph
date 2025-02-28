@@ -1,4 +1,5 @@
-import { GoogleGenerativeAI, Schema, SchemaType } from "@google/generative-ai";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { generateObject } from "ai";
 import {
   grammarEditPrompt,
   lexicalEditPrompt,
@@ -6,23 +7,20 @@ import {
   systemPrompt,
 } from "@/lib/prompts";
 import type { Edit } from "@prisma/client";
+import { z } from "zod";
 
-const editSchema: Schema = {
-  type: SchemaType.OBJECT,
-  properties: {
-    success: {
-      type: SchemaType.BOOLEAN,
-      description:
-        "True if the original text is valid and the rewrite is successful, false otherwise.",
-    },
-    edit: {
-      type: SchemaType.STRING,
-      description:
-        "The edited version of original text. Preserve line breaks as '\\n'",
-    },
-  },
-  required: ["success", "edit"],
-};
+const editSchema = z.object({
+  success: z
+    .boolean()
+    .describe(
+      "True if the original text is valid and the rewrite is successful, false otherwise.",
+    ),
+  edit: z
+    .string()
+    .describe(
+      "The edited version of original text. Preserve line breaks as \\n.",
+    ),
+});
 
 export type ResponseType =
   | {
@@ -36,73 +34,49 @@ export type ResponseType =
       error: string;
     };
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY!);
-const model = genAI.getGenerativeModel({
-  model: "gemini-2.0-flash-exp",
-  systemInstruction: systemPrompt,
+const genAI = createGoogleGenerativeAI({
+  apiKey: process.env.GEMINI_KEY,
 });
+const model = genAI("gemini-2.0-flash-exp");
 
 const getJsonResponse = async (
   prompt: string,
   payload: string,
 ): Promise<ResponseType> => {
-  let result;
   try {
-    result = await model.generateContent({
-      contents: [
+    const { object } = await generateObject({
+      model,
+      schema: editSchema,
+      system: systemPrompt,
+      messages: [
         {
           role: "user",
-          parts: [
+          content: [
             {
+              type: "text",
               text: prompt,
             },
             {
+              type: "text",
               text: payload,
             },
           ],
         },
       ],
-      generationConfig: {
-        responseMimeType: "application/json",
-        responseSchema: editSchema,
-      },
     });
+
+    return {
+      success: true,
+      response: object.edit,
+    };
   } catch (error: unknown) {
     console.error(error);
     return {
       success: false,
-      error: "Unable to generate content. Please try again later.",
+      error:
+        "An error occurred while generating a response. Please try again later.",
     };
   }
-
-  let jsonResponse;
-  try {
-    jsonResponse = JSON.parse(result.response.text());
-  } catch (error: unknown) {
-    if (error instanceof Error) {
-      return {
-        success: false,
-        error: error.message,
-      };
-    } else {
-      console.error(error);
-      return {
-        success: false,
-        error: "Malformatted response.",
-      };
-    }
-  }
-
-  if (jsonResponse.success && jsonResponse.edit) {
-    return {
-      success: true,
-      response: jsonResponse.edit,
-    };
-  } else
-    return {
-      success: false,
-      error: "An error occurred while generating a response.",
-    };
 };
 
 export const getEdit = async (
