@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Edit, Version } from "@prisma/client";
-import { getCustomEdit, getEditById } from "@/actions/edit";
+import { getCustomEdit, getPresetEdit } from "@/actions/edit";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Loader2, Pencil } from "lucide-react";
@@ -42,7 +42,7 @@ function PassageDropdown({ version }: PassageActionProps) {
 
   const getEdit = async (edit: string) => {
     setIsPending(true);
-    const response = await getEditById(version.id, edit);
+    const response = await getPresetEdit(version.id, edit);
     setIsPending(false);
     // response is void on success
     if (response) {

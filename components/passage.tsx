@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -12,9 +13,9 @@ import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Subtitle, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
-import { changeTitle } from "@/actions/edit";
+import { changeTitle, saveSelfEdit } from "@/actions/edit";
 import { toast } from "sonner";
-import { ClipboardCopy } from "lucide-react";
+import { ClipboardCopy, PenLine } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -25,6 +26,16 @@ import { useMediaQuery } from "@/lib/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NavigationBackArrow } from "@/components/navigation";
 import PassageAction from "@/components/passage-action";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
 
 type PassageProps = {
   passage: DialogueWithVersion;
@@ -103,6 +114,70 @@ const Copy = ({ text }: { text: string }) => {
   );
 };
 
+const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const [editText, setEditText] = React.useState<string>(text);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const response = await saveSelfEdit(versionId, editText);
+    setLoading(false);
+    if (response) {
+      toast.error("An error occurred.", {
+        description: response.message,
+        action: {
+          label: "Retry",
+          onClick: handleSubmit,
+        },
+      });
+    } else {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <PenLine
+                className="cursor-pointer"
+                size="1.25rem"
+                onClick={() => {
+                  setOpen(true);
+                }}
+              />
+            </TooltipTrigger>
+            <TooltipContent>Edit this version</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit this version</DialogTitle>
+        </DialogHeader>
+        <Textarea
+          className="h-[50svh]"
+          value={editText}
+          autoFocus
+          onChange={(e) => setEditText(e.target.value)}
+        />
+        <DialogFooter>
+          <Button
+            disabled={loading}
+            className="cursor-pointer"
+            onClick={handleSubmit}
+          >
+            Save changes
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
   return diffs.map((diff, pIndex) => (
     <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
@@ -117,7 +192,7 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex justify-between items-center ">
+        <CardTitle className="flex justify-between items-center">
           <span className="capitalize flex items-center gap-1">
             {version.edit === "ORIGINAL"
               ? "original"
@@ -140,6 +215,9 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
       <CardContent>
         <article>{html}</article>
       </CardContent>
+      <CardFooter className="justify-end">
+        <Edit versionId={version.id} text={version.text} />
+      </CardFooter>
     </Card>
   );
 };
@@ -184,7 +262,7 @@ export function Passage({ passage }: PassageProps) {
   return (
     <div
       className="w-sm
-    sm:w-full sm:max-w-2xl"
+      sm:w-full sm:max-w-2xl"
     >
       <NavigationBackArrow className="mb-5" />
       <div className="flex justify-between mb-2">

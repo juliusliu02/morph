@@ -4,6 +4,7 @@ import {
   presetEditSchema,
   newDialogueSchema,
   customEditSchema,
+  selfEditSchema,
 } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
@@ -67,7 +68,93 @@ export const createDialogue = async (
   redirect(`/passages/${dialogue.id}`);
 };
 
-export const getEditById = async (
+export const deleteDialogue = async (
+  id: unknown,
+): Promise<ActionState | void> => {
+  const { user } = await getCurrentSession();
+  if (!user) {
+    return { message: "Not logged in." };
+  }
+
+  if (typeof id !== "string") {
+    return { message: "Invalid input." };
+  }
+
+  let passage;
+  try {
+    passage = await prisma.dialogue.findUnique({
+      where: { id: id },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "Passage not found." };
+  }
+
+  if (!passage) {
+    return { message: "Passage not found." };
+  }
+
+  if (passage.ownerId !== user.id) {
+    return { message: "You are not authorized." };
+  }
+
+  try {
+    await prisma.dialogue.delete({
+      where: { id: passage.id },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "server error, try again later" };
+  }
+
+  revalidatePath(`/passages/`);
+};
+
+export const changeTitle = async (
+  id: unknown,
+  title: unknown,
+): Promise<ActionState | void> => {
+  if (typeof id !== "string" || typeof title !== "string") {
+    return { message: "Invalid input." };
+  }
+  const { user } = await getCurrentSession();
+
+  if (!user) {
+    return { message: "You are not logged in." };
+  }
+
+  let passage;
+
+  try {
+    passage = await prisma.dialogue.findUnique({
+      where: {
+        id: id,
+      },
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  if (!passage || passage.ownerId != user.id) {
+    return { message: "Passage doesn't exist." };
+  }
+
+  try {
+    await prisma.dialogue.update({
+      data: {
+        title: title,
+      },
+      where: {
+        id: id,
+      },
+    });
+  } catch (error: unknown) {
+    console.error(error);
+    return { message: "Couldn't update title. Please try again later." };
+  }
+};
+
+export const getPresetEdit = async (
   id: unknown,
   edit: unknown,
 ): Promise<ActionState | void> => {
@@ -169,88 +256,55 @@ export const getCustomEdit = async (id: unknown, prompt: unknown) => {
   revalidatePath(`/passages/${original.dialogueId}`);
 };
 
-export const deleteDialogue = async (
+export const saveSelfEdit = async (
   id: unknown,
+  text: unknown,
 ): Promise<ActionState | void> => {
   const { user } = await getCurrentSession();
   if (!user) {
     return { message: "Not logged in." };
   }
 
-  if (typeof id !== "string") {
-    return { message: "Invalid input." };
+  const validatedFields = selfEditSchema.safeParse({ id, text });
+  if (!validatedFields.success) {
+    return {
+      message: "Invalid input.",
+    };
   }
 
-  let passage;
-  try {
-    passage = await prisma.dialogue.findUnique({
-      where: { id: id },
-    });
-  } catch (error: unknown) {
-    console.error(error);
+  const version = await prisma.version.findUnique({
+    where: { id: validatedFields.data.id },
+    include: {
+      dialogue: true,
+    },
+  });
+
+  if (!version) {
     return { message: "Passage not found." };
   }
 
-  if (!passage) {
-    return { message: "Passage not found." };
+  if (version.dialogue.ownerId !== user.id) {
+    return { message: "Not authorized." };
   }
 
-  if (passage.ownerId !== user.id) {
-    return { message: "You are not authorized." };
+  if (version.text === validatedFields.data.text) {
+    return;
   }
 
-  try {
-    await prisma.dialogue.delete({
-      where: { id: passage.id },
-    });
-  } catch (error: unknown) {
-    console.error(error);
-    return { message: "server error, try again later" };
-  }
+  const formattedText = validatedFields.data.text.replaceAll("\r\n", "\n");
 
-  revalidatePath(`/passages/`);
-};
-
-export const changeTitle = async (
-  id: unknown,
-  title: unknown,
-): Promise<ActionState | void> => {
-  if (typeof id !== "string" || typeof title !== "string") {
-    return { message: "Invalid input." };
-  }
-  const { user } = await getCurrentSession();
-
-  if (!user) {
-    return { message: "You are not logged in." };
-  }
-
-  let passage;
-
-  try {
-    passage = await prisma.dialogue.findUnique({
-      where: {
-        id: id,
+  // store to database
+  await prisma.dialogue.update({
+    where: { id: version.dialogueId },
+    data: {
+      versions: {
+        create: {
+          edit: "SELF",
+          text: formattedText,
+        },
       },
-    });
-  } catch (e) {
-    console.error(e);
-  }
+    },
+  });
 
-  if (!passage || passage.ownerId != user.id) {
-    return { message: "Passage doesn't exist." };
-  }
-
-  try {
-    await prisma.dialogue.update({
-      data: {
-        title: title,
-      },
-      where: {
-        id: id,
-      },
-    });
-  } catch (error: unknown) {
-    console.error(error);
-    return { message: "Couldn't update title. Please try again later." };
-  }
+  revalidatePath(`/passages/${version.dialogueId}`);
 };

@@ -24,6 +24,14 @@ export const customEditSchema = z.object({
   prompt: z.string().trim(),
 });
 
+export const selfEditSchema = z.object({
+  id: z.string(),
+  text: z
+    .string()
+    .trim()
+    .min(200, { message: "The passage must be longer than 200 characters." }),
+});
+
 export const loginFormSchema = z.object({
   username: z.string().trim().nonempty(),
   password: z
