@@ -39,7 +39,7 @@ const genAI = createGoogleGenerativeAI({
 });
 const model = genAI("gemini-2.0-flash-exp");
 
-const getJsonResponse = async (
+const getResponse = async (
   prompt: string,
   payload: string,
 ): Promise<ResponseType> => {
@@ -86,14 +86,14 @@ export const getEdit = async (
 ): Promise<ResponseType> => {
   switch (type) {
     case "GRAMMAR":
-      return await getJsonResponse(grammarEditPrompt, original);
+      return await getResponse(grammarEditPrompt, original);
     case "LEXICAL":
-      return await getJsonResponse(lexicalEditPrompt, original);
+      return await getResponse(lexicalEditPrompt, original);
     case "LOGICAL":
-      return await getJsonResponse(logicalEditPrompt, original);
+      return await getResponse(logicalEditPrompt, original);
     case "CUSTOM":
       if (customPrompt) {
-        return await getJsonResponse(customPrompt, original);
+        return await getResponse(customPrompt, original);
       } else {
         return { success: false, error: "Custom prompt cannot be empty." };
       }

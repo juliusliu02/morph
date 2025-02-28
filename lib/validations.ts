@@ -14,9 +14,14 @@ export const textEditFormSchema = z.object({
   edit: z.nativeEnum(Edit),
 });
 
-export const idEditFormSchema = z.object({
+export const presetEditSchema = z.object({
   id: z.string(),
-  edit: z.nativeEnum(Edit),
+  edit: z.enum([Edit.GRAMMAR, Edit.LEXICAL, Edit.LOGICAL]),
+});
+
+export const customEditSchema = z.object({
+  id: z.string(),
+  prompt: z.string().trim(),
 });
 
 export const loginFormSchema = z.object({
