@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/lib/hooks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { NavigationBackArrow } from "@/components/navigation";
 import PassageAction, { RevertDialog } from "@/components/passage-action";
 import {
   Dialog,
@@ -268,7 +267,6 @@ export function Passage({ passage }: PassageProps) {
       className="w-sm
       sm:w-full sm:max-w-2xl"
     >
-      <NavigationBackArrow className="mb-5" />
       <div className="flex justify-between mb-2">
         <span
           className="flex flex-col p-1 mr-5
