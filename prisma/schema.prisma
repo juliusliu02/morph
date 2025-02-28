@@ -23,6 +23,7 @@ model Version {
   dialogue   Dialogue @relation(fields: [dialogueId], references: [id], onDelete: Cascade)
   createdAt  DateTime @default(now())
   dialogueId String   @db.ObjectId
+  feedback   String?
 }
 
 model Dialogue {

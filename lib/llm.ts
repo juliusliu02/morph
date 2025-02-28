@@ -20,12 +20,17 @@ const editSchema = z.object({
     .describe(
       "The edited version of original text. Preserve line breaks as \\n.",
     ),
+  feedback: z
+    .string()
+    .describe(
+      "Feedback on the original text and explanation for modifications in markdown.",
+    ),
 });
 
 export type ResponseType =
   | {
       success: true;
-      response: string;
+      response: z.infer<typeof editSchema>;
       error?: never;
     }
   | {
@@ -67,7 +72,7 @@ const getResponse = async (
 
     return {
       success: true,
-      response: object.edit,
+      response: object,
     };
   } catch (error: unknown) {
     console.error(error);

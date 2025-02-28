@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import Markdown from "react-markdown";
 
 type PassageProps = {
   passage: DialogueWithVersion;
@@ -258,6 +259,19 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
   );
 };
 
+const Feedback = ({ feedback }: { feedback: string }) => {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-lg">Feedback</CardTitle>
+      </CardHeader>
+      <CardContent className="prose prose-slate min-w-full">
+        <Markdown>{feedback}</Markdown>
+      </CardContent>
+    </Card>
+  );
+};
+
 export function Passage({ passage }: PassageProps) {
   const original = passage.versions[passage.versions.length - 2];
   const edit = passage.versions[passage.versions.length - 1];
@@ -283,6 +297,7 @@ export function Passage({ passage }: PassageProps) {
         </span>
       </div>
       <PassageBody original={original} edit={edit} />
+      {edit.feedback && <Feedback feedback={edit.feedback} />}
     </div>
   );
 }

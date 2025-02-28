@@ -56,7 +56,8 @@ export const getPresetEdit = async (
       versions: {
         create: {
           edit: validatedFields.data.edit,
-          text: response.response,
+          text: response.response.edit,
+          feedback: response.response.feedback,
         },
       },
     },
@@ -108,7 +109,8 @@ export const getCustomEdit = async (id: unknown, prompt: unknown) => {
       versions: {
         create: {
           edit: "CUSTOM",
-          text: response.response,
+          text: response.response.edit,
+          feedback: response.response.feedback,
         },
       },
     },

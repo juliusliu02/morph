@@ -47,12 +47,13 @@ export const createDialogue = async (
       versions: {
         create: [
           {
-            text: original,
             edit: "ORIGINAL",
+            text: original,
           },
           {
-            text: response.response,
             edit: "GRAMMAR",
+            text: response.response.edit,
+            feedback: response.response.feedback,
           },
         ],
       },
