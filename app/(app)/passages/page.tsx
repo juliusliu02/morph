@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -11,9 +11,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Subtitle, Title } from "@/components/typography";
-import { LoadingSpinner } from "@/components/loading";
+import { Metadata } from "next";
 
-const PassageListCard = async () => {
+export const metadata: Metadata = {
+  title: "My Passages",
+};
+
+async function Page() {
   const { user } = await getCurrentSession();
   if (!user) {
     return redirect("/login");
@@ -49,12 +53,6 @@ const PassageListCard = async () => {
       </Card>
     </main>
   );
-};
-
-const Page = async () => (
-  <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
-    <PassageListCard />
-  </Suspense>
-);
+}
 
 export default Page;

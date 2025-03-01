@@ -5,8 +5,10 @@ import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "Morph | A Smart Essay Editor",
-  description: "AI-powered multi-step essay editor",
+  title: {
+    template: "%s | Morph",
+    default: "Smart AI Editor | Morph",
+  },
 };
 
 const sourceSans3 = Source_Sans_3({
