@@ -67,7 +67,7 @@ export function RevertDialog({ versionId }: RevertDialogProps) {
 }
 
 function PassageDropdown({ version }: PassageActionProps) {
-  const [isPending, setisPending] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   // filter out unsupported or invalid edit types.
   const editFilterList = [
@@ -82,9 +82,9 @@ function PassageDropdown({ version }: PassageActionProps) {
   );
 
   const getEdit = async (edit: string) => {
-    setisPending(true);
+    setLoading(true);
     const response = await getPresetEdit(version.id, edit);
-    setisPending(false);
+    setLoading(false);
     // response is void on success
     if (response) {
       toast.error("An error occurred.", {
@@ -100,8 +100,8 @@ function PassageDropdown({ version }: PassageActionProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button disabled={isPending} className="cursor-pointer">
-          {isPending ? (
+        <Button disabled={loading} className="cursor-pointer">
+          {loading ? (
             <>
               <Loader2 className="animate-spin" />
               <span className="hidden sm:inline">Loading</span>
