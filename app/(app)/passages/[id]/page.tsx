@@ -6,7 +6,7 @@ import { getCurrentSession } from "@/lib/auth/dal";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 
-async function Dialogue({ id }: { id: string }) {
+const Dialogue = async ({ id }: { id: string }) => {
   const { user } = await getCurrentSession();
 
   if (!user) {
@@ -33,7 +33,7 @@ async function Dialogue({ id }: { id: string }) {
     notFound();
   }
   return <Passage passage={passage} />;
-}
+};
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

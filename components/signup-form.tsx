@@ -30,10 +30,10 @@ import { AlertCircle } from "lucide-react";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-export function SignupForm({
+export const SignupForm = ({
   className,
   ...props
-}: React.ComponentPropsWithoutRef<"div">) {
+}: React.ComponentPropsWithoutRef<"div">) => {
   const form = useForm<z.output<typeof signupFormSchema>>({
     resolver: zodResolver(signupFormSchema),
     defaultValues: {
@@ -147,4 +147,4 @@ export function SignupForm({
       </Card>
     </div>
   );
-}
+};

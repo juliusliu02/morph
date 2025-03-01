@@ -31,42 +31,40 @@ type RevertDialogProps = {
   versionId: string;
 };
 
-export function RevertDialog({ versionId }: RevertDialogProps) {
-  return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="destructive" className="cursor-pointer">
-          <Undo2 />
-        </Button>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Discard this version?</DialogTitle>
-          <DialogDescription>
-            This action cannot be undone. Are you sure you want to permanently
-            discard this version of the edit?
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button
-              variant="destructive"
-              className="cursor-pointer"
-              onClick={async () => {
-                const response = await deleteEdit(versionId);
-                if (response) toast.error(response.message);
-              }}
-            >
-              Discard
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-}
+export const RevertDialog = ({ versionId }: RevertDialogProps) => (
+  <Dialog>
+    <DialogTrigger asChild>
+      <Button variant="destructive" className="cursor-pointer">
+        <Undo2 />
+      </Button>
+    </DialogTrigger>
+    <DialogContent>
+      <DialogHeader>
+        <DialogTitle>Discard this version?</DialogTitle>
+        <DialogDescription>
+          This action cannot be undone. Are you sure you want to permanently
+          discard this version of the edit?
+        </DialogDescription>
+      </DialogHeader>
+      <DialogFooter>
+        <DialogClose asChild>
+          <Button
+            variant="destructive"
+            className="cursor-pointer"
+            onClick={async () => {
+              const response = await deleteEdit(versionId);
+              if (response) toast.error(response.message);
+            }}
+          >
+            Discard
+          </Button>
+        </DialogClose>
+      </DialogFooter>
+    </DialogContent>
+  </Dialog>
+);
 
-function PassageDropdown({ version }: PassageActionProps) {
+const PassageDropdown = ({ version }: PassageActionProps) => {
   const [loading, setLoading] = React.useState<boolean>(false);
 
   // filter out unsupported or invalid edit types.
@@ -132,7 +130,7 @@ function PassageDropdown({ version }: PassageActionProps) {
       </DropdownMenuContent>
     </DropdownMenu>
   );
-}
+};
 
 const PassageAction = ({ version }: PassageActionProps) => {
   const [open, setOpen] = React.useState(false);

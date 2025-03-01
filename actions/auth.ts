@@ -19,10 +19,10 @@ type AuthFormState = {
   message: string;
 };
 
-export async function signup(
+export const signup = async (
   _state: AuthFormState,
   formData: FormData,
-): Promise<AuthFormState> {
+): Promise<AuthFormState> => {
   // Validate form fields
   const validatedFields = signupFormSchema.safeParse({
     name: formData.get("name"),
@@ -68,12 +68,12 @@ export async function signup(
   }
 
   redirect("/", RedirectType.replace);
-}
+};
 
-export async function login(
+export const login = async (
   _state: AuthFormState,
   formData: FormData,
-): Promise<AuthFormState> {
+): Promise<AuthFormState> => {
   const validatedFields = loginFormSchema.safeParse({
     username: formData.get("username"),
     password: formData.get("password"),
@@ -119,9 +119,9 @@ export async function login(
   await setSessionTokenCookie(token, session.expiresAt);
 
   redirect("/", RedirectType.replace);
-}
+};
 
-export async function logout() {
+export const logout = async () => {
   const { session } = await getCurrentSession();
   if (session) {
     await invalidateSession(session.id);
@@ -129,4 +129,4 @@ export async function logout() {
 
   await deleteSessionTokenCookie();
   redirect("/login", RedirectType.replace);
-}
+};

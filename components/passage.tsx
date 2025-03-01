@@ -57,7 +57,7 @@ type PassageCardProps = {
   isEdit?: boolean;
 };
 
-function PassageTitle({ passage }: PassageTitleProps) {
+const PassageTitle = ({ passage }: PassageTitleProps) => {
   const ref = useRef<HTMLSpanElement>(null);
   const saveTitle = async () => {
     if (!ref.current) return;
@@ -92,7 +92,7 @@ function PassageTitle({ passage }: PassageTitleProps) {
       </span>
     </Title>
   );
-}
+};
 
 const Copy = ({ text }: { text: string }) => {
   return (
@@ -272,7 +272,7 @@ const Feedback = ({ feedback }: { feedback: string }) => {
   );
 };
 
-export function Passage({ passage }: PassageProps) {
+export const Passage = ({ passage }: PassageProps) => {
   const original = passage.versions[passage.versions.length - 2];
   const edit = passage.versions[passage.versions.length - 1];
 
@@ -300,4 +300,4 @@ export function Passage({ passage }: PassageProps) {
       {edit.feedback && <Feedback feedback={edit.feedback} />}
     </div>
   );
-}
+};

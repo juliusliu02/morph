@@ -13,7 +13,7 @@ import {
 import { Subtitle, Title } from "@/components/typography";
 import { LoadingSpinner } from "@/components/loading";
 
-async function PassageListCard() {
+const PassageListCard = async () => {
   const { user } = await getCurrentSession();
   if (!user) {
     return redirect("/login");
@@ -49,14 +49,12 @@ async function PassageListCard() {
       </Card>
     </main>
   );
-}
+};
 
-async function Page() {
-  return (
-    <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
-      <PassageListCard />
-    </Suspense>
-  );
-}
+const Page = async () => (
+  <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
+    <PassageListCard />
+  </Suspense>
+);
 
 export default Page;
