@@ -1,12 +1,13 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Passage } from "@/components/passage";
-import { LoadingSpinner } from "@/components/loading";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
+import { cache } from "react";
 
-const Dialogue = async ({ id }: { id: string }) => {
+const fetchPassage = cache(async (id: string) => {
   const { user } = await getCurrentSession();
 
   if (!user) {
@@ -18,7 +19,7 @@ const Dialogue = async ({ id }: { id: string }) => {
   try {
     passage = await prisma.dialogue.findUnique({
       where: {
-        id: id,
+        id,
       },
       include: {
         versions: true,
@@ -32,22 +33,35 @@ const Dialogue = async ({ id }: { id: string }) => {
   if (!passage || !passage.versions || passage.ownerId != user.id) {
     notFound();
   }
-  return <Passage passage={passage} />;
-};
+
+  return passage;
+});
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  const passage = await fetchPassage(id);
 
   return (
     <main className="p-5 flex w-full justify-center">
       <div className="mt-12 pt-5 flex flex-col items-center">
-        <Suspense fallback={<LoadingSpinner className="fixed inset-[50%]" />}>
-          <Dialogue id={id} />
-        </Suspense>
+        <Passage passage={passage} />
       </div>
       <Toaster richColors />
     </main>
   );
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const id = (await params).id;
+  const passage = await fetchPassage(id);
+
+  return {
+    title: passage.title || "Untitled document",
+  };
 }
 
 export default Page;
