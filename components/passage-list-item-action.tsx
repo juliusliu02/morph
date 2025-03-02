@@ -63,7 +63,7 @@ const PassageDropdown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger className="cursor-pointer">
-        <Ellipsis className="translate-y-[0.1rem] text-gray-500" />
+        <Ellipsis className="translate-y-[1px] text-gray-500" />
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DialogTrigger asChild onClick={(event) => event.stopPropagation()}>

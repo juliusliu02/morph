@@ -42,12 +42,12 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   const passage = await fetchPassage(id);
 
   return (
-    <main className="p-5 flex w-full justify-center">
-      <div className="mt-12 pt-5 flex flex-col items-center">
+    <div className="p-5 flex w-full justify-center">
+      <div className="mt-12 pt-5">
         <Passage passage={passage} />
       </div>
       <Toaster richColors />
-    </main>
+    </div>
   );
 }
 

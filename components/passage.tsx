@@ -100,8 +100,7 @@ const Copy = ({ text }: { text: string }) => {
       <Tooltip>
         <TooltipTrigger>
           <ClipboardCopy
-            className="cursor-pointer translate-y-[-1px]"
-            size="1.25rem"
+            className="cursor-pointer translate-y-[-1px] h-5 w-5"
             onClick={() => {
               navigator.clipboard
                 .writeText(text)
@@ -144,8 +143,7 @@ const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
           <Tooltip>
             <TooltipTrigger>
               <PenLine
-                className="cursor-pointer"
-                size="1.25rem"
+                className="cursor-pointer h-5 w-5"
                 onClick={() => {
                   setOpen(true);
                 }}
@@ -191,7 +189,7 @@ const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
 
 const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
   return (
-    <Card>
+    <Card className="flex-1">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span className="capitalize flex items-center gap-1">
@@ -233,16 +231,12 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
   const isSm = useMediaQuery("(min-width: 640px)");
 
   return isSm ? (
-    <div className="flex gap-5 flex-1">
-      <div className="my-5 w-1/2">
-        <PassageCard version={original} html={originalHTML} />
-      </div>
-      <div className="my-5 w-1/2">
-        <PassageCard version={edit} html={editHTML} isEdit />
-      </div>
-    </div>
+    <section className="flex gap-5 my-5">
+      <PassageCard version={original} html={originalHTML} />
+      <PassageCard version={edit} html={editHTML} isEdit />
+    </section>
   ) : (
-    <div className="flex justify-center">
+    <section className="flex justify-center">
       <Tabs defaultValue="original" className="w-sm">
         <TabsList>
           <TabsTrigger value="original">Original</TabsTrigger>
@@ -255,7 +249,7 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
           <PassageCard version={edit} html={editHTML} isEdit />
         </TabsContent>
       </Tabs>
-    </div>
+    </section>
   );
 };
 
@@ -277,7 +271,7 @@ export const Passage = ({ passage }: PassageProps) => {
   const edit = passage.versions[passage.versions.length - 1];
 
   return (
-    <div
+    <main
       className="w-sm
       sm:w-full sm:max-w-2xl"
     >
@@ -298,6 +292,6 @@ export const Passage = ({ passage }: PassageProps) => {
       </div>
       <PassageBody original={original} edit={edit} />
       {edit.feedback && <Feedback feedback={edit.feedback} />}
-    </div>
+    </main>
   );
 };
