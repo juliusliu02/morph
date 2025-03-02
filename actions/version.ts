@@ -1,16 +1,36 @@
 "use server";
 import { getEdit } from "@/lib/llm";
 import {
-  presetEditSchema,
   customEditSchema,
+  presetEditSchema,
   selfEditSchema,
 } from "@/lib/validations";
 import { prisma } from "@/lib/prisma";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { revalidatePath } from "next/cache";
+import arcjet from "@/lib/arcjet";
+import { tokenBucket } from "arcjet";
+import { request } from "@arcjet/next";
 
 type ActionState = {
   message: string;
+};
+
+const aj = arcjet.withRule(
+  tokenBucket({
+    mode: "LIVE",
+    refillRate: 5,
+    interval: 60 * 15,
+    capacity: 20,
+  }),
+);
+
+const rateLimit = async (id: string) => {
+  const req = await request();
+  return aj.protect(req, {
+    fingerprint: id,
+    requested: 5,
+  });
 };
 
 export const getPresetEdit = async (
@@ -20,6 +40,11 @@ export const getPresetEdit = async (
   const { user } = await getCurrentSession();
   if (!user) {
     return { message: "Not logged in." };
+  }
+
+  const decision = await rateLimit(user.id);
+  if (decision.isDenied()) {
+    return { message: "Too many requests. Please try again again." };
   }
 
   // validate data
@@ -70,6 +95,11 @@ export const getCustomEdit = async (id: unknown, prompt: unknown) => {
   const { user } = await getCurrentSession();
   if (!user) {
     return { message: "Not logged in." };
+  }
+
+  const decision = await rateLimit(user.id);
+  if (decision.isDenied()) {
+    return { message: "Too many requests. Please try again again." };
   }
 
   const validatedFields = customEditSchema.safeParse({ id, prompt });
