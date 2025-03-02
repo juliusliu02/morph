@@ -5,6 +5,7 @@ import { getEdit } from "@/lib/llm";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import { rateLimit } from "@/actions/version";
 
 type ActionState = {
   message: string;
@@ -17,6 +18,11 @@ export const createDialogue = async (
   const { user } = await getCurrentSession();
   if (!user) {
     return { message: "Not logged in." };
+  }
+
+  const decision = await rateLimit(user.id);
+  if (decision.isDenied()) {
+    return { message: "Too many requests. Please try again again." };
   }
 
   // type guard

@@ -25,7 +25,7 @@ const aj = arcjet.withRule(
   }),
 );
 
-const rateLimit = async (id: string) => {
+export const rateLimit = async (id: string) => {
   const req = await request();
   return aj.protect(req, {
     fingerprint: id,

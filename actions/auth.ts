@@ -14,10 +14,37 @@ import {
 } from "@/lib/auth/cookie";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { Prisma } from "@prisma/client";
+import arcjet from "@/lib/arcjet";
+import { protectSignup } from "arcjet";
+import { request } from "@arcjet/next";
 
 type AuthFormState = {
   message: string;
 };
+
+const aj = arcjet.withRule(
+  protectSignup({
+    email: {
+      mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
+      // Block emails that are disposable, invalid, or have no MX records
+      block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
+    },
+    bots: {
+      mode: "LIVE",
+      // configured with a list of bots to allow from
+      // https://arcjet.com/bot-list
+      allow: [], // "allow none" will block all detected bots
+    },
+    // It would be unusual for a form to be submitted more than 5 times in 10
+    // minutes from the same IP address
+    rateLimit: {
+      // uses a sliding window rate limit
+      mode: "LIVE",
+      interval: "10m", // counts requests over a 10 minute sliding window
+      max: 5, // allows 5 submissions within the window
+    },
+  }),
+);
 
 export const signup = async (
   _state: AuthFormState,
@@ -41,6 +68,24 @@ export const signup = async (
 
   const { name, username, email, password } = validatedFields.data;
   const hashedPassword = await bcrypt.hash(password, 10);
+
+  const req = await request();
+  const decision = await aj.protect(req, {
+    email,
+    fingerprint: req.ip ?? "",
+  });
+
+  if (decision.isDenied()) {
+    if (decision.reason.isEmail()) {
+      return {
+        message: "Invalid email address.",
+      };
+    } else {
+      return {
+        message: "Something went wrong. Please try again later.",
+      };
+    }
+  }
 
   try {
     const user = await prisma.user.create({
