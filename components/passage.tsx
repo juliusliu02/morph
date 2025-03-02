@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
-import { DiffWord, Subtitle, Title } from "@/components/typography";
+import { DiffWord, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/types";
 import { saveSelfEdit } from "@/actions/version";
 import { changeTitle } from "@/actions/dialogue";
@@ -198,12 +198,12 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
               : `${version.edit.toLowerCase()} edit`}
             <Copy text={version.text} />
           </span>
-          <span className="text-md font-normal text-slate-500">
+          <time className="text-md font-normal text-slate-500">
             {version.createdAt.toLocaleTimeString("en-ca", {
               hour: "2-digit",
               minute: "2-digit",
             })}
-          </span>
+          </time>
         </CardTitle>
         <CardDescription>
           {!isEdit
@@ -275,21 +275,21 @@ export const Passage = ({ passage }: PassageProps) => {
       className="w-sm
       sm:w-full sm:max-w-2xl"
     >
-      <div className="flex justify-between mb-2">
+      <header className="flex justify-between mb-2">
         <span
           className="flex flex-col p-1 mr-5
           sm:flex-row sm:gap-5 sm:items-baseline"
         >
           <PassageTitle passage={passage} />
-          <Subtitle className="text-slate-500">
+          <time className="text-xl text-muted-foreground text-slate-500">
             {passage.createdAt.toLocaleDateString("en-ca")}
-          </Subtitle>
+          </time>
         </span>
         <span className="translate-y-0.5 flex gap-2 items-baseline">
           <PassageAction version={edit} />
           <RevertDialog versionId={edit.id} />
         </span>
-      </div>
+      </header>
       <PassageBody original={original} edit={edit} />
       {edit.feedback && <Feedback feedback={edit.feedback} />}
     </main>

@@ -7,15 +7,15 @@ type Props = {
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <span className="line-through text-slate-400">{children}</span>;
+  return <mark className="line-through text-slate-400">{children}</mark>;
 };
 
 const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <span>{children}</span>;
+  return <>{children}</>;
 };
 
 const InsertText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <span className="text-indigo-800 font-semibold">{children}</span>;
+  return <mark className="text-indigo-800 font-semibold">{children}</mark>;
 };
 
 export const DiffWord: React.FC<{ diff: Diff }> = ({ diff }) => {
@@ -42,13 +42,11 @@ export const Title = (props: React.PropsWithChildren<Props>) => {
   );
 };
 
-export const Subtitle = ({
+export const Description = ({
   children,
   className,
 }: React.PropsWithChildren<Props>) => {
   return (
-    <h2 className={cn("text-xl text-muted-foreground", className)}>
-      {children}
-    </h2>
+    <p className={cn("text-xl text-muted-foreground", className)}>{children}</p>
   );
 };

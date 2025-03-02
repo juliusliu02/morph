@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Subtitle, Title } from "@/components/typography";
+import { Description, Title } from "@/components/typography";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -38,11 +38,11 @@ async function Page() {
             <Title>My Passages</Title>
           </CardTitle>
           <CardDescription>
-            <Subtitle>
+            <Description>
               {passages.length > 0
                 ? "This is a list of your past passages."
                 : "You don't currently have any passages."}
-            </Subtitle>
+            </Description>
           </CardDescription>
         </CardHeader>
         {passages.length > 0 && (

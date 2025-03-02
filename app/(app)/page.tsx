@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Subtitle, Title } from "@/components/typography";
+import { Description, Title } from "@/components/typography";
 
 async function Page() {
   const { user } = await getCurrentSession();
@@ -27,7 +27,7 @@ async function Page() {
             </Title>
           </CardTitle>
           <CardDescription>
-            <Subtitle>Input a passage to start editing.</Subtitle>
+            <Description>Input a passage to start editing.</Description>
           </CardDescription>
         </CardHeader>
         <CardContent>
