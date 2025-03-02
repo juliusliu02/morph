@@ -231,25 +231,23 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
   const isSm = useMediaQuery("(min-width: 640px)");
 
   return isSm ? (
-    <section className="flex gap-5 my-5">
+    <>
       <PassageCard version={original} html={originalHTML} />
       <PassageCard version={edit} html={editHTML} isEdit />
-    </section>
+    </>
   ) : (
-    <section className="flex justify-center">
-      <Tabs defaultValue="original" className="w-sm">
-        <TabsList>
-          <TabsTrigger value="original">Original</TabsTrigger>
-          <TabsTrigger value="edit">Edit</TabsTrigger>
-        </TabsList>
-        <TabsContent value="original">
-          <PassageCard version={original} html={originalHTML} />
-        </TabsContent>
-        <TabsContent value="edit">
-          <PassageCard version={edit} html={editHTML} isEdit />
-        </TabsContent>
-      </Tabs>
-    </section>
+    <Tabs defaultValue="original" className="w-sm">
+      <TabsList>
+        <TabsTrigger value="original">Original</TabsTrigger>
+        <TabsTrigger value="edit">Edit</TabsTrigger>
+      </TabsList>
+      <TabsContent value="original">
+        <PassageCard version={original} html={originalHTML} />
+      </TabsContent>
+      <TabsContent value="edit">
+        <PassageCard version={edit} html={editHTML} isEdit />
+      </TabsContent>
+    </Tabs>
   );
 };
 
@@ -290,7 +288,9 @@ export const Passage = ({ passage }: PassageProps) => {
           <RevertDialog versionId={edit.id} />
         </span>
       </header>
-      <PassageBody original={original} edit={edit} />
+      <section className="flex justify-center my-4 gap-4">
+        <PassageBody original={original} edit={edit} />
+      </section>
       {edit.feedback && <Feedback feedback={edit.feedback} />}
     </main>
   );
