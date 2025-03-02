@@ -7,7 +7,7 @@ type Props = {
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <mark className="line-through text-slate-400">{children}</mark>;
+  return <span className="line-through text-slate-400">{children}</span>;
 };
 
 const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
@@ -15,7 +15,7 @@ const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
 };
 
 const InsertText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <mark className="text-indigo-800 font-semibold">{children}</mark>;
+  return <span className="text-indigo-800 font-semibold">{children}</span>;
 };
 
 export const DiffWord: React.FC<{ diff: Diff }> = ({ diff }) => {
