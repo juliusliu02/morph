@@ -153,9 +153,9 @@ const PassageAction = ({ version }: PassageActionProps) => {
       <PassageDropdown version={version} />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Custom edit</DialogTitle>
+          <DialogTitle>Custom prompt</DialogTitle>
           <DialogDescription>
-            Input prompt below to get customized edit.
+            Type in your own prompt below to get customized edit.
           </DialogDescription>
         </DialogHeader>
         <Textarea onChange={(e) => setPrompt(e.target.value)} value={prompt} />
@@ -165,7 +165,14 @@ const PassageAction = ({ version }: PassageActionProps) => {
             disabled={loading}
             onClick={() => handleCustomEdit(prompt)}
           >
-            Get edit
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" />
+                <span className="hidden sm:inline">Loading</span>
+              </>
+            ) : (
+              "Get edit"
+            )}
           </Button>
         </DialogFooter>
       </DialogContent>
