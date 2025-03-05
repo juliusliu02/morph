@@ -1,7 +1,6 @@
 import React from "react";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import PassageList from "@/components/passage-list";
 import {
   Card,
@@ -12,6 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Description, Title } from "@/components/typography";
 import { Metadata } from "next";
+import { getPassages } from "@/lib/queries";
 
 export const metadata: Metadata = {
   title: "My Passages",
@@ -23,12 +23,7 @@ async function Page() {
     return redirect("/login");
   }
 
-  const passages = await prisma.dialogue.findMany({
-    where: {
-      ownerId: user.id,
-    },
-    orderBy: [{ createdAt: "desc" }],
-  });
+  const passages = await getPassages(user.id);
 
   return (
     <main className="flex justify-center items-center min-h-[calc(100vh-5rem)] pt-[5rem] px-5">
