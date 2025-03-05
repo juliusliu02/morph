@@ -199,7 +199,10 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
               : `${version.edit.toLowerCase()} edit`}
             <Copy text={version.text} />
           </span>
-          <time className="text-md font-normal text-slate-500">
+          <time
+            className="text-md font-normal text-slate-500"
+            suppressHydrationWarning
+          >
             {version.createdAt.toLocaleTimeString("en-ca", {
               hour: "2-digit",
               minute: "2-digit",
@@ -280,7 +283,10 @@ export const Passage = ({ passage }: PassageProps) => {
           sm:flex-row sm:gap-5 sm:items-baseline"
         >
           <PassageTitle passage={passage} />
-          <time className="text-xl text-muted-foreground text-slate-500">
+          <time
+            className="text-xl text-muted-foreground text-slate-500"
+            suppressHydrationWarning
+          >
             {passage.createdAt.toLocaleDateString("en-ca")}
           </time>
         </span>
