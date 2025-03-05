@@ -51,6 +51,7 @@ export const RevertDialog = ({ versionId }: RevertDialogProps) => (
           <Button
             variant="destructive"
             className="cursor-pointer"
+            aria-label="Delete edit"
             onClick={async () => {
               const response = await deleteEdit(versionId);
               if (response) toast.error(response.message);
@@ -98,7 +99,11 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button disabled={loading} className="cursor-pointer">
+        <Button
+          aria-label="Get new edit"
+          disabled={loading}
+          className="cursor-pointer"
+        >
           {loading ? (
             <>
               <Loader2 className="animate-spin" />

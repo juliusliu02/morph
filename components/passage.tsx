@@ -98,7 +98,7 @@ const Copy = ({ text }: { text: string }) => {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger>
+        <TooltipTrigger aria-label="Copy to clipboard">
           <ClipboardCopy
             className="cursor-pointer translate-y-[-1px] h-5 w-5"
             onClick={() => {
@@ -143,6 +143,7 @@ const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
           <Tooltip>
             <TooltipTrigger>
               <PenLine
+                aria-label="Edit this version"
                 className="cursor-pointer h-5 w-5"
                 onClick={() => {
                   setOpen(true);
@@ -166,7 +167,7 @@ const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
         <DialogFooter>
           <Button
             disabled={loading}
-            className="cursor-pointer"
+            className="cursor-pointer self-end"
             onClick={handleSubmit}
           >
             Save changes
