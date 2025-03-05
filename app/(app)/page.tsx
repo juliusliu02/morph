@@ -18,7 +18,7 @@ async function Page() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-[5rem]">
+    <main className="flex items-center justify-center min-h-[calc(100vh-5rem)] pt-[5rem]">
       <Card className="w-full max-w-2xl mx-5">
         <CardHeader>
           <CardTitle>
@@ -34,7 +34,7 @@ async function Page() {
           <InputPassageForm />
         </CardContent>
       </Card>
-    </div>
+    </main>
   );
 }
 

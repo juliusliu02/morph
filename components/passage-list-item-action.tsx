@@ -26,9 +26,23 @@ type PassageListItemActionProps = {
 
 const PassageListItemAction = ({ id }: PassageListItemActionProps) => {
   return (
-    <menu onClick={(e) => e.stopPropagation()}>
+    <div onClick={(e) => e.stopPropagation()}>
       <Dialog>
-        <PassageDropdown />
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            aria-label="Passage Action"
+            className="cursor-pointer"
+          >
+            <Ellipsis className="translate-y-[1px] text-gray-500" />
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DialogTrigger asChild>
+              <DropdownMenuItem className="cursor-pointer">
+                Delete passage
+              </DropdownMenuItem>
+            </DialogTrigger>
+          </DropdownMenuContent>
+        </DropdownMenu>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -39,12 +53,13 @@ const PassageListItemAction = ({ id }: PassageListItemActionProps) => {
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button type="button" variant="secondary">
+              <Button variant="secondary" className="cursor-pointer">
                 Close
               </Button>
             </DialogClose>
             <DialogClose asChild>
               <Button
+                className="cursor-pointer"
                 onClick={async () => {
                   await deleteDialogue(id);
                 }}
@@ -55,22 +70,7 @@ const PassageListItemAction = ({ id }: PassageListItemActionProps) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
-    </menu>
-  );
-};
-
-const PassageDropdown = () => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="cursor-pointer">
-        <Ellipsis className="translate-y-[1px] text-gray-500" />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DialogTrigger asChild onClick={(event) => event.stopPropagation()}>
-          <DropdownMenuItem>Delete passage</DropdownMenuItem>
-        </DialogTrigger>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    </div>
   );
 };
 

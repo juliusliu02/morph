@@ -74,7 +74,7 @@ const PassageTitle = ({ passage }: PassageTitleProps) => {
   };
 
   return (
-    <Title>
+    <Title className="dark:text-gray-100">
       <span
         ref={ref}
         className="rounded-xl"
@@ -257,7 +257,7 @@ const Feedback = ({ feedback }: { feedback: string }) => {
       <CardHeader>
         <CardTitle className="text-lg">Feedback</CardTitle>
       </CardHeader>
-      <CardContent className="prose prose-slate min-w-full">
+      <CardContent className="prose text-slate-950 dark:prose-invert min-w-full">
         <Markdown>{feedback}</Markdown>
       </CardContent>
     </Card>

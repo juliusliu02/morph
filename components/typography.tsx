@@ -15,7 +15,11 @@ const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
 };
 
 const InsertText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <span className="text-indigo-800 font-semibold">{children}</span>;
+  return (
+    <span className="text-indigo-800 dark:text-indigo-300 font-semibold">
+      {children}
+    </span>
+  );
 };
 
 export const DiffWord: React.FC<{ diff: Diff }> = ({ diff }) => {
