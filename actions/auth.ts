@@ -112,7 +112,7 @@ export const signup = async (
     return { message: errorMessage };
   }
 
-  redirect("/", RedirectType.replace);
+  redirect("/app", RedirectType.replace);
 };
 
 export const login = async (
@@ -163,7 +163,7 @@ export const login = async (
   // might fail if the user has javascript disabled.
   await setSessionTokenCookie(token, session.expiresAt);
 
-  redirect("/", RedirectType.replace);
+  redirect("/app", RedirectType.replace);
 };
 
 export const logout = async () => {

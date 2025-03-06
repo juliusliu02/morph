@@ -15,7 +15,7 @@ const NavBar = () => {
       <NavigationMenu className="bg-white dark:bg-slate-700 p-1 rounded-xl border-1 border-gray-200 dark:border-slate-600">
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link href="/" legacyBehavior passHref>
+            <Link href="/app" legacyBehavior passHref>
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
@@ -27,7 +27,7 @@ const NavBar = () => {
             </Link>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/passages" legacyBehavior passHref>
+            <Link href="/app/passages" legacyBehavior passHref>
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),

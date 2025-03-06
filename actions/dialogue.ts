@@ -66,7 +66,7 @@ export const createDialogue = async (
     },
   });
 
-  redirect(`/passages/${dialogue.id}`);
+  redirect(`/app/passages/${dialogue.id}`);
 };
 
 export const deleteDialogue = async (
@@ -108,7 +108,7 @@ export const deleteDialogue = async (
     return { message: "server error, try again later" };
   }
 
-  revalidatePath(`/passages/`);
+  revalidatePath(`/app/passages/`);
 };
 
 export const changeTitle = async (

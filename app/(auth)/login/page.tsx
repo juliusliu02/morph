@@ -1,15 +1,22 @@
 import React from "react";
 import { LoginForm } from "@/components/login-form";
 import { Metadata } from "next";
+import { getCurrentSession } from "@/lib/auth/dal";
+import { redirect, RedirectType } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Log in to your account",
 };
 
-const Page = () => (
-  <main className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 mt-12">
-    <LoginForm className="w-full max-w-sm"></LoginForm>
-  </main>
-);
+export default async function Page() {
+  const { user } = await getCurrentSession();
+  if (user) {
+    redirect("/app", RedirectType.replace);
+  }
 
-export default Page;
+  return (
+    <main className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 mt-12">
+      <LoginForm className="w-full max-w-sm"></LoginForm>
+    </main>
+  );
+}

@@ -88,7 +88,7 @@ export const getPresetEdit = async (
     },
   });
 
-  revalidatePath(`/passages/${original.dialogueId}`);
+  revalidatePath(`/app/passages/${original.dialogueId}`);
 };
 
 export const getCustomEdit = async (id: unknown, prompt: unknown) => {
@@ -146,7 +146,7 @@ export const getCustomEdit = async (id: unknown, prompt: unknown) => {
     },
   });
 
-  revalidatePath(`/passages/${original.dialogueId}`);
+  revalidatePath(`/app/passages/${original.dialogueId}`);
 };
 
 export const saveSelfEdit = async (
@@ -198,7 +198,7 @@ export const saveSelfEdit = async (
     },
   });
 
-  revalidatePath(`/passages/${version.dialogueId}`);
+  revalidatePath(`/app/passages/${version.dialogueId}`);
 };
 
 export const deleteEdit = async (id: unknown): Promise<ActionState | void> => {
@@ -248,5 +248,5 @@ export const deleteEdit = async (id: unknown): Promise<ActionState | void> => {
     return { message: "Server error. Please alert the administrator." };
   }
 
-  revalidatePath(`/passages/${version.dialogueId}`);
+  revalidatePath(`/app/passages/${version.dialogueId}`);
 };

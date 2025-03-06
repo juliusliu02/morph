@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
-const NotFound = () => {
+function NotFound() {
   return (
     <div className="flex justify-center items-center h-screen">
       <Card className="max-w-xl">
@@ -21,6 +21,6 @@ const NotFound = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default NotFound;

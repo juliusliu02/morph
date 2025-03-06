@@ -284,7 +284,7 @@ export const Passage = ({ passage }: PassageProps) => {
         >
           <PassageTitle passage={passage} />
           <time
-            className="text-xl text-muted-foreground text-slate-500"
+            className="text-xl text-muted-foreground text-slate-500 dark:text-slate-100"
             suppressHydrationWarning
           >
             {passage.createdAt.toLocaleDateString("en-ca")}

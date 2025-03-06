@@ -21,7 +21,7 @@ const PassageListItem = ({ passage }: PassageListItemProps) => {
           buttonVariants({ variant: "ghost" }),
           "dark:bg-slate-950 flex justify-between items-baseline w-full dark:text-gray-200 gap-2",
         )}
-        href={`/passages/${passage.id}`}
+        href={`/app/passages/${passage.id}`}
       >
         <span className="overflow-hidden overflow-ellipsis">
           {passage.title !== "" ? passage.title : "Untitled document"}

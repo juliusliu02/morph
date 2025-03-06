@@ -23,8 +23,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${sourceSans3.className} antialiased bg-slate-50 dark:bg-slate-950 relative`}
+        className={`${sourceSans3.className} antialiased bg-gray-50 dark:bg-slate-950 relative`}
       >
+        <div
+          className="absolute left-[38svw] top-[8rem] -z-10 h-[32rem] w-[15rem] rounded-full bg-[#DFE7F6] blur-[10rem]
+                   sm:w-[25rem] dark:bg-[#10497E]"
+        />
+        <div
+          className="absolute right-[36svw] top-[4rem] -z-10 h-[24rem] w-[20rem] rounded-full bg-[#DDE5DC] blur-[10em]
+                    sm:w-[28rem] dark:bg-[#46AFA1]"
+        />
         {children}
         <SpeedInsights />
       </body>
