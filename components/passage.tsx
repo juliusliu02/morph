@@ -42,19 +42,22 @@ type PassageProps = {
   passage: DialogueWithVersion;
 };
 
+type PassageTitleProps = {
+  passage: DialogueWithVersion;
+};
+
 type PassageBodyProps = {
   original: Version;
   edit: Version;
 };
 
-type PassageTitleProps = {
-  passage: DialogueWithVersion;
-};
-
 type PassageCardProps = {
   version: Version;
-  html: React.JSX.Element[];
   isEdit?: boolean;
+};
+
+type PassageContentProps = {
+  content: Diff[][];
 };
 
 const PassageTitle = ({ passage }: PassageTitleProps) => {
@@ -178,17 +181,23 @@ const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
   );
 };
 
-const renderPassage = (diffs: Diff[][], keyPrefix: string) => {
-  return diffs.map((diff, pIndex) => (
-    <p key={keyPrefix + pIndex} className="leading-relaxed mb-4 last:mb-0">
-      {diff.map((diff, wIndex) => (
-        <DiffWord diff={diff} key={keyPrefix + pIndex + "w" + wIndex} />
-      ))}
-    </p>
-  ));
-};
+const PassageContent = ({ content }: PassageContentProps) => (
+  <article>
+    {content.map((diff, index) => (
+      <p key={index} className="leading-relaxed mb-4 last:mb-0">
+        {diff.map((diff, index) => (
+          <DiffWord diff={diff} key={index} />
+        ))}
+      </p>
+    ))}
+  </article>
+);
 
-const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
+const PassageCard = ({
+  version,
+  isEdit = false,
+  children,
+}: React.PropsWithChildren<PassageCardProps>) => {
   return (
     <Card className="flex-1">
       <CardHeader>
@@ -215,9 +224,7 @@ const PassageCard = ({ version, html, isEdit = false }: PassageCardProps) => {
             : "This is the text after editing."}
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <article>{html}</article>
-      </CardContent>
+      <CardContent>{children}</CardContent>
       <CardFooter className="justify-end">
         <Edit versionId={version.id} text={version.text} />
       </CardFooter>
@@ -230,14 +237,16 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
     original.text,
     edit.text,
   );
-  const originalHTML = renderPassage(originalDiffs, "o");
-  const editHTML = renderPassage(editDiffs, "e");
   const isSm = useMediaQuery("(min-width: 640px)");
 
   return isSm ? (
     <>
-      <PassageCard version={original} html={originalHTML} />
-      <PassageCard version={edit} html={editHTML} isEdit />
+      <PassageCard version={original}>
+        <PassageContent content={originalDiffs} />
+      </PassageCard>
+      <PassageCard version={edit} isEdit>
+        <PassageContent content={editDiffs} />
+      </PassageCard>
     </>
   ) : (
     <Tabs defaultValue="original" className="w-sm">
@@ -246,10 +255,14 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
         <TabsTrigger value="edit">Edit</TabsTrigger>
       </TabsList>
       <TabsContent value="original">
-        <PassageCard version={original} html={originalHTML} />
+        <PassageCard version={original}>
+          <PassageContent content={originalDiffs} />
+        </PassageCard>
       </TabsContent>
       <TabsContent value="edit">
-        <PassageCard version={edit} html={editHTML} isEdit />
+        <PassageCard version={edit} isEdit>
+          <PassageContent content={editDiffs} />
+        </PassageCard>
       </TabsContent>
     </Tabs>
   );
@@ -261,7 +274,7 @@ const Feedback = ({ feedback }: { feedback: string }) => {
       <CardHeader>
         <CardTitle className="text-lg">Feedback</CardTitle>
       </CardHeader>
-      <CardContent className="prose text-slate-950 dark:prose-invert min-w-full">
+      <CardContent className="prose dark:prose-invert min-w-full">
         <Markdown>{feedback}</Markdown>
       </CardContent>
     </Card>
