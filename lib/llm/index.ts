@@ -52,15 +52,11 @@ const getResponse = async (
     const { object } = await generateObject({
       model,
       schema: editSchema,
-      system: systemPrompt,
+      system: systemPrompt.concat("\n\n", prompt),
       messages: [
         {
           role: "user",
           content: [
-            {
-              type: "text",
-              text: prompt,
-            },
             {
               type: "text",
               text: payload,

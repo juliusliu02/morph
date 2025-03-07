@@ -72,7 +72,6 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
   const editFilterList = [
     Edit.ORIGINAL,
     version.edit,
-    Edit.LOGICAL,
     Edit.CUSTOM,
     Edit.SELF,
   ].map((option) => option.valueOf());
