@@ -157,12 +157,18 @@ const PassageAction = ({ version }: PassageActionProps) => {
       <PassageDropdown version={version} />
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Custom prompt</DialogTitle>
+          <DialogTitle className="dark:text-slate-50">
+            Custom prompt
+          </DialogTitle>
           <DialogDescription>
             Type in your own prompt below to get customized edit.
           </DialogDescription>
         </DialogHeader>
-        <Textarea onChange={(e) => setPrompt(e.target.value)} value={prompt} />
+        <Textarea
+          className="text-slate-900 dark:text-slate-200"
+          onChange={(e) => setPrompt(e.target.value)}
+          value={prompt}
+        />
         <DialogFooter>
           <Button
             className="cursor-pointer"

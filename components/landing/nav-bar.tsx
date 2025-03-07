@@ -9,7 +9,7 @@ const NavBar = () => {
         <span className="text-2xl font-extrabold dark:text-slate-100">
           Morph
         </span>
-        <span className="text-slate-700 dark:text-slate-400">
+        <span className="hidden sm:inline text-slate-700 dark:text-slate-400">
           by The Polyglot Pro
         </span>
       </div>

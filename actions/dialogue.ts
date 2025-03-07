@@ -5,10 +5,29 @@ import { getEdit } from "@/lib/llm";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { rateLimit } from "@/actions/version";
+import { request } from "@arcjet/next";
+import arcjet from "@/lib/auth/arcjet";
+import { tokenBucket } from "arcjet";
 
 type ActionState = {
   message: string;
+};
+
+const aj = arcjet.withRule(
+  tokenBucket({
+    mode: "LIVE",
+    refillRate: 5,
+    interval: 60 * 15,
+    capacity: 20,
+  }),
+);
+
+export const rateLimit = async (id: string) => {
+  const req = await request();
+  return aj.protect(req, {
+    fingerprint: id,
+    requested: 5,
+  });
 };
 
 export const createDialogue = async (

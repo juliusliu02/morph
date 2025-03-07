@@ -18,7 +18,7 @@ type ActionState = {
 
 const aj = arcjet.withRule(
   tokenBucket({
-    mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
+    mode: "LIVE",
     refillRate: 5,
     interval: 60 * 15,
     capacity: 20,

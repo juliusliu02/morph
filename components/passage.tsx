@@ -233,8 +233,6 @@ const PassageCard = ({
 };
 
 const PassageBody = ({ original, edit }: PassageBodyProps) => {
-  console.log(original);
-  console.log(edit);
   const { original: originalDiffs, edit: editDiffs } = getDiff(
     original.text,
     edit.text,
