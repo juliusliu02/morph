@@ -12,7 +12,7 @@ import {
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Title } from "@/components/typography";
-import { DialogueWithVersion } from "@/lib/types";
+import { DialogueWithVersion } from "../lib/db/types";
 import { saveSelfEdit } from "@/actions/version";
 import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
@@ -23,7 +23,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMediaQuery } from "@/lib/hooks";
+import { useMediaQuery } from "@/lib/hooks/use-media-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PassageAction, { RevertDialog } from "@/components/passage-action";
 import {

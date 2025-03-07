@@ -1,5 +1,5 @@
 import { cache } from "react";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db/index";
 
 export const getPassage = cache(async (id: string, userId: string) => {
   let passage;

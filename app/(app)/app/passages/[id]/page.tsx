@@ -4,7 +4,7 @@ import { Passage } from "@/components/passage";
 import type { Metadata } from "next";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { notFound, redirect } from "next/navigation";
-import { getPassage } from "@/lib/queries";
+import { getPassage } from "@/lib/db/queries";
 
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;

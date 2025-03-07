@@ -1,7 +1,7 @@
 "use server";
 import { signupFormSchema, loginFormSchema } from "@/lib/validations";
 import bcrypt from "bcrypt";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { redirect, RedirectType } from "next/navigation";
 import {
   createSession,
@@ -14,7 +14,7 @@ import {
 } from "@/lib/auth/cookie";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { Prisma } from "@prisma/client";
-import arcjet from "@/lib/arcjet";
+import arcjet from "@/lib/auth/arcjet";
 import { protectSignup } from "arcjet";
 import { request } from "@arcjet/next";
 

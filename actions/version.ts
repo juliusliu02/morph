@@ -5,10 +5,10 @@ import {
   presetEditSchema,
   selfEditSchema,
 } from "@/lib/validations";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { revalidatePath } from "next/cache";
-import arcjet from "@/lib/arcjet";
+import arcjet from "@/lib/auth/arcjet";
 import { tokenBucket } from "arcjet";
 import { request } from "@arcjet/next";
 

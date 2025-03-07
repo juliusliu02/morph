@@ -5,7 +5,7 @@ import {
   lexicalEditPrompt,
   logicalEditPrompt,
   systemPrompt,
-} from "@/lib/prompts";
+} from "@/lib/llm/prompts";
 import type { Edit } from "@prisma/client";
 import { z } from "zod";
 

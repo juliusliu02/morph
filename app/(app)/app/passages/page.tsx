@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Description, Title } from "@/components/typography";
 import { Metadata } from "next";
-import { getPassages } from "@/lib/queries";
+import { getPassages } from "@/lib/db/queries";
 
 export const metadata: Metadata = {
   title: "My Passages",

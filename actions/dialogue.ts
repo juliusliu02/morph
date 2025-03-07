@@ -2,7 +2,7 @@
 import { getCurrentSession } from "@/lib/auth/dal";
 import { newDialogueSchema } from "@/lib/validations";
 import { getEdit } from "@/lib/llm";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { rateLimit } from "@/actions/version";
