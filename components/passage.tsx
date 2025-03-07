@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef } from "react";
+import { type PropsWithChildren, useRef, useState } from "react";
 import { Diff } from "diff-match-patch-ts";
 import {
   Card,
@@ -118,9 +118,9 @@ const Copy = ({ text }: { text: string }) => {
 };
 
 const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
-  const [open, setOpen] = React.useState<boolean>(false);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [editText, setEditText] = React.useState<string>(text);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [editText, setEditText] = useState<string>(text);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -197,7 +197,7 @@ const PassageCard = ({
   version,
   isEdit = false,
   children,
-}: React.PropsWithChildren<PassageCardProps>) => {
+}: PropsWithChildren<PassageCardProps>) => {
   return (
     <Card className="flex-1">
       <CardHeader>
