@@ -1,9 +1,5 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
-/*
-  ---break---
-*/
-
 @plugin 'tailwindcss-animate';
 
 @theme {

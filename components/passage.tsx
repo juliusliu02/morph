@@ -12,7 +12,7 @@ import {
 import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Title } from "@/components/typography";
-import { DialogueWithVersion } from "../lib/db/types";
+import { DialogueWithVersion } from "@/lib/db/types";
 import { saveSelfEdit } from "@/actions/version";
 import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
@@ -199,7 +199,7 @@ const PassageCard = ({
   children,
 }: PropsWithChildren<PassageCardProps>) => {
   return (
-    <Card className="flex-1">
+    <Card className="flex-1 h-fit">
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
           <span className="capitalize flex items-center gap-1">

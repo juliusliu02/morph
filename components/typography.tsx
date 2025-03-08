@@ -7,7 +7,7 @@ type Props = {
 };
 
 const DeleteText = ({ children }: React.PropsWithChildren<Props>) => {
-  return <span className="line-through text-slate-400">{children}</span>;
+  return <del className="line-through text-slate-400">{children}</del>;
 };
 
 const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
@@ -16,9 +16,9 @@ const EqualText = ({ children }: React.PropsWithChildren<Props>) => {
 
 const InsertText = ({ children }: React.PropsWithChildren<Props>) => {
   return (
-    <span className="text-indigo-800 dark:text-indigo-300 font-semibold">
+    <ins className="text-indigo-800 dark:text-indigo-300 font-semibold no-underline">
       {children}
-    </span>
+    </ins>
   );
 };
 
