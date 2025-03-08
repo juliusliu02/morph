@@ -249,7 +249,7 @@ const PassageBody = ({ original, edit }: PassageBodyProps) => {
       </PassageCard>
     </>
   ) : (
-    <Tabs defaultValue="original" className="w-sm">
+    <Tabs defaultValue="original">
       <TabsList>
         <TabsTrigger value="original">Original</TabsTrigger>
         <TabsTrigger value="edit">Edit</TabsTrigger>
@@ -274,7 +274,7 @@ const Feedback = ({ feedback }: { feedback: string }) => {
       <CardHeader>
         <CardTitle className="text-lg">Feedback</CardTitle>
       </CardHeader>
-      <CardContent className="prose dark:prose-invert min-w-full">
+      <CardContent className="prose dark:prose-invert w-full">
         <Markdown>{feedback}</Markdown>
       </CardContent>
     </Card>
@@ -286,14 +286,11 @@ export const Passage = ({ passage }: PassageProps) => {
   const edit = passage.versions[passage.versions.length - 1];
 
   return (
-    <main
-      className="w-sm
-      sm:w-full sm:max-w-2xl"
-    >
-      <header className="flex justify-between mb-2">
+    <main className="max-w-sm sm:w-full sm:max-w-2xl">
+      <div className="flex justify-between mb-2">
         <span
           className="flex flex-col p-1 mr-5
-          sm:flex-row sm:gap-5 sm:items-baseline"
+          sm:items-baseline"
         >
           <PassageTitle passage={passage} />
           <time
@@ -303,14 +300,14 @@ export const Passage = ({ passage }: PassageProps) => {
             {passage.createdAt.toLocaleDateString("en-ca")}
           </time>
         </span>
-        <span className="translate-y-0.5 flex gap-2 items-baseline">
+        <span className="translate-y-0.5 flex flex-col sm:flex-row gap-2 items-baseline">
           <PassageAction version={edit} />
           <RevertDialog versionId={edit.id} />
         </span>
-      </header>
-      <section className="flex justify-center my-4 gap-4">
+      </div>
+      <div className="flex justify-center my-4 gap-4">
         <PassageBody original={original} edit={edit} />
-      </section>
+      </div>
       {edit.feedback && <Feedback feedback={edit.feedback} />}
     </main>
   );

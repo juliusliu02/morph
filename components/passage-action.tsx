@@ -98,11 +98,7 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          aria-label="Get new edit"
-          disabled={loading}
-          className="cursor-pointer"
-        >
+        <Button disabled={loading} className="cursor-pointer">
           {loading ? (
             <>
               <Loader2 className="animate-spin" />

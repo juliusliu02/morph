@@ -19,8 +19,8 @@ async function Page({ params }: { params: Promise<{ id: string }> }) {
   }
 
   return (
-    <div className="p-5 flex w-full justify-center">
-      <div className="mt-12 pt-5">
+    <div className="px-4 flex w-full justify-center">
+      <div className="mt-20">
         <Passage passage={passage} />
       </div>
       <Toaster richColors />
