@@ -287,20 +287,17 @@ export const Passage = ({ passage }: PassageProps) => {
 
   return (
     <main className="max-w-sm sm:w-full sm:max-w-2xl">
-      <div className="flex justify-between mb-2">
-        <span
-          className="flex flex-col p-1 mr-5
-          sm:items-baseline"
-        >
+      <div className="flex justify-between gap-4 mb-2 items-baseline">
+        <span className="flex flex-col p-1">
           <PassageTitle passage={passage} />
           <time
-            className="text-xl text-muted-foreground text-slate-500 dark:text-slate-100"
+            className="text-xl text-slate-500 dark:text-slate-100"
             suppressHydrationWarning
           >
             {passage.createdAt.toLocaleDateString("en-ca")}
           </time>
         </span>
-        <span className="translate-y-0.5 flex flex-col sm:flex-row gap-2 items-baseline">
+        <span className="flex flex-col sm:flex-row gap-2">
           <PassageAction version={edit} />
           <RevertDialog versionId={edit.id} />
         </span>
