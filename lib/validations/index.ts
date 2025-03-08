@@ -17,7 +17,7 @@ export const presetEditSchema = z.object({
 
 export const customEditSchema = z.object({
   id: z.string(),
-  prompt: z.string().trim(),
+  prompt: z.string().trim().nonempty("Please enter a valid prompt."),
 });
 
 export const selfEditSchema = z.object({

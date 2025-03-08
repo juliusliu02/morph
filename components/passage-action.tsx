@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import { useRef, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -66,7 +66,7 @@ export const RevertDialog = ({ versionId }: RevertDialogProps) => (
 );
 
 const PassageDropdown = ({ version }: PassageActionProps) => {
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   // filter out unsupported or invalid edit types.
   const editFilterList = [
@@ -137,17 +137,22 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
 };
 
 const PassageAction = ({ version }: PassageActionProps) => {
-  const [open, setOpen] = React.useState(false);
-  const [prompt, setPrompt] = React.useState<string>("");
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const ref = useRef<HTMLTextAreaElement>(null);
 
-  const handleCustomEdit = async (prompt: string) => {
+  const handleCustomEdit = async () => {
+    if (!ref.current || ref.current.value.trim() === "") {
+      toast.error("Custom prompt cannot be empty.");
+      return;
+    }
     setLoading(true);
-    const response = await getCustomEdit(version.id, prompt);
+    const response = await getCustomEdit(version.id, ref.current.value);
     setLoading(false);
     if (response) {
       toast.error(response.message);
     } else {
+      ref.current.value = "";
       setOpen(false);
     }
   };
@@ -164,16 +169,12 @@ const PassageAction = ({ version }: PassageActionProps) => {
             Type in your own prompt below to get customized edit.
           </DialogDescription>
         </DialogHeader>
-        <Textarea
-          className="text-slate-900 dark:text-slate-200"
-          onChange={(e) => setPrompt(e.target.value)}
-          value={prompt}
-        />
+        <Textarea ref={ref} className="text-slate-900 dark:text-slate-200" />
         <DialogFooter>
           <Button
             className="cursor-pointer"
             disabled={loading}
-            onClick={() => handleCustomEdit(prompt)}
+            onClick={handleCustomEdit}
           >
             {loading ? (
               <>
