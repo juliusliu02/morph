@@ -79,7 +79,6 @@ const InputPassageForm = () => {
           )}
         />
         <Button
-          className="cursor-pointer"
           disabled={isPending}
           type="submit"
           onClick={form.handleSubmit(() => {

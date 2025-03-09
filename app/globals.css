@@ -37,3 +37,10 @@
     --radius: 0.5rem;
   }
 }
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

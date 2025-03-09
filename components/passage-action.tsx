@@ -34,7 +34,7 @@ type RevertDialogProps = {
 export const RevertDialog = ({ versionId }: RevertDialogProps) => (
   <Dialog>
     <DialogTrigger asChild>
-      <Button variant="destructive" className="cursor-pointer">
+      <Button variant="destructive">
         <Undo2 />
       </Button>
     </DialogTrigger>
@@ -50,7 +50,6 @@ export const RevertDialog = ({ versionId }: RevertDialogProps) => (
         <DialogClose asChild>
           <Button
             variant="destructive"
-            className="cursor-pointer"
             aria-label="Delete edit"
             onClick={async () => {
               const response = await deleteEdit(versionId);
@@ -98,7 +97,7 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button disabled={loading} className="cursor-pointer">
+        <Button disabled={loading}>
           {loading ? (
             <>
               <Loader2 className="animate-spin" />
@@ -114,18 +113,12 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {editOptions.map((item) => (
-          <DropdownMenuItem
-            className="cursor-pointer"
-            key={item}
-            onSelect={() => getEdit(item)}
-          >
+          <DropdownMenuItem key={item} onSelect={() => getEdit(item)}>
             Get {item.toLowerCase()} edit
           </DropdownMenuItem>
         ))}
         <DialogTrigger asChild>
-          <DropdownMenuItem className="cursor-pointer">
-            Use my own prompt
-          </DropdownMenuItem>
+          <DropdownMenuItem>Use my own prompt</DropdownMenuItem>
         </DialogTrigger>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -167,11 +160,7 @@ const PassageAction = ({ version }: PassageActionProps) => {
         </DialogHeader>
         <Textarea ref={ref} className="text-slate-900 dark:text-slate-50" />
         <DialogFooter>
-          <Button
-            className="cursor-pointer"
-            disabled={loading}
-            onClick={handleCustomEdit}
-          >
+          <Button disabled={loading} onClick={handleCustomEdit}>
             {loading ? (
               <>
                 <Loader2 className="animate-spin" />

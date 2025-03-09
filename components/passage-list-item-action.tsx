@@ -29,17 +29,12 @@ const PassageListItemAction = ({ id }: PassageListItemActionProps) => {
     <div onClick={(e) => e.stopPropagation()}>
       <Dialog>
         <DropdownMenu>
-          <DropdownMenuTrigger
-            aria-label="Passage Action"
-            className="cursor-pointer"
-          >
+          <DropdownMenuTrigger aria-label="Passage Action">
             <Ellipsis className="translate-y-[1px] text-gray-500" />
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DialogTrigger asChild>
-              <DropdownMenuItem className="cursor-pointer">
-                Delete passage
-              </DropdownMenuItem>
+              <DropdownMenuItem>Delete passage</DropdownMenuItem>
             </DialogTrigger>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -53,13 +48,10 @@ const PassageListItemAction = ({ id }: PassageListItemActionProps) => {
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
-              <Button variant="secondary" className="cursor-pointer">
-                Close
-              </Button>
+              <Button variant="secondary">Close</Button>
             </DialogClose>
             <DialogClose asChild>
               <Button
-                className="cursor-pointer"
                 onClick={async () => {
                   await deleteDialogue(id);
                 }}

@@ -12,14 +12,14 @@ import { cn } from "@/lib/utils";
 const NavBar = () => {
   return (
     <header className="absolute top-5 flex justify-center w-full">
-      <NavigationMenu className="bg-white dark:bg-slate-700 p-1 rounded-xl border-1 border-gray-200 dark:border-slate-600">
+      <NavigationMenu className="bg-white dark:bg-slate-700 p-1 rounded-xl border-1 border-slate-200 dark:border-slate-600">
         <NavigationMenuList>
           <NavigationMenuItem>
             <Link href="/app" legacyBehavior passHref>
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "dark:text-gray-200 dark:bg-slate-700",
+                  "dark:text-slate-200 dark:bg-slate-700",
                 )}
               >
                 New Passage
@@ -31,7 +31,7 @@ const NavBar = () => {
               <NavigationMenuLink
                 className={cn(
                   navigationMenuTriggerStyle(),
-                  "dark:text-gray-200 dark:bg-slate-700",
+                  "dark:text-slate-200 dark:bg-slate-700",
                 )}
               >
                 My Passages
@@ -43,7 +43,7 @@ const NavBar = () => {
               onClick={logout}
               className={cn(
                 navigationMenuTriggerStyle(),
-                "dark:text-gray-200 dark:bg-slate-700 cursor-pointer",
+                "dark:text-slate-200 dark:bg-slate-700 cursor-pointer",
               )}
             >
               Log out
