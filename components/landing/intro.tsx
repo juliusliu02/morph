@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export default function Intro() {
   return (
-    <>
+    <section>
       <motion.h1
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ export default function Intro() {
         transition={{
           delay: 0.2,
         }}
-        className="flex items-center"
+        className="flex justify-center"
       >
         <Link
           className={cn(
@@ -43,6 +43,6 @@ export default function Intro() {
           Start for free
         </Link>
       </motion.div>
-    </>
+    </section>
   );
 }

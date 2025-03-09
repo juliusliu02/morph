@@ -181,7 +181,7 @@ const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
   );
 };
 
-const PassageContent = ({ content }: PassageContentProps) => (
+export const PassageContent = ({ content }: PassageContentProps) => (
   <article>
     {content.map((diff, index) => (
       <p key={index} className="leading-relaxed mb-4 last:mb-0">
