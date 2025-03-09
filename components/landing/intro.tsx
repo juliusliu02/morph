@@ -11,7 +11,7 @@ export default function Intro() {
       <motion.h1
         initial={{ opacity: 0, y: 100 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-slate-700 text-center font-extrabold dark:text-slate-50 text-3xl leading-snug sm:text-5xl"
+        className="text-slate-900 dark:text-slate-50 text-center font-extrabold text-3xl leading-snug sm:text-5xl"
       >
         Streamline your multi-step essay polishing
       </motion.h1>
@@ -21,7 +21,7 @@ export default function Intro() {
         transition={{
           delay: 0.1,
         }}
-        className="mt-5 sm:mt-8 mx-10 text-lg sm:text-2xl text-center text-slate-600 dark:text-slate-200"
+        className="mt-5 sm:mt-8 mx-10 text-lg sm:text-2xl text-center text-slate-700 dark:text-slate-200"
       >
         Produce error-free and elevated passages in one click with Morph.
       </motion.p>

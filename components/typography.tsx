@@ -51,6 +51,8 @@ export const Description = ({
   className,
 }: React.PropsWithChildren<Props>) => {
   return (
-    <p className={cn("text-xl text-muted-foreground", className)}>{children}</p>
+    <p className={cn("text-xl text-slate-500 dark:text-slate-400", className)}>
+      {children}
+    </p>
   );
 };

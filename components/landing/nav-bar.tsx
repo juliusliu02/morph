@@ -6,10 +6,10 @@ const NavBar = () => {
   return (
     <header className="absolute top-5 flex w-full items-center justify-between px-5 sm:px-20">
       <div className="flex gap-2 items-baseline">
-        <span className="text-2xl font-extrabold dark:text-slate-100">
+        <span className="text-2xl font-extrabold text-slate-900 dark:text-slate-50">
           Morph
         </span>
-        <span className="hidden sm:inline text-slate-700 dark:text-slate-400">
+        <span className="hidden sm:inline text-slate-700 dark:text-slate-200">
           by The Polyglot Pro
         </span>
       </div>
@@ -17,7 +17,7 @@ const NavBar = () => {
         <Link
           className={cn(
             buttonVariants({ variant: "ghost" }),
-            "dark:text-slate-100 dark:hover:bg-transparent rounded-full",
+            "text-slate-900 dark:text-slate-50 dark:hover:bg-transparent rounded-full",
           )}
           href="/login"
         >

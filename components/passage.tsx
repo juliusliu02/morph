@@ -209,7 +209,7 @@ const PassageCard = ({
             <Copy text={version.text} />
           </span>
           <time
-            className="text-md font-normal text-slate-500"
+            className="text-md font-normal text-slate-500 dark:text-slate-400"
             suppressHydrationWarning
           >
             {version.createdAt.toLocaleTimeString("en-ca", {
@@ -291,7 +291,7 @@ export const Passage = ({ passage }: PassageProps) => {
         <span className="flex flex-col p-1">
           <PassageTitle passage={passage} />
           <time
-            className="text-xl text-slate-500 dark:text-slate-100"
+            className="text-xl text-slate-600 dark:text-slate-300"
             suppressHydrationWarning
           >
             {passage.createdAt.toLocaleDateString("en-ca")}
