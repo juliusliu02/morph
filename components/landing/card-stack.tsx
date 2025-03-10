@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import {
   Card,
   CardContent,
@@ -14,7 +14,6 @@ import {
   useTransform,
   type MotionValue,
 } from "motion/react";
-import Lenis from "lenis";
 import { getDiff } from "@/lib/utils";
 import { PassageContent } from "@/components/passage";
 import { max } from "@floating-ui/utils";
@@ -37,46 +36,48 @@ const PassageCard = ({
 }: PassageCardProps) => {
   const isSm = useMediaQuery("(min-width: 640px)");
   const diffs = original ? getDiff(original, edit.text) : undefined;
-  const enterRange = [
+
+  const desktopEnterRange = [
     max((index - 0.75) / dataLength, 0),
     (index + 0.25) / dataLength,
   ]; // use max for the first card
-  const exitRange = [(index + 0.25) / dataLength, 1];
-
-  const mobile = {
-    translateY: useTransform(scrollYProgress, exitRange, [
-      0,
-      -50 * (dataLength - index),
-    ]),
-    scale: useTransform(scrollYProgress, exitRange, [
-      1,
-      1 - 0.05 * (dataLength - index),
-    ]),
-  };
-
+  // slightly delay exit animation to when the card is at the center
+  const desktopExitRange = [(index + 0.25) / dataLength, 1];
   const desktop = {
-    scale: useTransform(scrollYProgress, enterRange, [2, 1]),
-    opacity: useTransform(scrollYProgress, enterRange, [0, 1]),
-    rotate: useTransform(scrollYProgress, exitRange, [
+    scale: useTransform(scrollYProgress, desktopEnterRange, [2, 1]),
+    opacity: useTransform(scrollYProgress, desktopEnterRange, [0, 1]),
+    rotate: useTransform(scrollYProgress, desktopExitRange, [
       0,
       (dataLength - index - 1) * -15,
     ]),
-    translateY: useTransform(scrollYProgress, enterRange, [100, 0]),
+    translateY: useTransform(scrollYProgress, desktopEnterRange, [100, 0]),
+  };
+
+  const mobileExitRange = [index / dataLength, 1];
+  const mobile = {
+    translateY: useTransform(scrollYProgress, mobileExitRange, [
+      0,
+      -50 * (dataLength - index),
+    ]),
+    scale: useTransform(scrollYProgress, mobileExitRange, [
+      1,
+      1 - 0.1 * (dataLength - index),
+    ]),
   };
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
       <motion.div
         style={isSm ? desktop : mobile}
-        className="top-[-10%] relative sm:h-[36rem]"
+        className="h-screen sm:top-[-10%] sm:relative sm:h-[36rem]"
       >
-        <Card className="h-full flex-1 w-full max-w-md relative p-2">
+        <Card className="h-fit sm:h-full flex-1 w-full max-w-md relative sm:p-2">
           <CardHeader>
-            <CardTitle className="text-center capitalize text-xl">
+            <CardTitle className="text-center capitalize sm:text-xl">
               {edit.type.toLowerCase()}
             </CardTitle>
           </CardHeader>
-          <CardContent className="leading-relaxed">
+          <CardContent className="sm:leading-relaxed">
             {diffs ? (
               <PassageContent content={diffs.edit} />
             ) : (
@@ -101,17 +102,6 @@ const CardStack = () => {
     offset: ["start start", "end end"],
   });
 
-  useEffect(() => {
-    const lenis = new Lenis();
-
-    function raf(time: number) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-
-    requestAnimationFrame(raf);
-  });
-
   const data = LandingEdits;
   return (
     <motion.section
@@ -121,11 +111,11 @@ const CardStack = () => {
         delay: 0.3,
       }}
       ref={ref}
-      className="mt-12 p-4 flex flex-col items-center mb-96 relative"
+      className="mt-12 p-4 flex flex-col items-center relative"
     >
-      <h1 className="mb-20 text-2xl sm:text-3xl font-semibold sticky top-8 text-center text-slate-900 dark:text-slate-50">
+      <h2 className="pb-[100svh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
-      </h1>
+      </h2>
       {data.map((edit, i) => (
         <PassageCard
           original={i > 0 ? data[i - 1].text : undefined}
