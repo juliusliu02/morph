@@ -25,14 +25,16 @@ export default function RootLayout({
       <body
         className={`${sourceSans3.className} antialiased bg-slate-50 dark:bg-slate-950 relative`}
       >
-        <div
-          className="absolute top-[10rem] -z-10 h-[28rem] rounded-full bg-[#DFE7F6] blur-[15rem]
-                   right-[calc(46svw-20rem)] w-[20rem] sm:w-[26rem] dark:bg-[#10497E]"
-        />
-        <div
-          className="absolute top-[6rem] -z-10 h-[24rem] w-[20rem] rounded-full bg-[#DDE5DC] blur-[15em]
-                    left-[calc(48svw-18rem)] sm:w-[25rem] dark:bg-[#46AFA1]"
-        />
+        <div className="absolute top-0 left-0 -z-10 overflow-x-hidden h-full w-full">
+          <div
+            className="absolute top-[10rem] h-[28rem] rounded-full bg-[#DFE7F6] blur-[10rem]
+                   right-[calc(46vw-20rem)]  w-[20rem] sm:w-[26rem] dark:bg-[#10497E]"
+          />
+          <div
+            className="absolute top-[6rem] h-[24rem] w-[20rem] rounded-full bg-[#DDE5DC] blur-[10em]
+                    left-[calc(48vw-18rem)] sm:w-[25rem] dark:bg-[#46AFA1]"
+          />
+        </div>
         {children}
         <SpeedInsights />
       </body>

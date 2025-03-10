@@ -7,10 +7,10 @@ const Layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <div className="w-full relative">
+    <>
       <NavBar />
       {children}
-    </div>
+    </>
   );
 };
 
