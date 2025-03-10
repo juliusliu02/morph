@@ -21,7 +21,7 @@ export default function Intro() {
         transition={{
           delay: 0.1,
         }}
-        className="mt-5 sm:mt-8 mx-10 text-lg sm:text-2xl text-center text-slate-700 dark:text-slate-200"
+        className="mt-8 mx-10 text-lg sm:text-2xl text-center text-slate-700 dark:text-slate-200"
       >
         Produce error-free and elevated passages in one click with Morph.
       </motion.p>
@@ -36,7 +36,7 @@ export default function Intro() {
         <Link
           className={cn(
             buttonVariants({ variant: "default" }),
-            "mt-6 sm:mt-8 rounded-full font-semibold hover:scale-105 transition duration-200 will-change-transform",
+            "mt-10 rounded-full font-semibold hover:scale-105 transition duration-200 will-change-transform",
           )}
           href="/signup"
         >

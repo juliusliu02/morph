@@ -18,34 +18,56 @@ import Lenis from "lenis";
 import { getDiff } from "@/lib/utils";
 import { PassageContent } from "@/components/passage";
 import { max } from "@floating-ui/utils";
+import { useMediaQuery } from "@/lib/hooks/use-media-query";
 
 type PassageCardProps = {
   original?: string;
   edit: (typeof LandingEdits)[number];
-  enterRange: [number, number];
-  exitRange: [number, number];
-  targetDegree: number;
+  index: number;
+  dataLength: number;
   scrollYProgress: MotionValue<number>;
 };
 
 const PassageCard = ({
   original,
   edit,
-  enterRange,
-  exitRange,
-  targetDegree,
+  index,
+  dataLength,
   scrollYProgress,
 }: PassageCardProps) => {
-  const rotate = useTransform(scrollYProgress, exitRange, [0, -targetDegree]);
-  const scale = useTransform(scrollYProgress, enterRange, [2, 1]);
-  const translateY = useTransform(scrollYProgress, enterRange, [100, 0]);
-  const opacity = useTransform(scrollYProgress, enterRange, [0, 1]);
+  const isSm = useMediaQuery("(min-width: 640px)");
   const diffs = original ? getDiff(original, edit.text) : undefined;
+  const enterRange = [
+    max((index - 0.75) / dataLength, 0),
+    (index + 0.25) / dataLength,
+  ]; // use max for the first card
+  const exitRange = [(index + 0.25) / dataLength, 1];
+
+  const mobile = {
+    translateY: useTransform(scrollYProgress, exitRange, [
+      0,
+      -50 * (dataLength - index),
+    ]),
+    scale: useTransform(scrollYProgress, exitRange, [
+      1,
+      1 - 0.05 * (dataLength - index),
+    ]),
+  };
+
+  const desktop = {
+    scale: useTransform(scrollYProgress, enterRange, [2, 1]),
+    opacity: useTransform(scrollYProgress, enterRange, [0, 1]),
+    rotate: useTransform(scrollYProgress, exitRange, [
+      0,
+      (dataLength - index - 1) * -15,
+    ]),
+    translateY: useTransform(scrollYProgress, enterRange, [100, 0]),
+  };
 
   return (
-    <div className="sticky top-24 h-screen flex justify-center items-center">
+    <div className="sticky top-28 h-screen flex justify-center items-center">
       <motion.div
-        style={{ rotate, scale, opacity, translateY }}
+        style={isSm ? desktop : mobile}
         className="top-[-10%] relative sm:h-[36rem]"
       >
         <Card className="h-full flex-1 w-full max-w-md relative p-2">
@@ -92,8 +114,16 @@ const CardStack = () => {
 
   const data = LandingEdits;
   return (
-    <section ref={ref} className="mt-12 p-4 flex flex-col items-center mb-96">
-      <h1 className="mb-20 text-2xl sm:text-3xl font-semibold sticky top-8 text-center">
+    <motion.section
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        delay: 0.3,
+      }}
+      ref={ref}
+      className="mt-12 p-4 flex flex-col items-center mb-96 relative"
+    >
+      <h1 className="mb-20 text-2xl sm:text-3xl font-semibold sticky top-8 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h1>
       {data.map((edit, i) => (
@@ -101,16 +131,12 @@ const CardStack = () => {
           original={i > 0 ? data[i - 1].text : undefined}
           edit={edit}
           key={i}
-          enterRange={[
-            max((i - 0.5) / data.length, 0),
-            (i + 0.5) / data.length + +0.1,
-          ]}
-          exitRange={[i / data.length + 0.1, 1]}
-          targetDegree={(data.length - i - 1) * 15}
+          index={i}
+          dataLength={data.length}
           scrollYProgress={scrollYProgress}
         />
       ))}
-    </section>
+    </motion.section>
   );
 };
 
