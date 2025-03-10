@@ -18,17 +18,118 @@ import {
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Edit, Version } from "@prisma/client";
-import { deleteEdit, getCustomEdit, getPresetEdit } from "@/actions/version";
+import {
+  deleteEdit,
+  getCustomEdit,
+  getPresetEdit,
+  saveSelfEdit,
+} from "@/actions/version";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Loader2, Pencil, Undo2 } from "lucide-react";
+import { ClipboardCopy, Loader2, Pencil, PenLine, Undo2 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-type PassageActionProps = {
+type EditOptionsProps = {
   version: Version;
 };
 
 type RevertDialogProps = {
   versionId: string;
+};
+
+export const Copy = ({ text }: { text: string }) => {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger aria-label="Copy to clipboard">
+          <ClipboardCopy
+            className="cursor-pointer translate-y-[-1px] h-5 w-5"
+            onClick={() => {
+              navigator.clipboard
+                .writeText(text)
+                .then(() => toast.success("Copied to clipboard!"));
+            }}
+          />
+        </TooltipTrigger>
+        <TooltipContent>Copy to Clipboard</TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+
+export const SelfEditDialog = ({
+  versionId,
+  text,
+}: {
+  versionId: string;
+  text: string;
+}) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [editText, setEditText] = useState<string>(text);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    const response = await saveSelfEdit(versionId, editText);
+    setLoading(false);
+    if (response) {
+      toast.error("An error occurred.", {
+        description: response.message,
+        action: {
+          label: "Retry",
+          onClick: handleSubmit,
+        },
+      });
+    } else {
+      setOpen(false);
+    }
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <PenLine
+                aria-label="Edit this version"
+                className="cursor-pointer h-5 w-5"
+                onClick={() => {
+                  setOpen(true);
+                }}
+              />
+            </TooltipTrigger>
+            <TooltipContent>Edit this version</TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Edit this version</DialogTitle>
+        </DialogHeader>
+        <Textarea
+          className="h-[50svh]"
+          value={editText}
+          autoFocus
+          onChange={(e) => setEditText(e.target.value)}
+        />
+        <DialogFooter>
+          <Button
+            disabled={loading}
+            className="cursor-pointer self-end"
+            onClick={handleSubmit}
+          >
+            Save changes
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 export const RevertDialog = ({ versionId }: RevertDialogProps) => (
@@ -64,7 +165,7 @@ export const RevertDialog = ({ versionId }: RevertDialogProps) => (
   </Dialog>
 );
 
-const PassageDropdown = ({ version }: PassageActionProps) => {
+const PresetEditDropdown = ({ version }: EditOptionsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   // filter out unsupported or invalid edit types.
@@ -125,7 +226,7 @@ const PassageDropdown = ({ version }: PassageActionProps) => {
   );
 };
 
-const PassageAction = ({ version }: PassageActionProps) => {
+export const EditOptions = ({ version }: EditOptionsProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -148,7 +249,7 @@ const PassageAction = ({ version }: PassageActionProps) => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <PassageDropdown version={version} />
+      <PresetEditDropdown version={version} />
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-slate-900 dark:text-slate-50">
@@ -175,5 +276,3 @@ const PassageAction = ({ version }: PassageActionProps) => {
     </Dialog>
   );
 };
-
-export default PassageAction;

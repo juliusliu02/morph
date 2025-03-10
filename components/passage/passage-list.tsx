@@ -3,7 +3,7 @@ import { Dialogue } from "@prisma/client";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import PassageListItemAction from "@/components/passage-list-item-action";
+import PassageListItemAction from "@/components/passage/passage-list-item-action";
 
 type PassageListProps = {
   passages: Dialogue[];

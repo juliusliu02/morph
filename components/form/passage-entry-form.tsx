@@ -22,7 +22,7 @@ import { createDialogue } from "@/actions/dialogue";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
-const InputPassageForm = () => {
+const PassageEntryForm = () => {
   const form = useForm<z.output<typeof newDialogueSchema>>({
     resolver: zodResolver(newDialogueSchema),
     defaultValues: {
@@ -92,4 +92,4 @@ const InputPassageForm = () => {
   );
 };
 
-export default InputPassageForm;
+export default PassageEntryForm;

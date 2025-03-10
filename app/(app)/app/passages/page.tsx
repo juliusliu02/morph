@@ -1,7 +1,7 @@
 import React from "react";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { redirect } from "next/navigation";
-import PassageList from "@/components/passage-list";
+import PassageList from "@/components/passage/passage-list";
 import {
   Card,
   CardContent,

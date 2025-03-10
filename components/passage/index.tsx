@@ -1,5 +1,5 @@
 "use client";
-import { type PropsWithChildren, useRef, useState } from "react";
+import { type PropsWithChildren, useRef } from "react";
 import { Diff } from "diff-match-patch-ts";
 import {
   Card,
@@ -13,29 +13,16 @@ import { getDiff } from "@/lib/utils";
 import { Version } from "@prisma/client";
 import { DiffWord, Title } from "@/components/typography";
 import { DialogueWithVersion } from "@/lib/db/types";
-import { saveSelfEdit } from "@/actions/version";
 import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
-import { ClipboardCopy, PenLine } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import PassageAction, { RevertDialog } from "@/components/passage-action";
 import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
+  EditOptions,
+  RevertDialog,
+  SelfEditDialog,
+  Copy,
+} from "@/components/passage/passage-action";
 import Markdown from "react-markdown";
 
 type PassageProps = {
@@ -97,90 +84,6 @@ const PassageTitle = ({ passage }: PassageTitleProps) => {
   );
 };
 
-const Copy = ({ text }: { text: string }) => {
-  return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger aria-label="Copy to clipboard">
-          <ClipboardCopy
-            className="cursor-pointer translate-y-[-1px] h-5 w-5"
-            onClick={() => {
-              navigator.clipboard
-                .writeText(text)
-                .then(() => toast.success("Copied to clipboard!"));
-            }}
-          />
-        </TooltipTrigger>
-        <TooltipContent>Copy to Clipboard</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
-};
-
-const Edit = ({ versionId, text }: { versionId: string; text: string }) => {
-  const [open, setOpen] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [editText, setEditText] = useState<string>(text);
-
-  const handleSubmit = async () => {
-    setLoading(true);
-    const response = await saveSelfEdit(versionId, editText);
-    setLoading(false);
-    if (response) {
-      toast.error("An error occurred.", {
-        description: response.message,
-        action: {
-          label: "Retry",
-          onClick: handleSubmit,
-        },
-      });
-    } else {
-      setOpen(false);
-    }
-  };
-
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <PenLine
-                aria-label="Edit this version"
-                className="cursor-pointer h-5 w-5"
-                onClick={() => {
-                  setOpen(true);
-                }}
-              />
-            </TooltipTrigger>
-            <TooltipContent>Edit this version</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Edit this version</DialogTitle>
-        </DialogHeader>
-        <Textarea
-          className="h-[50svh]"
-          value={editText}
-          autoFocus
-          onChange={(e) => setEditText(e.target.value)}
-        />
-        <DialogFooter>
-          <Button
-            disabled={loading}
-            className="cursor-pointer self-end"
-            onClick={handleSubmit}
-          >
-            Save changes
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
-  );
-};
-
 export const PassageContent = ({ content }: PassageContentProps) => (
   <article>
     {content.map((diff, index) => (
@@ -226,7 +129,7 @@ const PassageCard = ({
       </CardHeader>
       <CardContent>{children}</CardContent>
       <CardFooter className="justify-end">
-        <Edit versionId={version.id} text={version.text} />
+        <SelfEditDialog versionId={version.id} text={version.text} />
       </CardFooter>
     </Card>
   );
@@ -298,7 +201,7 @@ export const Passage = ({ passage }: PassageProps) => {
           </time>
         </span>
         <span className="flex flex-col sm:flex-row gap-2">
-          <PassageAction version={edit} />
+          <EditOptions version={edit} />
           <RevertDialog versionId={edit.id} />
         </span>
       </div>

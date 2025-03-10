@@ -1,7 +1,7 @@
 import React from "react";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { redirect } from "next/navigation";
-import InputPassageForm from "@/components/input-passage-form";
+import PassageEntryForm from "@/components/form/passage-entry-form";
 import {
   Card,
   CardContent,
@@ -31,7 +31,7 @@ async function Page() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <InputPassageForm />
+          <PassageEntryForm />
         </CardContent>
       </Card>
     </main>
