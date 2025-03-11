@@ -48,7 +48,7 @@ const MobilePassageCard = ({
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div style={style} className="h-screen will-change-transform">
+      <motion.div style={style} className="h-screen">
         <Card className="h-fit flex-1 w-full relative">
           <CardHeader className="pb-4">
             <CardTitle className="text-center capitalize">
@@ -96,10 +96,7 @@ const DesktopPassageCard = ({
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div
-        style={style}
-        className="top-[-10%] relative h-[36rem] will-change-transform"
-      >
+      <motion.div style={style} className="top-[-10%] relative h-[36rem]">
         <Card className="h-full flex-1 w-full max-w-md relative p-2">
           <CardHeader>
             <CardTitle className="text-center capitalize text-xl">
@@ -149,7 +146,7 @@ const CardStack = () => {
       transition={{
         delay: 0.3,
       }}
-      className="mt-12 p-4 relative flex flex-col items-center will-change-transform"
+      className="mt-12 p-4 relative flex flex-col items-center"
     >
       <div className="absolute h-full pb-[50vh]">
         <h2 className="text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
