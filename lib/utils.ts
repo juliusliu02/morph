@@ -12,7 +12,7 @@ export const getDiff = (originalText: string, editText: string) => {
   const original = originalText.replaceAll(/\n+/g, "\n");
   const edit = editText.replaceAll(/\n+/g, "\n");
   const diffResult = diff.diff_main(original, edit);
-  diff.diff_cleanupEfficiency(diffResult);
+  diff.diff_cleanupSemantic(diffResult);
 
   const originalDiffs = diffResult.filter((d: Diff) => d[0] != DiffOp.Insert);
   const editDiffs = diffResult.filter((d: Diff) => d[0] != DiffOp.Delete);
