@@ -2,8 +2,8 @@
 import React, { useEffect } from "react";
 import Intro from "@/components/landing/intro";
 import CardStack from "@/components/landing/card-stack";
-import Prompt from "@/components/landing/prompt";
 import Lenis from "lenis";
+import Footer from "@/components/landing/footer";
 
 function Page() {
   useEffect(() => {
@@ -22,7 +22,7 @@ function Page() {
       <main className="max-w-3xl flex flex-col items-center px-10">
         <Intro />
         <CardStack />
-        <Prompt />
+        <Footer />
       </main>
     </div>
   );

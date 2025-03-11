@@ -21,9 +21,9 @@ export default function Intro() {
         transition={{
           delay: 0.1,
         }}
-        className="mt-8 mx-10 text-lg sm:text-2xl text-center text-slate-700 dark:text-slate-200 will-change-transform"
+        className="mt-8 mx-10 text-lg sm:text-xl text-center text-slate-700 dark:text-slate-200 will-change-transform"
       >
-        Produce error-free and elevated passages in one click with Morph.
+        Produce error-free and elevated passages in one click without hassle.
       </motion.p>
       <motion.div
         initial={{ opacity: 0, y: 100 }}

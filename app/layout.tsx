@@ -7,7 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 export const metadata: Metadata = {
   title: {
     template: "%s | Morph",
-    default: "Smart AI Editor | Morph",
+    default: "Morph — Smart, Opinionated AI Editor",
   },
 };
 
