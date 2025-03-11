@@ -148,10 +148,10 @@ const CardStack = () => {
       }}
       className="mt-12 p-4 flex flex-col items-center relative will-change-transform"
     >
-      <h2 className="pb-[100svh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
+      <h2 className="pb-[120vh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h2>
-      <div ref={ref}>
+      <div ref={ref} className="top-[-50vh] relative">
         {data.map((edit, i) => (
           <PassageCard
             original={i > 0 ? data[i - 1].text : undefined}
