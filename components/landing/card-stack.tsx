@@ -16,7 +16,6 @@ import {
 } from "motion/react";
 import { getDiff } from "@/lib/utils";
 import { PassageContent } from "@/components/passage";
-import { max } from "@floating-ui/utils";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
 
 type PassageCardProps = {
@@ -27,39 +26,21 @@ type PassageCardProps = {
   scrollYProgress: MotionValue<number>;
 };
 
-const PassageCard = ({
+const MobilePassageCard = ({
   original,
   edit,
   index,
   dataLength,
   scrollYProgress,
 }: PassageCardProps) => {
-  const isSm = useMediaQuery("(min-width: 640px)");
   const diffs = original ? getDiff(original, edit.text) : undefined;
-
-  const desktopEnterRange = [
-    max((index - 0.75) / dataLength, 0),
-    (index + 0.25) / dataLength,
-  ]; // use max for the first card
-  // slightly delay exit animation to when the card is at the center
-  const desktopExitRange = [(index + 0.25) / dataLength, 1];
-  const desktop = {
-    scale: useTransform(scrollYProgress, desktopEnterRange, [2, 1]),
-    opacity: useTransform(scrollYProgress, desktopEnterRange, [0, 1]),
-    rotate: useTransform(scrollYProgress, desktopExitRange, [
-      0,
-      (dataLength - index - 1) * -15,
-    ]),
-    translateY: useTransform(scrollYProgress, desktopEnterRange, [100, 0]),
-  };
-
-  const mobileExitRange = [index / dataLength, 1];
-  const mobile = {
-    translateY: useTransform(scrollYProgress, mobileExitRange, [
+  const exitRange = [index / dataLength, 1];
+  const style = {
+    translateY: useTransform(scrollYProgress, exitRange, [
       0,
       -50 * (dataLength - index),
     ]),
-    scale: useTransform(scrollYProgress, mobileExitRange, [
+    scale: useTransform(scrollYProgress, exitRange, [
       1,
       1 - 0.1 * (dataLength - index),
     ]),
@@ -67,17 +48,14 @@ const PassageCard = ({
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div
-        style={isSm ? desktop : mobile}
-        className="h-screen sm:top-[-10%] sm:relative sm:h-[36rem]"
-      >
-        <Card className="h-fit sm:h-full flex-1 w-full max-w-md relative sm:p-2">
-          <CardHeader>
-            <CardTitle className="text-center capitalize sm:text-xl">
+      <motion.div style={style} className="h-screen">
+        <Card className="h-fit flex-1 w-full relative">
+          <CardHeader className="pb-4">
+            <CardTitle className="text-center capitalize">
               {edit.type.toLowerCase()}
             </CardTitle>
           </CardHeader>
-          <CardContent className="sm:leading-relaxed">
+          <CardContent>
             {diffs ? (
               <PassageContent content={diffs.edit} />
             ) : (
@@ -92,6 +70,64 @@ const PassageCard = ({
         </Card>
       </motion.div>
     </div>
+  );
+};
+
+const DesktopPassageCard = ({
+  original,
+  edit,
+  index,
+  dataLength,
+  scrollYProgress,
+}: PassageCardProps) => {
+  const diffs = original ? getDiff(original, edit.text) : undefined;
+
+  const enterRange = [(index - 1) / dataLength, index / dataLength];
+  // slightly delay exit animation to when the card is at the center
+  const exitRange = [(index + 0.2) / dataLength, 1];
+  const style = {
+    scale: useTransform(scrollYProgress, enterRange, [2, 1]),
+    opacity: useTransform(scrollYProgress, enterRange, [0, 1]),
+    rotate: useTransform(scrollYProgress, exitRange, [
+      0,
+      (dataLength - index - 1) * -15,
+    ]),
+  };
+
+  return (
+    <div className="sticky top-28 h-screen flex justify-center items-center">
+      <motion.div style={style} className="top-[-10%] relative h-[36rem]">
+        <Card className="h-full flex-1 w-full max-w-md relative p-2">
+          <CardHeader>
+            <CardTitle className="text-center capitalize text-xl">
+              {edit.type.toLowerCase()}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="leading-relaxed">
+            {diffs ? (
+              <PassageContent content={diffs.edit} />
+            ) : (
+              <p>{edit.text}</p>
+            )}
+          </CardContent>
+          {edit.footnote && (
+            <CardFooter className="text-slate-600 dark:text-slate-300 text-sm">
+              *{edit.footnote}
+            </CardFooter>
+          )}
+        </Card>
+      </motion.div>
+    </div>
+  );
+};
+
+const PassageCard = (props: PassageCardProps) => {
+  const isSm = useMediaQuery("(min-width: 640px)");
+
+  return isSm ? (
+    <DesktopPassageCard {...props} />
+  ) : (
+    <MobilePassageCard {...props} />
   );
 };
 
@@ -110,22 +146,23 @@ const CardStack = () => {
       transition={{
         delay: 0.3,
       }}
-      ref={ref}
-      className="mt-12 p-4 flex flex-col items-center relative"
+      className="mt-12 p-4 flex flex-col items-center relative will-change-transform"
     >
       <h2 className="pb-[100svh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h2>
-      {data.map((edit, i) => (
-        <PassageCard
-          original={i > 0 ? data[i - 1].text : undefined}
-          edit={edit}
-          key={i}
-          index={i}
-          dataLength={data.length}
-          scrollYProgress={scrollYProgress}
-        />
-      ))}
+      <div ref={ref}>
+        {data.map((edit, i) => (
+          <PassageCard
+            original={i > 0 ? data[i - 1].text : undefined}
+            edit={edit}
+            key={i}
+            index={i}
+            dataLength={data.length}
+            scrollYProgress={scrollYProgress}
+          />
+        ))}
+      </div>
     </motion.section>
   );
 };
