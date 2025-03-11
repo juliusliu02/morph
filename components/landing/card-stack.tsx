@@ -37,8 +37,8 @@ const MobilePassageCard = ({
   const exitRange = [index / dataLength, 1];
   const style = {
     translateY: useTransform(scrollYProgress, exitRange, [
-      0,
-      -50 * (dataLength - index),
+      "0",
+      -6 * (dataLength - index) + "vh",
     ]),
     scale: useTransform(scrollYProgress, exitRange, [
       1,
@@ -146,7 +146,7 @@ const CardStack = () => {
       transition={{
         delay: 0.3,
       }}
-      className="mt-12 p-4 relative flex flex-col items-center"
+      className="mt-12 sm:p-4 relative flex flex-col items-center"
     >
       <div className="absolute h-full pb-[50vh]">
         <h2 className="text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
@@ -154,7 +154,7 @@ const CardStack = () => {
         </h2>
       </div>
 
-      <div ref={ref} className="mt-20">
+      <div ref={ref} className="mt-28 sm:mt-20">
         {data.map((edit, i) => (
           <PassageCard
             original={i > 0 ? data[i - 1].text : undefined}
