@@ -48,7 +48,7 @@ const MobilePassageCard = ({
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div style={style} className="h-screen">
+      <motion.div style={style} className="h-screen will-change-transform">
         <Card className="h-fit flex-1 w-full relative">
           <CardHeader className="pb-4">
             <CardTitle className="text-center capitalize">
@@ -96,7 +96,10 @@ const DesktopPassageCard = ({
 
   return (
     <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div style={style} className="top-[-10%] relative h-[36rem]">
+      <motion.div
+        style={style}
+        className="top-[-10%] relative h-[36rem] will-change-transform"
+      >
         <Card className="h-full flex-1 w-full max-w-md relative p-2">
           <CardHeader>
             <CardTitle className="text-center capitalize text-xl">
@@ -122,9 +125,9 @@ const DesktopPassageCard = ({
 };
 
 const PassageCard = (props: PassageCardProps) => {
-  const isSm = useMediaQuery("(min-width: 640px)");
+  const isMobile = useMediaQuery("(min-width: 640px)");
 
-  return isSm ? (
+  return isMobile ? (
     <DesktopPassageCard {...props} />
   ) : (
     <MobilePassageCard {...props} />

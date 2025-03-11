@@ -21,7 +21,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="relative">
       <body
         className={`${sourceSans3.className} antialiased bg-slate-50 dark:bg-slate-950 relative`}
       >
