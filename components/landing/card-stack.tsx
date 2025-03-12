@@ -47,7 +47,7 @@ const MobilePassageCard = ({
   };
 
   return (
-    <div className="sticky top-28 h-screen flex justify-center items-center">
+    <div className="sticky top-[15vh] h-screen flex justify-center items-center">
       <motion.div style={style} className="h-screen">
         <Card className="h-fit flex-1 w-full relative">
           <CardHeader className="pb-4">
@@ -95,8 +95,8 @@ const DesktopPassageCard = ({
   };
 
   return (
-    <div className="sticky top-28 h-screen flex justify-center items-center">
-      <motion.div style={style} className="top-[-10%] relative h-[36rem]">
+    <div className="sticky -top-4 h-screen flex justify-center items-center">
+      <motion.div style={style} className="relative h-[36rem]">
         <Card className="h-full flex-1 w-full max-w-md relative p-2">
           <CardHeader>
             <CardTitle className="text-center capitalize text-xl">
@@ -121,24 +121,16 @@ const DesktopPassageCard = ({
   );
 };
 
-const PassageCard = (props: PassageCardProps) => {
-  const isMobile = useMediaQuery("(min-width: 640px)");
-
-  return isMobile ? (
-    <DesktopPassageCard {...props} />
-  ) : (
-    <MobilePassageCard {...props} />
-  );
-};
-
 const CardStack = () => {
   const ref = useRef<HTMLDivElement>(null);
+  const isDesktop = useMediaQuery("(min-width: 640px) and (min-height: 768px)");
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
   const data = LandingEdits;
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 100 }}
@@ -148,23 +140,32 @@ const CardStack = () => {
       }}
       className="mt-12 sm:p-4 relative flex flex-col items-center"
     >
-      <div className="absolute h-full pb-[50vh]">
-        <h2 className="text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
-          Make modular and incisive edits in seconds.
-        </h2>
-      </div>
+      <h2 className="px-8 pb-[50vh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
+        Make modular and incisive edits in seconds.
+      </h2>
 
-      <div ref={ref} className="mt-28 sm:mt-20">
-        {data.map((edit, i) => (
-          <PassageCard
-            original={i > 0 ? data[i - 1].text : undefined}
-            edit={edit}
-            key={i}
-            index={i}
-            dataLength={data.length}
-            scrollYProgress={scrollYProgress}
-          />
-        ))}
+      <div ref={ref} className={isDesktop ? "-mt-[60vh]" : "mt-[50vh]"}>
+        {data.map((edit, i) =>
+          isDesktop ? (
+            <DesktopPassageCard
+              original={i > 0 ? data[i - 1].text : undefined}
+              edit={edit}
+              key={i}
+              index={i}
+              dataLength={data.length}
+              scrollYProgress={scrollYProgress}
+            />
+          ) : (
+            <MobilePassageCard
+              original={i > 0 ? data[i - 1].text : undefined}
+              edit={edit}
+              key={i}
+              index={i}
+              dataLength={data.length}
+              scrollYProgress={scrollYProgress}
+            />
+          ),
+        )}
       </div>
     </motion.section>
   );
