@@ -10,7 +10,9 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky",
-    "test": "npx playwright test"
+    "test": "dotenv -e .env.test -- npx playwright test",
+    "migrate:dev": "dotenv -e .env.development -- npx prisma db push",
+    "migrate:test": "dotenv -e .env.test -- npx prisma db push"
   },
   "lint-staged": {
     "*.{js, jsx,ts,tsx}": [
@@ -67,6 +69,7 @@
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "husky": "^9.1.7",
