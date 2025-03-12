@@ -140,11 +140,14 @@ const CardStack = () => {
       }}
       className="mt-12 sm:p-4 relative flex flex-col items-center"
     >
-      <h2 className="px-8 pb-[50vh] text-2xl sm:text-3xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
+      <h2 className="px-8 pb-[50vh] text-2xl sm:text-4xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h2>
 
-      <div ref={ref} className={isDesktop ? "-mt-[60vh]" : "mt-[50vh]"}>
+      <div
+        ref={ref}
+        className={isDesktop ? "mt-[-60vh]" : "mt-[calc(-50vh+2rem)]"}
+      >
         {data.map((edit, i) =>
           isDesktop ? (
             <DesktopPassageCard
