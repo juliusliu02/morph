@@ -1,10 +1,10 @@
 import { expect, test } from "@playwright/test";
-import { clearUser, createExampleUser, loginUser } from "@/e2e/utils";
+import { deleteTestUser, createTestUser, loginUser } from "@/e2e/utils";
 
 test.describe("Create passage", async () => {
   test.beforeAll("create test user", async () => {
-    await clearUser();
-    await createExampleUser();
+    await deleteTestUser();
+    await createTestUser();
   });
 
   test.beforeEach("log in", async ({ page }) => {
