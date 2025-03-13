@@ -1,3 +1,4 @@
+# adapted from https://github.com/prisma/prisma/blob/main/docker/mongodb_replica/Dockerfile
 ARG MONGO_VERSION
 
 FROM mongo:${MONGO_VERSION}

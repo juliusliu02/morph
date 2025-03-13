@@ -2,11 +2,12 @@ services:
   # -> only used for manual testing locally
   # This config is for MongoDB v5+
   # It's a Replica Set (required for Prisma Client)
+  # adapted from https://github.com/prisma/prisma/blob/main/docker/docker-compose.yml
   mongo:
     build:
       context: .
       args:
-        MONGO_VERSION: 6
+        MONGO_VERSION: latest
     environment:
       MONGO_REPLICA_HOST: 127.0.0.1
       MONGO_REPLICA_PORT: 27017
