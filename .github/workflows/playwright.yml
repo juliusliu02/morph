@@ -11,8 +11,8 @@ jobs:
 
     env:
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      ARCJET_API: ${{ secrets.ARCJET_KEY }}
-      GEMINI_API: ${{ secrets.GEMINI_KEY }}
+      ARCJET_KEY: ${{ secrets.ARCJET_KEY }}
+      GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
 
     steps:
     - uses: actions/checkout@v4
