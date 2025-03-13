@@ -47,7 +47,7 @@ const MobilePassageCard = ({
   };
 
   return (
-    <div className="sticky top-[15vh] h-screen flex justify-center items-center">
+    <div className="sticky top-[20svh] h-screen flex justify-center items-center">
       <motion.div style={style} className="h-screen">
         <Card className="h-fit flex-1 w-full relative">
           <CardHeader className="pb-4">
@@ -126,7 +126,7 @@ const CardStack = () => {
   const isDesktop = useMediaQuery("(min-width: 640px) and (min-height: 768px)");
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end end"],
+    offset: ["start 0.8", "end end"],
   });
 
   const data = LandingEdits;
@@ -140,13 +140,13 @@ const CardStack = () => {
       }}
       className="mt-12 sm:p-4 relative flex flex-col items-center"
     >
-      <h2 className="px-8 pb-[50vh] text-2xl sm:text-4xl font-semibold sticky top-4 sm:top-12 text-center text-slate-900 dark:text-slate-50">
+      <h2 className="px-8 pb-[50vh] text-2xl sm:text-4xl font-semibold sticky top-6 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h2>
 
       <div
         ref={ref}
-        className={isDesktop ? "mt-[-60vh]" : "mt-[calc(-50vh+2rem)]"}
+        className={isDesktop ? "mt-[-60vh]" : "mt-[calc(-50vh+4rem)]"}
       >
         {data.map((edit, i) =>
           isDesktop ? (
