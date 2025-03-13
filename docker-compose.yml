@@ -1,11 +1,23 @@
 services:
-  mongodb_container:
-    # This image automatically creates a replica set required for transactions
-    image: prismagraphql/mongo-single-replica:4.4.3-bionic
-    platform: linux/amd64
+  # -> only used for manual testing locally
+  # This config is for MongoDB v5+
+  # It's a Replica Set (required for Prisma Client)
+  mongo:
+    build:
+      context: .
+      args:
+        MONGO_VERSION: 6
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: prisma
-      INIT_WAIT_SEC: 3
+      MONGO_REPLICA_HOST: 127.0.0.1
+      MONGO_REPLICA_PORT: 27017
+      # Use "mongo" instead of "mongosh" before v5.0
+      MONGO_COMMAND: 'mongosh'
     ports:
-      - 27017:27017
+      - '27017:27017'
+    restart: unless-stopped
+    healthcheck:
+      # Use "mongo" instead of "mongosh" before v5.0
+      test: [ 'CMD', 'mongosh', 'admin', '--port', '27017', '--eval', "db.adminCommand('ping').ok" ]
+      interval: 5s
+      timeout: 2s
+      retries: 20

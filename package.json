@@ -10,7 +10,7 @@
     "lint": "next lint",
     "format": "prettier --write .",
     "prepare": "husky",
-    "test": "docker compose up --wait && dotenv -e .env.test -- npx playwright test",
+    "test": "docker compose up --wait --remove-orphans && dotenv -e .env.test -- npx playwright test",
     "migrate:dev": "dotenv -e .env.development -- npx prisma db push",
     "migrate:test": "dotenv -e .env.test -- npx prisma db push"
   },

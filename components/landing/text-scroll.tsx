@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "motion/react";
 import React, { useRef } from "react";
 import { MotionValue } from "motion/react";
 
@@ -13,7 +13,7 @@ const Paragraph = ({ paragraph }: { paragraph: string }) => {
   return (
     <p
       ref={container}
-      className="text-4xl sm:text-6xl leading-none font-bold flex flex-wrap"
+      className="text-slate-900 dark:text-slate-50 text-4xl sm:text-6xl leading-none font-bold flex flex-wrap"
     >
       {words.map((word, i) => {
         const start = i / words.length;

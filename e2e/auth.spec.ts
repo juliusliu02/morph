@@ -53,7 +53,7 @@ test.describe("Unauthenticated", () => {
   });
 });
 
-test.describe("authentication", async () => {
+test.describe("Authentication", async () => {
   test.beforeAll("set up example user", async () => {
     await clearUser();
     await createExampleUser();
@@ -72,7 +72,7 @@ test.describe("authentication", async () => {
   });
 });
 
-test.describe("post-auth", async () => {
+test.describe("Authenticated", async () => {
   test.beforeAll("set up example user", async () => {
     await clearUser();
     await createExampleUser();

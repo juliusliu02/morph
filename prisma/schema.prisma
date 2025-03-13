@@ -29,7 +29,7 @@ model Version {
 model Dialogue {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String?
-  owner     User      @relation(fields: [ownerId], references: [id])
+  owner     User      @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId   String    @db.ObjectId
   createdAt DateTime  @default(now())
   versions  Version[]
