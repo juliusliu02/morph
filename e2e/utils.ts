@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/db";
 import bcrypt from "bcrypt";
 import type { Page } from "@playwright/test";
+import { LandingEdits } from "@/public/data";
 
+// test data
 export const testUser = {
+  id: "507f1f77bcf86cd799439011",
   name: "John Doe",
   username: "jd",
   email: "johndoe@example.com",
@@ -10,9 +13,15 @@ export const testUser = {
   hashedPassword: await bcrypt.hash("abcStrong123", 10),
 };
 
+export const testPassage = LandingEdits[0].text;
+
+export const testGrammarEdit = LandingEdits[1].text;
+
+// DB utils
 export const createTestUser = async () => {
   await prisma.user.create({
     data: {
+      id: testUser.id,
       name: testUser.name,
       email: testUser.email,
       username: testUser.username,
@@ -29,6 +38,28 @@ export const deleteTestUser = async () => {
   });
 };
 
+export const createTestEdit = async () => {
+  await prisma.dialogue.create({
+    data: {
+      title: "",
+      ownerId: testUser.id,
+      versions: {
+        create: [
+          {
+            edit: "ORIGINAL",
+            text: testPassage,
+          },
+          {
+            edit: "GRAMMAR",
+            text: testGrammarEdit,
+          },
+        ],
+      },
+    },
+  });
+};
+
+// Page utils
 export const loginUser = async (page: Page) => {
   await page.goto("/login");
   await page.getByRole("textbox", { name: "Username" }).click();
