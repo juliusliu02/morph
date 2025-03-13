@@ -105,8 +105,9 @@ export const signup = async (
     let errorMessage: string = "An error occurred while creating your account.";
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       // unique constraint
-      if (error.code === "P2002") {
-        errorMessage = `The ${(error.meta?.target as string).split("_")[1]} is already taken.`;
+      console.table(error);
+      if (error.code === "P2002" && typeof error.meta?.target === "string") {
+        errorMessage = `The ${error.meta.target.split("_")[1]} is already taken.`;
       }
     }
     return { message: errorMessage };
