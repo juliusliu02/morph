@@ -82,9 +82,9 @@ const DesktopPassageCard = ({
 }: PassageCardProps) => {
   const diffs = original ? getDiff(original, edit.text) : undefined;
 
-  const enterRange = [(index - 1) / dataLength, index / dataLength];
+  const enterRange = [index / dataLength, (index + 1) / dataLength];
   // slightly delay exit animation to when the card is at the center
-  const exitRange = [(index + 0.2) / dataLength, 1];
+  const exitRange = [(index + 1) / dataLength, 1];
   const style = {
     scale: useTransform(scrollYProgress, enterRange, [2, 1]),
     opacity: useTransform(scrollYProgress, enterRange, [0, 1]),
@@ -140,13 +140,13 @@ const CardStack = () => {
       }}
       className="mt-12 sm:p-4 relative flex flex-col items-center"
     >
-      <h2 className="px-8 pb-[50vh] text-2xl sm:text-4xl font-semibold sticky top-6 sm:top-12 text-center text-slate-900 dark:text-slate-50">
+      <h2 className="px-8 pb-[90vh] text-2xl sm:text-4xl font-semibold sticky top-6 sm:top-12 text-center text-slate-900 dark:text-slate-50">
         Make modular and incisive edits in seconds.
       </h2>
 
       <div
         ref={ref}
-        className={isDesktop ? "mt-[-60vh]" : "mt-[calc(-50vh+4rem)]"}
+        className={isDesktop ? "mt-[-50vh]" : "mt-[calc(-90vh+4rem)]"}
       >
         {data.map((edit, i) =>
           isDesktop ? (
