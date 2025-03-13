@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
 import {
-  clearUser,
-  createExampleUser,
-  exampleUser,
+  deleteTestUser,
+  createTestUser,
+  testUser,
   loginUser,
 } from "@/e2e/utils";
 
@@ -26,7 +26,7 @@ test.describe("Input validation", () => {
 
 test.describe("Unauthenticated", () => {
   test.beforeEach(async () => {
-    await clearUser();
+    await deleteTestUser();
   });
 
   test("user can sign up", async ({ page }) => {
@@ -34,29 +34,27 @@ test.describe("Unauthenticated", () => {
     await page.getByRole("textbox", { name: "Username" }).click();
     await page
       .getByRole("textbox", { name: "Username" })
-      .fill(exampleUser.username);
+      .fill(testUser.username);
     await page.getByRole("textbox", { name: "Full Name" }).click();
-    await page
-      .getByRole("textbox", { name: "Full Name" })
-      .fill(exampleUser.name);
+    await page.getByRole("textbox", { name: "Full Name" }).fill(testUser.name);
     await page.getByRole("textbox", { name: "Email" }).click();
-    await page.getByRole("textbox", { name: "Email" }).fill(exampleUser.email);
+    await page.getByRole("textbox", { name: "Email" }).fill(testUser.email);
     await page.getByRole("textbox", { name: "Password" }).click();
     await page
       .getByRole("textbox", { name: "Password" })
-      .fill(exampleUser.password);
+      .fill(testUser.password);
     await page.getByRole("button", { name: "Sign up" }).click();
     await page.waitForURL("/app");
     await expect(
-      page.getByRole("heading", { name: `Hello ${exampleUser.name}.` }),
+      page.getByRole("heading", { name: `Hello ${testUser.name}.` }),
     ).toBeVisible();
   });
 });
 
 test.describe("Authentication", async () => {
   test.beforeAll("set up example user", async () => {
-    await clearUser();
-    await createExampleUser();
+    await deleteTestUser();
+    await createTestUser();
   });
 
   test("unauthenticated user is redirected to login page", async ({ page }) => {
@@ -67,15 +65,15 @@ test.describe("Authentication", async () => {
   test("user can log in", async ({ page }) => {
     await loginUser(page);
     await expect(
-      page.getByRole("heading", { name: `Hello ${exampleUser.name}.` }),
+      page.getByRole("heading", { name: `Hello ${testUser.name}.` }),
     ).toBeVisible();
   });
 });
 
 test.describe("Authenticated", async () => {
   test.beforeAll("set up example user", async () => {
-    await clearUser();
-    await createExampleUser();
+    await deleteTestUser();
+    await createTestUser();
   });
 
   test.beforeEach(async ({ page }) => {

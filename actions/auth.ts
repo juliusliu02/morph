@@ -40,7 +40,7 @@ const aj = arcjet.withRule(
     rateLimit: {
       // uses a sliding window rate limit
       mode: "LIVE",
-      interval: "10m", // counts requests over a 10 minute sliding window
+      interval: "10m", // counts requests over a 10-minute sliding window
       max: 5, // allows 5 submissions within the window
     },
   }),
