@@ -22,7 +22,7 @@ export const createTestUser = async () => {
 };
 
 export const deleteTestUser = async () => {
-  await prisma.user.delete({
+  await prisma.user.deleteMany({
     where: {
       username: testUser.username,
     },
