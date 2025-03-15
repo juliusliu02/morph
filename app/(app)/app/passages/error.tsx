@@ -1,6 +1,14 @@
 "use client"; // Error boundaries must be Client Components
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export default function Error({
   error,
@@ -15,17 +23,20 @@ export default function Error({
   }, [error]);
 
   return (
-    <div>
-      <h2>Something went wrong!</h2>
-      <p>{error.message}</p>
-      <button
-        onClick={
-          // Attempt to recover by trying to re-render the segment
-          () => reset()
-        }
-      >
-        Try again
-      </button>
+    <div className="flex justify-center items-center h-screen">
+      <Card className="max-w-xl ">
+        <CardHeader>
+          <CardTitle className="text-xl font-semibold text-rose-700 dark:text-rose-300">
+            An error has occurred.
+          </CardTitle>
+        </CardHeader>
+        <CardContent>{error.message}</CardContent>
+        <CardFooter>
+          <Button variant="outline" onClick={reset}>
+            Try again
+          </Button>
+        </CardFooter>
+      </Card>
     </div>
   );
 }
