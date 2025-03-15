@@ -6,15 +6,21 @@ import { getCurrentSession } from "@/lib/auth/dal";
 import { notFound, redirect } from "next/navigation";
 import { getPassage } from "@/lib/db/queries";
 
+const preload = (id: string) => {
+  void getPassage(id);
+};
+
 async function Page({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  preload(id);
+
   const { user } = await getCurrentSession();
   if (!user) {
     redirect("/login");
   }
 
-  const passage = await getPassage(id, user.id);
-  if (!passage) {
+  const passage = await getPassage(id);
+  if (!passage || passage.ownerId != user.id) {
     notFound();
   }
 
@@ -34,13 +40,15 @@ export async function generateMetadata({
   params: Promise<{ id: string }>;
 }): Promise<Metadata> {
   const { id } = await params;
+  preload(id);
+
   const { user } = await getCurrentSession();
   if (!user) {
     redirect("/login");
   }
 
-  const passage = await getPassage(id, user.id);
-  if (!passage) {
+  const passage = await getPassage(id);
+  if (!passage || passage.ownerId != user.id) {
     notFound();
   }
 
