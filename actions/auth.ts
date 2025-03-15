@@ -25,12 +25,12 @@ type AuthFormState = {
 const aj = arcjet.withRule(
   protectSignup({
     email: {
-      mode: "LIVE", // will block requests. Use "DRY_RUN" to log only
+      mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       // Block emails that are disposable, invalid, or have no MX records
       block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
     },
     bots: {
-      mode: "LIVE",
+      mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       // configured with a list of bots to allow from
       // https://arcjet.com/bot-list
       allow: [], // "allow none" will block all detected bots
@@ -39,7 +39,7 @@ const aj = arcjet.withRule(
     // minutes from the same IP address
     rateLimit: {
       // uses a sliding window rate limit
-      mode: "LIVE",
+      mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       interval: "10m", // counts requests over a 10-minute sliding window
       max: 5, // allows 5 submissions within the window
     },
@@ -72,7 +72,7 @@ export const signup = async (
   const req = await request();
   const decision = await aj.protect(req, {
     email,
-    fingerprint: req.ip ?? "",
+    fingerprint: req.ip ?? "localhost",
   });
 
   if (decision.isDenied()) {
