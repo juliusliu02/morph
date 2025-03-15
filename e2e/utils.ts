@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import bcrypt from "bcrypt";
-import type { Page } from "@playwright/test";
+import { expect, Page } from "@playwright/test";
 import { LandingEdits } from "@/public/data";
 
 // test data
@@ -68,4 +68,14 @@ export const loginUser = async (page: Page) => {
   await page.getByRole("textbox", { name: "Password" }).fill(testUser.password);
   await page.getByRole("button", { name: "Log in" }).click();
   await page.waitForURL("/app");
+};
+
+export const getTestEdit = async (page: Page) => {
+  await page.getByRole("textbox", { name: "Body" }).click();
+  await page.getByRole("textbox", { name: "Body" }).fill(testPassage);
+  await page.getByRole("button", { name: "Get grammar edit" }).click();
+  await page.waitForURL(/\/app\/passages\/.+/);
+  await expect(
+    page.getByRole("button", { name: "Get a new edit" }),
+  ).toBeVisible();
 };
