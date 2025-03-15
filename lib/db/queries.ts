@@ -1,7 +1,7 @@
 import { cache } from "react";
 import { prisma } from "@/lib/db/index";
 
-export const getPassage = cache(async (id: string, userId: string) => {
+export const getPassage = cache(async (id: string) => {
   let passage;
   try {
     passage = await prisma.dialogue.findUnique({
@@ -16,11 +16,6 @@ export const getPassage = cache(async (id: string, userId: string) => {
     console.error(e);
     return null;
   }
-
-  if (!passage || passage.ownerId != userId) {
-    return null;
-  }
-
   return passage;
 });
 
