@@ -1,5 +1,5 @@
 "use server";
-import { signupFormSchema, loginFormSchema } from "@/lib/validations";
+import { signupFormSchema, loginFormSchema } from "@/lib/validations/auth";
 import bcrypt from "bcrypt";
 import { prisma } from "@/lib/db";
 import { redirect, RedirectType } from "next/navigation";

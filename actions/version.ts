@@ -4,7 +4,7 @@ import {
   customEditSchema,
   presetEditSchema,
   selfEditSchema,
-} from "@/lib/validations";
+} from "@/lib/validations/edit";
 import { prisma } from "@/lib/db";
 import { getCurrentSession } from "@/lib/auth/dal";
 import { revalidatePath } from "next/cache";

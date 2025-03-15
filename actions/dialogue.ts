@@ -1,6 +1,6 @@
 "use server";
 import { getCurrentSession } from "@/lib/auth/dal";
-import { newDialogueSchema } from "@/lib/validations";
+import { newDialogueSchema } from "@/lib/validations/edit";
 import { getEdit } from "@/lib/llm";
 import { prisma } from "@/lib/db";
 import { redirect } from "next/navigation";
