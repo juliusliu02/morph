@@ -172,4 +172,6 @@ export const changeTitle = async (
     console.error(error);
     return { message: "Couldn't update title. Please try again later." };
   }
+
+  revalidatePath(`/app/passages/`);
 };
