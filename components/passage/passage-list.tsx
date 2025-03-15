@@ -11,9 +11,10 @@ type PassageListProps = {
 
 type PassageListItemProps = {
   passage: Dialogue;
+  index: number;
 };
 
-const PassageListItem = ({ passage }: PassageListItemProps) => {
+const PassageListItem = ({ passage, index }: PassageListItemProps) => {
   return (
     <li>
       <Link
@@ -22,6 +23,7 @@ const PassageListItem = ({ passage }: PassageListItemProps) => {
           "dark:bg-slate-950 flex justify-between items-baseline w-full dark:text-gray-200 gap-2",
         )}
         href={`/app/passages/${passage.id}`}
+        prefetch={index < 3 ? true : null}
       >
         <span className="overflow-hidden overflow-ellipsis">
           {passage.title !== "" ? passage.title : "Untitled document"}
@@ -39,7 +41,7 @@ const PassageList = ({ passages }: PassageListProps) => {
   return (
     <ul className="flex flex-col bg-white dark:bg-slate-950">
       {passages.map((passage, index) => (
-        <PassageListItem key={index} passage={passage} />
+        <PassageListItem key={index} index={index} passage={passage} />
       ))}
     </ul>
   );
