@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { signupFormSchema } from "@/lib/validations";
+import { signupFormSchema } from "@/lib/validations/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signup } from "@/actions/auth";
 import { AlertCircle } from "lucide-react";
