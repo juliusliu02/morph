@@ -17,7 +17,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
-import { Edit, Version } from "@prisma/client";
+import { Edit, type Version } from "@prisma/client";
 import {
   deleteEdit,
   getCustomEdit,
@@ -113,7 +113,7 @@ export const SelfEditDialog = ({
           <DialogTitle>Edit this version</DialogTitle>
         </DialogHeader>
         <Textarea
-          className="h-[50svh]"
+          className="h-[50svh] text-slate-900 dark:text-slate-50"
           value={editText}
           autoFocus
           onChange={(e) => setEditText(e.target.value)}
