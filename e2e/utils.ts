@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/db";
 import bcrypt from "bcrypt";
-import { expect, Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 import { LandingEdits } from "@/public/data";
 
 // test data

@@ -1,6 +1,6 @@
 import { motion, useScroll, useTransform } from "motion/react";
 import React, { useRef } from "react";
-import { MotionValue } from "motion/react";
+import type { MotionValue } from "motion/react";
 
 const Paragraph = ({ paragraph }: { paragraph: string }) => {
   const container = useRef(null);
