@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { Diff, DiffMatchPatch, DiffOp } from "diff-match-patch-ts";
+import { type Diff, DiffMatchPatch, DiffOp } from "diff-match-patch-ts";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

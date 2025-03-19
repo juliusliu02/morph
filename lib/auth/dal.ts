@@ -1,7 +1,10 @@
 import "server-only";
 import { cookies } from "next/headers";
 import { cache } from "react";
-import { SessionValidationResult, validateSessionToken } from "@/lib/auth/auth";
+import {
+  type SessionValidationResult,
+  validateSessionToken,
+} from "@/lib/auth/auth";
 
 export const getCurrentSession = cache(
   async (): Promise<SessionValidationResult> => {

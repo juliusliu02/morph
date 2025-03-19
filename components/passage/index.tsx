@@ -1,6 +1,6 @@
 "use client";
 import { type PropsWithChildren, useRef } from "react";
-import { Diff } from "diff-match-patch-ts";
+import type { Diff } from "diff-match-patch-ts";
 import {
   Card,
   CardContent,
@@ -10,9 +10,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getDiff } from "@/lib/utils";
-import { Version } from "@prisma/client";
+import type { Version } from "@prisma/client";
 import { DiffWord, Title } from "@/components/typography";
-import { DialogueWithVersion } from "@/lib/db/types";
+import type { DialogueWithVersion } from "@/lib/db/types";
 import { changeTitle } from "@/actions/dialogue";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
