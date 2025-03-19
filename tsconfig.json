@@ -12,6 +12,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "verbatimModuleSyntax": true,
+    "erasableSyntaxOnly": true,
     "incremental": true,
     "plugins": [
       {
