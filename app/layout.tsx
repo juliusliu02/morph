@@ -3,6 +3,7 @@ import "./globals.css";
 import { Source_Sans_3 } from "next/font/google";
 import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: {
@@ -37,6 +38,7 @@ export default function RootLayout({
         </div>
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
