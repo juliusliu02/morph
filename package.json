@@ -3,6 +3,17 @@
   "version": "0.5.7",
   "private": true,
   "type": "module",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "@vercel/speed-insights",
+      "bcrypt",
+      "esbuild",
+      "prisma",
+      "sharp"
+    ]
+  },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "next dev --turbopack",
