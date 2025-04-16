@@ -7,12 +7,12 @@ import {
   createSession,
   generateSessionToken,
   invalidateSession,
-} from "@/lib/auth/auth";
+} from "@/lib/auth/service";
 import {
   deleteSessionTokenCookie,
   setSessionTokenCookie,
 } from "@/lib/auth/cookie";
-import { getCurrentSession } from "@/lib/auth/dal";
+import { getCurrentSession } from "@/lib/auth/session";
 import { Prisma } from "@prisma/client";
 import arcjet from "@/lib/auth/arcjet";
 import { protectSignup } from "arcjet";

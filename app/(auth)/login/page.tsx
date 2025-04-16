@@ -1,7 +1,7 @@
 import React from "react";
 import { LoginForm } from "@/components/form/login-form";
 import type { Metadata } from "next";
-import { getCurrentSession } from "@/lib/auth/dal";
+import { getCurrentSession } from "@/lib/auth/session";
 import { redirect, RedirectType } from "next/navigation";
 
 export const metadata: Metadata = {
