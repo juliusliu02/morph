@@ -1,5 +1,5 @@
 import React from "react";
-import { getCurrentSession } from "@/lib/auth/dal";
+import { getCurrentSession } from "@/lib/auth/session";
 import { redirect } from "next/navigation";
 import PassageEntryForm from "@/components/form/passage-entry-form";
 import {

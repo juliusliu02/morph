@@ -6,7 +6,7 @@ import {
   selfEditSchema,
 } from "@/lib/validations/edit";
 import { prisma } from "@/lib/db";
-import { getCurrentSession } from "@/lib/auth/dal";
+import { getCurrentSession } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
 import arcjet from "@/lib/auth/arcjet";
 import { tokenBucket } from "arcjet";

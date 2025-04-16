@@ -2,7 +2,7 @@ import React from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { Passage } from "@/components/passage";
 import type { Metadata } from "next";
-import { getCurrentSession } from "@/lib/auth/dal";
+import { getCurrentSession } from "@/lib/auth/session";
 import { notFound, redirect } from "next/navigation";
 import { getPassage } from "@/lib/db/queries";
 
