@@ -31,6 +31,8 @@ export const createTestUser = async () => {
 };
 
 export const deleteTestUser = async () => {
+  // delete here causes an error if the test user doesn't exist.
+  // deleteMany only deletes if it exists.
   await prisma.user.deleteMany({
     where: {
       username: testUser.username,
