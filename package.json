@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@ai-sdk/google": "^1.2.22",
-    "@arcjet/next": "1.0.0-beta.5",
+    "@arcjet/next": "1.0.0-beta.9",
     "@hookform/resolvers": "^4.1.3",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
