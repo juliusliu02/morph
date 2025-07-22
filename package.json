@@ -40,7 +40,7 @@
   "dependencies": {
     "@ai-sdk/google": "^1.2.22",
     "@arcjet/next": "1.0.0-beta.5",
-    "@hookform/resolvers": "^4.1.3",
+    "@hookform/resolvers": "^5.1.1",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@prisma/client": "^6.12.0",
