@@ -54,7 +54,7 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "ai": "^4.3.19",
-    "arcjet": "1.0.0-beta.5",
+    "arcjet": "1.0.0-beta.9",
     "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
