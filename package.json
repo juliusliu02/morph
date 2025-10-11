@@ -14,7 +14,10 @@
       "prisma",
       "sharp",
       "unrs-resolver"
-    ]
+    ],
+    "overrides": {
+      "jsondiffpatch@<0.7.2": ">=0.7.2"
+    }
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
