@@ -8,8 +8,8 @@ const Page = () => {
     demoLogin();
   });
   return (
-    <div className={"w-full h-[100svh] flex items-center justify-center"}>
-      <LoadingSpinner />
+    <div className={"w-full h-[100svh]"}>
+      <LoadingSpinner className={"fixed inset-1/2"} />
     </div>
   );
 };

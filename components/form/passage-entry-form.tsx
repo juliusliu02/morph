@@ -21,6 +21,9 @@ import React, { useActionState, useRef } from "react";
 import { createDialogue } from "@/actions/dialogue";
 import { AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { LandingEdits } from "@/public/data";
+
+const SAMPLE_PASSAGE = LandingEdits[0].text;
 
 const PassageEntryForm = () => {
   const form = useForm<z.output<typeof newDialogueSchema>>({
@@ -72,7 +75,16 @@ const PassageEntryForm = () => {
                 <Textarea className="mt-2" {...field} />
               </FormControl>
               <FormDescription>
-                Paste in the passage you want to edit.
+                Paste in the passage you want to edit or{" "}
+                <Button
+                  onClick={() => form.setValue("body", SAMPLE_PASSAGE)}
+                  type={"button"}
+                  variant={"link"}
+                  className="m-0 p-0 text-[0.8rem]"
+                >
+                  fill in a sample text
+                </Button>
+                .
               </FormDescription>
               <FormMessage />
             </FormItem>
