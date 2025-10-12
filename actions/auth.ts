@@ -167,6 +167,20 @@ export const login = async (
   redirect("/app", RedirectType.replace);
 };
 
+export const demoLogin = async () => {
+  const id = process.env.DEMO_ID;
+  if (!id) {
+    redirect("/error");
+  }
+
+  const token = generateSessionToken();
+
+  const session = await createSession(token, id);
+  await setSessionTokenCookie(token, session.expiresAt);
+
+  redirect("/app", RedirectType.replace);
+};
+
 export const logout = async () => {
   const { session } = await getCurrentSession();
   if (session) {
