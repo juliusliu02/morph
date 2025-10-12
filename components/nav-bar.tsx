@@ -15,28 +15,26 @@ const NavBar = () => {
       <NavigationMenu className="bg-white dark:bg-slate-700 p-1 rounded-xl border-1 border-slate-200 dark:border-slate-600">
         <NavigationMenuList>
           <NavigationMenuItem>
-            <Link href="/app" legacyBehavior passHref>
-              <NavigationMenuLink
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  "dark:text-slate-200 dark:bg-slate-700",
-                )}
-              >
-                New Passage
-              </NavigationMenuLink>
-            </Link>
+            <NavigationMenuLink
+              asChild
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "dark:text-slate-200 dark:bg-slate-700",
+              )}
+            >
+              <Link href="/app">New Passage</Link>
+            </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
-            <Link href="/app/passages" legacyBehavior passHref>
-              <NavigationMenuLink
-                className={cn(
-                  navigationMenuTriggerStyle(),
-                  "dark:text-slate-200 dark:bg-slate-700",
-                )}
-              >
-                My Passages
-              </NavigationMenuLink>
-            </Link>
+            <NavigationMenuLink
+              asChild
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "dark:text-slate-200 dark:bg-slate-700",
+              )}
+            >
+              <Link href="/app/passages">New Passage</Link>
+            </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
             <NavigationMenuLink
