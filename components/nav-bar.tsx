@@ -33,7 +33,7 @@ const NavBar = () => {
                 "dark:text-slate-200 dark:bg-slate-700",
               )}
             >
-              <Link href="/app/passages">New Passage</Link>
+              <Link href="/app/passages">My Passages</Link>
             </NavigationMenuLink>
           </NavigationMenuItem>
           <NavigationMenuItem>
