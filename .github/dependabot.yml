@@ -1,0 +1,16 @@
+version: 2
+updates:
+  - package-ecosystem: "pnpm"
+    directory: "/" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "deps"
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types: ["minor", "patch"]
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
