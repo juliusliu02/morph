@@ -91,7 +91,7 @@
     "@types/react-dom": "^19.2.3",
     "dotenv-cli": "^8.0.0",
     "eslint": "^9.39.1",
-    "eslint-config-next": "15.4.2",
+    "eslint-config-next": "16.0.7",
     "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
