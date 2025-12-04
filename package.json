@@ -41,7 +41,7 @@
     ]
   },
   "dependencies": {
-    "@ai-sdk/google": "^1.2.22",
+    "@ai-sdk/google": "^2.0.44",
     "@arcjet/next": "1.0.0-beta.9",
     "@hookform/resolvers": "^5.2.2",
     "@oslojs/crypto": "^1.0.1",
