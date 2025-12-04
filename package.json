@@ -81,7 +81,7 @@
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
     "@eslint/eslintrc": "^3.3.3",
-    "@next/eslint-plugin-next": "^15.5.7",
+    "@next/eslint-plugin-next": "^16.0.7",
     "@playwright/test": "^1.57.0",
     "@tailwindcss/postcss": "^4.1.17",
     "@tailwindcss/typography": "^0.5.19",
