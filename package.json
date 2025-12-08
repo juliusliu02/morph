@@ -92,7 +92,7 @@
     "dotenv-cli": "^8.0.0",
     "eslint": "^9.39.1",
     "eslint-config-next": "15.4.2",
-    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
     "postcss": "^8.5.6",
