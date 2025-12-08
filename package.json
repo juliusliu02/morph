@@ -79,7 +79,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
+    "@commitlint/config-conventional": "^20.2.0",
     "@eslint/eslintrc": "^3.3.3",
     "@next/eslint-plugin-next": "^15.5.7",
     "@playwright/test": "^1.57.0",
