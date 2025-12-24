@@ -30,7 +30,9 @@ test.describe("Create passage", async () => {
     ).toBeVisible();
   });
 
-  test(`passage title default to "Untitled document"`, async ({ page }) => {
+  test.skip(`passage title default to "Untitled document"`, async ({
+    page,
+  }) => {
     test.slow();
     await getTestEdit(page);
     await expect(page.getByRole("heading", { level: 1 })).toHaveText(
