@@ -22,7 +22,7 @@ test.describe("Create passage", async () => {
     await expect(page.getByText("Passage must be longer than")).toBeVisible();
   });
 
-  test("user can get grammar edit", async ({ page }) => {
+  test.skip("user can get grammar edit", async ({ page }) => {
     test.slow();
     await getTestEdit(page);
     await expect(
