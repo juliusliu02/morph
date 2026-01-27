@@ -10,9 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      ARCJET_KEY: ${{ secrets.ARCJET_KEY }}
-      GEMINI_KEY: ${{ secrets.GEMINI_KEY }}
+      DATABASE_URL: mongodb://localhost:27017/morph-test?directConnection=true
+      ARCJET_KEY: ${{ github.actor != 'dependabot[bot]' && secrets.ARCJET_KEY || '' }}
+      GEMINI_KEY: ${{ github.actor != 'dependabot[bot]' && secrets.GEMINI_KEY || '' }}
 
     steps:
     - uses: actions/checkout@v4
