@@ -27,7 +27,7 @@ const aj = arcjet.withRule(
     email: {
       mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
       // Block emails that are disposable, invalid, or have no MX records
-      block: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
+      deny: ["DISPOSABLE", "INVALID", "NO_MX_RECORDS"],
     },
     bots: {
       mode: process.env.NODE_ENV === "production" ? "LIVE" : "DRY_RUN",
